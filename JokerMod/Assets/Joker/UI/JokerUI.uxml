@@ -1,0 +1,5 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <GallantGames.UI.AspectRatioPanel aspect-ratio-x="309" aspect-ratio-y="101" style="left: 156px; width: auto; height: auto; min-width: auto; min-height: auto; background-image: url(&apos;project://database/Assets/Joker/UI/p5ui.png?fileID=2800000&amp;guid=1f1dd468064e0cd41ae825568fdf57d4&amp;type=3#p5ui&apos;);">
+        <ui:Label text="Label" display-tooltip-when-elided="true" class="text-auto-size text-auto-size-min-30 text-auto-size-max-50" style="font-size: 30px; width: 100%; height: 100%; padding-right: 2px; padding-left: 12%; padding-top: 14%; rotate: 9deg;" />
+    </GallantGames.UI.AspectRatioPanel>
+</ui:UXML>
