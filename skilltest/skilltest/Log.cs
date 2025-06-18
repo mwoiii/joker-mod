@@ -1,6 +1,6 @@
 ﻿using BepInEx.Logging;
 
-namespace SkillTest
+namespace JokerMod
 {
     internal static class Log
     {

@@ -1,17 +1,19 @@
 ManifestFileVersion: 0
-CRC: 2477559486
+CRC: 2298665933
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 9472da4a1a9fe1887a15450caca6a698
+    Hash: e90265567340614b5c0851a4c3215afc
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 70b198f3c1890b94aa50f977cf8748b9
+    Hash: 3f755dee6acee3bbabd6c61e16d17a5f
 HashAppended: 0
 ClassTypes:
 - Class: 1
   Script: {instanceID: 0}
 - Class: 4
+  Script: {instanceID: 0}
+- Class: 20
   Script: {instanceID: 0}
 - Class: 21
   Script: {instanceID: 0}
@@ -38,6 +40,8 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 1044368294, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+- Class: 114
   Script: {fileID: 1788389205, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
 - Class: 114
   Script: {fileID: 1783796254, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
@@ -47,10 +51,6 @@ ClassTypes:
   Script: {fileID: 1395413934, guid: da77c7bbf69f66ab2145560542327715, type: 3}
 - Class: 114
   Script: {fileID: 372142912, guid: d382a022563c7517aadbc92ca1060016, type: 3}
-- Class: 114
-  Script: {fileID: 1979405802, guid: 9a22f4cad4d733c40869ec07764a69dd, type: 3}
-- Class: 114
-  Script: {fileID: -309671171, guid: 9a22f4cad4d733c40869ec07764a69dd, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
 - Class: 114
@@ -63,6 +63,10 @@ ClassTypes:
   Script: {fileID: -1897863358, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
 - Class: 114
   Script: {fileID: -875252823, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
+- Class: 114
+  Script: {fileID: -1284244208, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
+- Class: 114
+  Script: {fileID: 1006468269, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
 - Class: 114
   Script: {fileID: 296141222, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
 - Class: 114
@@ -93,6 +97,10 @@ ClassTypes:
   Script: {fileID: 816898038, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+- Class: 114
+  Script: {fileID: 647418741, guid: 1e00111d2f6dfa0419cef29e30f6e2db, type: 3}
+- Class: 114
+  Script: {fileID: 175070816, guid: 1e00111d2f6dfa0419cef29e30f6e2db, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 128
@@ -169,14 +177,22 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: com.unity.multiplayer-hlapi.Runtime
   ClassName: UnityEngine.Networking.NetworkSceneId
 Assets:
+- Assets/Joker/Mask/MaskTier.asset
 - Assets/Joker/Eiha/CommandoGrenadeProjectile.prefab
+- Assets/Joker/Mask/mask.prefab
 - Assets/Joker/Eiha/physmatCommandoGrenade.physicMaterial
 - Assets/Joker/Eiha/OmniExplosionVFXCommandoGrenade.prefab
 - Assets/Joker/UI/p5hatty-1 SDF.asset
 - Assets/Joker/UI/JokerUI.uxml
 - Assets/Joker/UI/p5hatty-1.ttf
-- Assets/Joker/UI/p5ui.png
-- Assets/Joker/Eiha/CommandoGrenadeGhost.prefab
-- Assets/Joker/Eiha/nseCommandoGrenadeBounce.asset
+- Assets/Joker/Mask/MaskMat.mat
 - Assets/Joker/UI/JokerUI.prefab
+- Assets/Joker/Mask/MaskItemDef.asset
+- Assets/Joker/Mask/mask.blend
+- Assets/Joker/UI/AOAMask.png
+- Assets/Joker/UI/p5ui.png
+- Assets/Joker/Mask/c0001_t01_kamen.png
+- Assets/Joker/Eiha/CommandoGrenadeGhost.prefab
+- Assets/Joker/UI/SPMask.png
+- Assets/Joker/Eiha/nseCommandoGrenadeBounce.asset
 Dependencies: []
