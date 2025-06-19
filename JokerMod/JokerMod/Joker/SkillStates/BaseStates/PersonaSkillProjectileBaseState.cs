@@ -2,26 +2,39 @@
 using JokerMod.Joker.Components;
 
 namespace JokerMod.Joker.SkillStates.BaseStates {
-    public abstract class PersonaSkillStateBase : GenericProjectileBaseState {
+    public abstract class PersonaSkillProjectileBaseState : GenericProjectileBaseState {
 
         protected JokerMaster master;
 
         public virtual float spCost { get; }
 
-        private bool canFire;
+        protected bool canFire;
+
+        protected abstract void ActivateSkill();
 
         public override void OnEnter() {
+
             baseDuration = 0.2f;
+
+            duration = baseDuration / attackSpeedStat;
+
             master = GetComponent<JokerMaster>();
+            
             if (!(bool)master) {
                 Log.Error("Player without JokerMaster attemping to cast a Joker skill! Returning...");
                 return;
             }
+            
             if (master.spController.currentSP >= spCost) {
                 master.skillUsed = true;
                 master.spController.currentSP -= spCost;
                 canFire = true;
             }
+
+            if (canFire) {
+                ActivateSkill();
+            }
+
             base.OnEnter();
         }
 
@@ -37,11 +50,6 @@ namespace JokerMod.Joker.SkillStates.BaseStates {
                 outer.SetNextStateToMain();
                 return;
             }
-        }
-
-        //GetMinimumInterruptPriority() returns the InterruptPriority required to interrupt this skill
-        public override InterruptPriority GetMinimumInterruptPriority() {
-            return InterruptPriority.Frozen;
         }
     }
 }

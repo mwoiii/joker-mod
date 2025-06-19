@@ -9,14 +9,14 @@ using UnityEngine;
 
 
 namespace JokerMod.Joker.SkillStates {
-    public class UsePersonaSkill : BaseState {
+    public class OverrideMenu : BaseState {
 
-        private JokerMaster master;
+        protected JokerMaster master;
 
-        private GenericSkill primary;
-        private GenericSkill secondary;
-        private GenericSkill utility;
-        private GenericSkill special;
+        protected GenericSkill primary;
+        protected GenericSkill secondary;
+        protected GenericSkill utility;
+        protected GenericSkill special;
 
         private static SkillDef cancelSkill = JokerCatalog.GetSkillDefFromType(typeof(CancelState));
 
@@ -31,6 +31,8 @@ namespace JokerMod.Joker.SkillStates {
         private float holdSpecialStopwatch;
 
         private int holdSpecialStock;
+
+        protected bool alwaysUnsetOnExit = true;
 
         public override void OnEnter() {
             base.OnEnter();
@@ -64,7 +66,7 @@ namespace JokerMod.Joker.SkillStates {
             master.skillMenuActive = false;
             master.EnemySlainDuringMenu -= KillInMenu;
 
-            if (isAuthority && (bool)skillLocator) {
+            if (isAuthority && skillLocator != null) {
                 primary.UnsetSkillOverride(gameObject, master.personaStockController.primaryPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
                 secondary.UnsetSkillOverride(gameObject, master.personaStockController.secondaryPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
                 utility.UnsetSkillOverride(gameObject, master.personaStockController.utilityPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);

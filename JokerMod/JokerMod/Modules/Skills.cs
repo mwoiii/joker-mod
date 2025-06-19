@@ -164,7 +164,7 @@ namespace JokerMod.Modules {
 
             SkillDef mySkillDef = ScriptableObject.CreateInstance<SkillDef>();
 
-            mySkillDef.activationState = new SerializableEntityStateType(typeof(UsePersonaSkill));
+            mySkillDef.activationState = new SerializableEntityStateType(typeof(OverrideMenu));
             mySkillDef.activationStateMachineName = "Charge";
             mySkillDef.baseMaxStock = 1;
             mySkillDef.baseRechargeInterval = 6f;
