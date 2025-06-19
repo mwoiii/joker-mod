@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1284244208, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
+  m_Name: MaskItemDef
+  m_EditorClassIdentifier: 
+  deprecatedTier: 10
+  _itemTierDef: {fileID: 11400000, guid: c26b93559c69ff745b9cbf1a5af38603, type: 2}
+  nameToken: MASK_NAME
+  pickupToken: MASK_PICKUP
+  descriptionToken: MASK_DESCRIPTION
+  loreToken: MASK_LORE
+  unlockableDef: {fileID: 0}
+  pickupModelPrefab: {fileID: 3469887261074958610, guid: b470b93b13bad314781bd5256fe0db4d, type: 3}
+  pickupModelReference:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+  pickupIconSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  isConsumed: 0
+  hidden: 0
+  canRemove: 0
+  tags: 00000000
+  requiredExpansion: {fileID: 0}
