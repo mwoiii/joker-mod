@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using JokerMod.Joker.Components;
-using JokerMod.Modules.Personas;
+using JokerMod.Modules.PersonaMasks;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using R2API;
@@ -9,6 +10,8 @@ using RoR2;
 namespace JokerMod.Modules {
     public static class Items {
 
+        internal static List<ItemTierDef> itemTierDefs = new List<ItemTierDef>();
+
         public static void Init() {
             InitTierDefs();
             InitItemDefs();
@@ -16,25 +19,49 @@ namespace JokerMod.Modules {
         }
 
         private static void InitTierDefs() {
-            ContentAddition.AddItemTierDef(Asset.maskTierDef);
+            itemTierDefs.Add(Asset.maskTierDef);
         }
 
         private static void InitItemDefs() {
             new EmptyPersona().Init();
 
+            // Curse
             new ArsenePersona().Init();
+
+            // Elec
+            new AgathionPersona().Init();
+            new NagaPersona().Init();
+            new RajaNagaPersona().Init();
+
+            // Psy
+            new KodamaPersona().Init();
+            new MatadorPersona().Init();
+            new SudamaPersona().Init();
+            new ShikiOujiPersona().Init();
+            new ForneusPersona().Init();
+            new NebirosPersona().Init();
+
+            // Healing
             new PixiePersona().Init();
             new HighPixiePersona().Init();
             new SarasvatiPersona().Init();
         }
 
         private static void InitItemHooks() {
+            Hooks.Handle_GenericPickupControllerStart_Actions += AddMaskDecay;
             Hooks.IL_Handle_GenericPickupControllerAttemptGrant_Actions += JokerMaskPickup;
+        }
+
+        private static void AddMaskDecay(GenericPickupController self) {
+            ItemDef itemDef = ItemCatalog.GetItemDef(self.pickupIndex.pickupDef.itemIndex);
+            if (JokerCatalog.CheckIsMask(itemDef)) {
+                DestructionTimer timer = self.gameObject.AddComponent<DestructionTimer>();
+            }
         }
 
         private static void JokerMaskPickup(ILContext il) {
 
-            var continueDelegate = new Func<GenericPickupController, CharacterBody, PickupDef, bool>((RoR2.GenericPickupController self, CharacterBody body, PickupDef pickupDef) => {
+            var continueDelegate = new Func<GenericPickupController, CharacterBody, PickupDef, bool>((GenericPickupController self, CharacterBody body, PickupDef pickupDef) => {
                 if (pickupDef.itemTier == Asset.maskTierDef.tier) {
 
                     // only joker can interact with masks 
@@ -42,7 +69,7 @@ namespace JokerMod.Modules {
                         ItemDef itemDef = ItemCatalog.GetItemDef(pickupDef.itemIndex);
 
                         // cannot have dupes though
-                        if (body.GetComponent<JokerMaster>().personaStockController.HasPersona(itemDef)) {
+                        if (body.GetComponent<JokerMaster>().statController.HasPersona(itemDef)) {
                             return false;
                         }
 
@@ -50,7 +77,7 @@ namespace JokerMod.Modules {
                         if (userProfile != null) {
                             userProfile.DiscoverPickup(pickupDef.pickupIndex);
                         }
-                        body.GetComponent<JokerMaster>().personaStockController.ReceivePersona(itemDef);
+                        body.GetComponent<JokerMaster>().statController.ReceivePersona(itemDef);
 
                         UnityEngine.Object.Destroy(self.gameObject);
                     }

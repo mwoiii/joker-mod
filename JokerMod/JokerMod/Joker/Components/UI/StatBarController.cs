@@ -18,8 +18,10 @@ namespace JokerMod.Joker.Components.UI {
         }
 
         public void SetStat(float stat) {
-            float newWidth = stat / maxStat * width;
-            statBar.sizeDelta = new Vector2(newWidth, height);
+            if (maxStat * width != 0f) {
+                float newWidth = stat / maxStat * width;
+                statBar.sizeDelta = new Vector2(newWidth, height);
+            }
         }
     }
 }

@@ -18,9 +18,7 @@ namespace JokerMod.Joker.SkillStates {
         }
 
         public override void OnEnter() {
-            Log.Info(skillMenuWasActive);
             base.OnEnter();
-            alwaysUnsetOnExit = false;  // messy
             EntityStateMachine.FindByCustomName(characterBody.gameObject, "Weapon").SetNextState(new LockedState());
         }
 
@@ -38,7 +36,7 @@ namespace JokerMod.Joker.SkillStates {
         }
 
         private void SwapAndWaitRelease(int slot) {
-            master.personaStockController.SwapPersona(slot);
+            master.statController.SwapPersona(slot);
             if (skillMenuWasActive) {
                 outer.SetNextState(new WaitForReleaseOverrideState(slot));
             } else {

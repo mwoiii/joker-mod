@@ -1,0 +1,28 @@
+﻿using System;
+using JokerMod.Joker.SkillStates;
+using JokerMod.Joker.SkillStates.PersonaStates;
+using UnityEngine;
+
+namespace JokerMod.Modules.PersonaSkills
+{
+    public class ZiodyneSkill : PersonaSkillBase {
+
+        public override Type personaSkillState => typeof(ZiodyneState);
+
+        public override String activationStateMachineName => "Weapon";
+
+        public override int baseMaxStock => 1;
+
+        public override bool isCombatSkill => true;
+
+        public override Sprite icon => null;
+
+        public override string skillNameToken => "ZIODYNE";
+
+        public override string skillDescription => "Fire a heavy electric beam for <style=cIsDamage>8x100% damage</style>, applying <style=cIsDamage>Shock</style> " +
+            $"and <style=cIsDamage>Stun</style> for 8 seconds.";
+
+        public override string skillName => "Ziodyne";
+
+    }
+}

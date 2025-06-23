@@ -141,6 +141,8 @@ namespace JokerMod.Joker.SkillStates {
             }
         }
 
+        // I should change this,,,
+        // but I will forget I wrote this
         private IEnumerable<HurtBox> SearchForTargets() {
             BullseyeSearch bullseyeSearch = new BullseyeSearch();
             bullseyeSearch.searchOrigin = transform.position;

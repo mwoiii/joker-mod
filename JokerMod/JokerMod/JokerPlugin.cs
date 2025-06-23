@@ -2,6 +2,7 @@ using BepInEx;
 using EntityStates;
 using JokerMod.Joker.Components;
 using JokerMod.Modules;
+using JokerMod.Modules.Buffs;
 using JokerMod.Modules.DamageTypes;
 using R2API;
 using RoR2;
@@ -23,17 +24,18 @@ namespace JokerMod {
             pluginInfo = Info;
 
             Log.Init(Logger);
-
             Asset.PopulateAssets();
-
             InitStateMachine();
-
-            InitDamageTypes();
-
+            BuffCollection.Init();
+            States.Register();
             Skills.Init();
-
             Items.Init();
+            new ContentPackProvider().Register();
+            RoR2Application.onLoadFinished += OnLoadFinished;
+        }
 
+        private void OnLoadFinished() {
+            DamageTypeCollection.Init();
             Hooks.AddHooks();
         }
 
@@ -45,14 +47,10 @@ namespace JokerMod {
             chargeMachine.mainStateType = new SerializableEntityStateType(typeof(EntityStates.Idle));
 
             // temporary
-            // but also like what isn't
+            // but also like
             // this entire method is temporary
             mercBodyPrefab.AddComponent<AOAController>();
             mercBodyPrefab.AddComponent<JokerMaster>();
-        }
-
-        private void InitDamageTypes() {
-            CurseLight.CreateDamageType();
         }
     }
 }

@@ -10,6 +10,12 @@ namespace JokerMod.Modules {
         public delegate void Handle_SkillIconUpdate(RoR2.UI.SkillIcon self);
         public static Handle_SkillIconUpdate Handle_SkillIconUpdate_Actions;
 
+        public delegate void Handle_GenericPickupControllerStart(RoR2.GenericPickupController self);
+        public static Handle_GenericPickupControllerStart Handle_GenericPickupControllerStart_Actions;
+
+        public delegate void Handle_HealthComponentTakeDamageProcess(RoR2.HealthComponent self, RoR2.DamageInfo damageInfo);
+        public static Handle_HealthComponentTakeDamageProcess Handle_HealthComponentTakeDamageProcess_Actions;
+
         public delegate void IL_Handle_GenericPickupControllerAttemptGrant(ILContext il);
         public static IL_Handle_GenericPickupControllerAttemptGrant IL_Handle_GenericPickupControllerAttemptGrant_Actions;
 
@@ -26,6 +32,14 @@ namespace JokerMod.Modules {
                 On.RoR2.UI.SkillIcon.Update += SkillIcon_Update;
             }
 
+            if (Handle_GenericPickupControllerStart_Actions != null) {
+                On.RoR2.GenericPickupController.Start += GenericPickupController_Start;
+            }
+
+            if (Handle_HealthComponentTakeDamageProcess_Actions != null) {
+                On.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
+            }
+
             if (IL_Handle_GenericPickupControllerAttemptGrant_Actions != null) {
                 IL.RoR2.GenericPickupController.AttemptGrant += IL_GenericPickupController_AttemptGrant;
             }
@@ -39,6 +53,16 @@ namespace JokerMod.Modules {
         internal static void SkillIcon_Update(On.RoR2.UI.SkillIcon.orig_Update orig, RoR2.UI.SkillIcon self) {
             Handle_SkillIconUpdate_Actions.Invoke(self);
             orig(self);
+        }
+
+        internal static void GenericPickupController_Start(On.RoR2.GenericPickupController.orig_Start orig, RoR2.GenericPickupController self) {
+            Handle_GenericPickupControllerStart_Actions.Invoke(self);
+            orig(self);
+        }
+
+        internal static void HealthComponent_TakeDamageProcess(On.RoR2.HealthComponent.orig_TakeDamageProcess orig, RoR2.HealthComponent self, RoR2.DamageInfo damageInfo) {
+            Handle_HealthComponentTakeDamageProcess_Actions.Invoke(self, damageInfo);
+            orig(self, damageInfo);
         }
 
         internal static void IL_GenericPickupController_AttemptGrant(ILContext il) {

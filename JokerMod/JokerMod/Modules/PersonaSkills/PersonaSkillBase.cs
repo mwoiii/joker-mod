@@ -60,7 +60,7 @@ namespace JokerMod.Modules.PersonaSkills {
 
             // temporary
             JokerCatalog.AddSkill(personaSkillState, skillDef);
-            ContentAddition.AddSkillDef(skillDef);
+            // ContentAddition.AddSkillDef(skillDef);
         }
     }
 }

@@ -16,15 +16,19 @@ namespace JokerMod.Joker.Components {
 
         private JokerMaster master;
 
-        private const float standardCDMultiplier = 0.85f;
+        private const float cooldownMult = 0.85f;
+
+        private const float maskChanceMult = 2.5f;
 
         public void StartExecution() {
             GlobalEventManager.onCharacterDeathGlobal += AOAOnKill;
+            master.maskChance *= maskChanceMult;
             stopwatch = 0f;
         }
 
         public void StopExecution() {
             GlobalEventManager.onCharacterDeathGlobal -= AOAOnKill;
+            master.maskChance /= maskChanceMult;
         }
 
         private void Start() {
@@ -50,7 +54,7 @@ namespace JokerMod.Joker.Components {
             if ((bool)damageReport.attackerBody) {
                 if (damageReport.attackerBody == characterBody) {
                     // Reduce cooldown per kill
-                    MultiplyCooldown(standardCDMultiplier);
+                    MultiplyCooldown(cooldownMult);
                     // Gain SP per kill
                     master.spController.AOAKillRestoreSP();
                 }

@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections;
 using JokerMod.Joker.Components.UI;
+using JokerMod.Joker.SkillStates;
+using JokerMod.Joker.SkillStates.PersonaStates;
 using JokerMod.Modules;
+using JokerMod.Modules.PersonaMasks;
 using RoR2;
+using RoR2.Projectile;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -20,9 +24,14 @@ namespace JokerMod.Joker.Components {
 
         public StatNumberController spNumController;
 
-        public PersonaStockController personaStockController;
+        public PersonaStatController statController;
 
         private bool _skillUsed;
+
+        public float maskChance = 2f;
+
+        [SerializeField]
+        public float testRadius = 11f;
 
         public bool skillUsed {
             get {
@@ -36,8 +45,9 @@ namespace JokerMod.Joker.Components {
             }
         }
 
-        private void SecondarySkillStock(DamageReport damageReport) {
+        private void JokerOnKills(DamageReport damageReport) {
             // Granting a stock of secondary on kill
+            // And having a chance to drop a persona
             if (!NetworkServer.active || damageReport == null) {
                 return;
             }
@@ -45,13 +55,23 @@ namespace JokerMod.Joker.Components {
             if ((bool)damageReport.attackerBody) {
                 CharacterBody attackerBody = damageReport.attackerBody;
                 if (attackerBody == GetComponent<CharacterBody>()) {
+                    JokerMaster master = attackerBody.GetComponent<JokerMaster>();
+
+                    // bullet restock
                     float max = attackerBody.skillLocator.GetSkill(SkillSlot.Secondary).maxStock;
                     float current = attackerBody.skillLocator.GetSkill(SkillSlot.Secondary).stock;
-                    JokerMaster master = attackerBody.GetComponent<JokerMaster>();
                     if (!master.skillMenuActive) {
                         damageReport.attackerBody.skillLocator.GetSkill(SkillSlot.Secondary).stock = (int)Mathf.Clamp(current + 1, current, max);
                     } else {
                         master.EnemySlainDuringMenu();
+                    }
+
+                    // mask item dropping
+                    if (damageReport.victimBody != null && RoR2.Util.CheckRoll(maskChance, attackerBody.master)) {
+                        GenericPickupController.CreatePickupInfo pickupInfo = default(GenericPickupController.CreatePickupInfo);
+                        pickupInfo.pickupIndex = PickupCatalog.FindPickupIndex(JokerCatalog.RollForMask(attackerBody.level).itemDef.itemIndex);
+                        pickupInfo.position = damageReport.victimBody.transform.position;
+                        PickupDropletController.CreatePickupDroplet(pickupInfo, damageReport.victimBody.transform.position, Vector3.zero);
                     }
                 }
             }
@@ -59,7 +79,7 @@ namespace JokerMod.Joker.Components {
 
 
         private void Awake() {
-            GlobalEventManager.onCharacterDeathGlobal += SecondarySkillStock;
+            GlobalEventManager.onCharacterDeathGlobal += JokerOnKills;
             CreateUI();
 
             // spController requires UI to be fully initialised as it wants to instantly access components
@@ -67,13 +87,13 @@ namespace JokerMod.Joker.Components {
         }
 
         private void Start() {
-            PersonaStockController checkStockController = GetComponent<CharacterBody>().master.GetComponent<PersonaStockController>();
-            if (checkStockController == null) {
-                personaStockController = GetComponent<CharacterBody>().master.gameObject.AddComponent<PersonaStockController>();
-                personaStockController.master = this;
+            PersonaStatController checkStatController = GetComponent<CharacterBody>().master.GetComponent<PersonaStatController>();
+            if (checkStatController == null) {
+                statController = GetComponent<CharacterBody>().master.gameObject.AddComponent<PersonaStatController>();
             } else {
-                personaStockController = checkStockController;
+                statController = checkStatController;
             }
+            statController.master = this;
         }
 
         private void CreateUI() {
@@ -93,7 +113,17 @@ namespace JokerMod.Joker.Components {
 
         private void OnDestroy() {
             spController.UnsubscribeInstanceEvents();
-            GlobalEventManager.onCharacterDeathGlobal -= SecondarySkillStock;
+            GlobalEventManager.onCharacterDeathGlobal -= JokerOnKills;
+        }
+
+        private void Update() {
+            if (Input.GetKeyDown(KeyCode.F2)) {
+                // you WON!! THE [free] TEST EIHA
+                Log.Info($"CONGRATS!!!");
+                var freeState = new EihaState();
+                Asset.eihaPrefab.GetComponent<ProjectileImpactExplosion>().blastRadius = testRadius;
+                EntityStateMachine.FindByCustomName(GetComponent<CharacterBody>().gameObject, "Weapon").SetNextState(new EihaState());
+            }
         }
     }
 }

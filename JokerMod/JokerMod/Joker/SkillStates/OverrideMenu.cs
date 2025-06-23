@@ -32,8 +32,6 @@ namespace JokerMod.Joker.SkillStates {
 
         private int holdSpecialStock;
 
-        protected bool alwaysUnsetOnExit = true;
-
         public override void OnEnter() {
             base.OnEnter();
 
@@ -55,9 +53,9 @@ namespace JokerMod.Joker.SkillStates {
             holdSpecialStock = special.stock + 1; // only go on cooldown if skill used
 
             if (isAuthority && (bool)skillLocator) {
-                primary.SetSkillOverride(gameObject, master.personaStockController.primaryPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
-                secondary.SetSkillOverride(gameObject, master.personaStockController.secondaryPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
-                utility.SetSkillOverride(gameObject, master.personaStockController.utilityPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
+                primary.SetSkillOverride(gameObject, master.statController.primaryPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
+                secondary.SetSkillOverride(gameObject, master.statController.secondaryPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
+                utility.SetSkillOverride(gameObject, master.statController.utilityPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
                 special.SetSkillOverride(gameObject, cancelSkill, GenericSkill.SkillOverridePriority.Upgrade);
             }
         }
@@ -67,9 +65,9 @@ namespace JokerMod.Joker.SkillStates {
             master.EnemySlainDuringMenu -= KillInMenu;
 
             if (isAuthority && skillLocator != null) {
-                primary.UnsetSkillOverride(gameObject, master.personaStockController.primaryPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
-                secondary.UnsetSkillOverride(gameObject, master.personaStockController.secondaryPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
-                utility.UnsetSkillOverride(gameObject, master.personaStockController.utilityPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
+                primary.UnsetSkillOverride(gameObject, master.statController.primaryPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
+                secondary.UnsetSkillOverride(gameObject, master.statController.secondaryPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
+                utility.UnsetSkillOverride(gameObject, master.statController.utilityPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
                 special.UnsetSkillOverride(gameObject, cancelSkill, GenericSkill.SkillOverridePriority.Upgrade);
             }
 

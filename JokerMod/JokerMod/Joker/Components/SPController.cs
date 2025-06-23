@@ -7,21 +7,11 @@ namespace JokerMod.Joker.Components {
 
         private JokerMaster master;
 
-        private float _maxSP = 50f;
-
-        public event Action<float> MaxSPUpdate;
+        private PersonaStatController statController;
 
         public event Action<float> SPUpdate;
 
-        public float maxSP {
-            get {
-                return _maxSP;
-            }
-            private set {
-                _maxSP = value;
-                MaxSPUpdate(_maxSP);
-            }
-        }
+        // max sp is handled by personastatcontroller so it persists between stages
 
         private float _currentSP;
 
@@ -30,37 +20,79 @@ namespace JokerMod.Joker.Components {
                 return _currentSP;
             }
             set {
-                _currentSP = Math.Clamp(value, 0, maxSP);
+                _currentSP = Math.Clamp(value, 0, statController.maxSP);
                 SPUpdate(_currentSP);
             }
         }
 
         private float _spLevel = 1f;
 
+        public float onHitSP;
+
+        public float onKillSP;
+
         private float spLevel {
             get {
                 return _spLevel;
             }
             set {
-                float newMaxSP = 406f - 384f / (float)Math.Pow(2f, value / 11f);
-                float difference = newMaxSP - maxSP;
-                maxSP = newMaxSP;
-                currentSP += difference;
+                // splevel+1 so that thresholds are for new level rather than current level
+                // current level would be weird
+                for (float inc = _spLevel + 1; inc <= value; inc++) {
+                    float spIncrease = 0;
+                    switch (inc) {
+                        case <= JokerCatalog.tier1End:
+                            spIncrease = 4f / 3f;
+                            break;
+
+                        case <= JokerCatalog.tier2End:
+                            spIncrease = 1f;
+                            break;
+
+                        case <= JokerCatalog.tier3End:
+                            spIncrease = 4f / 3f;
+                            break;
+
+                        case <= JokerCatalog.tier4End:
+                            spIncrease = 8f / 3f;
+                            break;
+
+                        case <= JokerCatalog.tier5End:
+                            spIncrease = 16f / 3f;
+                            break;
+
+                        case <= JokerCatalog.tier6End:
+                            spIncrease = 8f / 3f;
+                            break;
+
+                        case <= JokerCatalog.tier7End:
+                            spIncrease = 6f;
+                            break;
+
+                        default:
+                            spIncrease = 1.3f;
+                            break;
+                    }
+                    statController.maxSP += spIncrease;
+                    currentSP += spIncrease;
+                }
                 _spLevel = value;
-                onHitSP = 0.2f * _spLevel;
-                onKillSP = 2f * _spLevel;
+                onHitSP = 0.005f * statController.maxSP;
+                onKillSP = 0.05f * statController.maxSP;
             }
         }
 
-        public float onHitSP = 0.2f;
-
-        public float onKillSP = 2f;
 
         public SPController(JokerMaster master) {
             this.master = master;
+            this.statController = master.statController;
+            
             SubscribeInstanceEvents();
-            SetStartSP();
-            currentSP = maxSP;
+            spLevel = master.GetComponent<CharacterBody>().level;
+
+            statController.ForceMaxSPUpdate();
+            currentSP = statController.maxSP;
+            
         }
 
         ~SPController() {
@@ -69,10 +101,6 @@ namespace JokerMod.Joker.Components {
 
         public void AOAKillRestoreSP() {
             currentSP += onKillSP;
-        }
-
-        private void SetStartSP() {
-            spLevel = master.GetComponent<CharacterBody>().level;
         }
 
         private static void SPUpgradeOnLevelUp(CharacterBody self) {
@@ -84,7 +112,7 @@ namespace JokerMod.Joker.Components {
 
         private void SPOnHit(DamageReport damageReport) {
             if ((bool)damageReport.attacker && damageReport.attacker == master.gameObject) {
-                currentSP += damageReport.damageInfo.procCoefficient * onHitSP;
+                currentSP += onHitSP * damageReport.damageInfo.procCoefficient;
             }
         }
 
@@ -94,14 +122,14 @@ namespace JokerMod.Joker.Components {
 
         private void SubscribeInstanceEvents() {
             GlobalEventManager.onServerDamageDealt += SPOnHit;
-            MaxSPUpdate += master.spBarController.SetMaxStat;
+            statController.MaxSPUpdate += master.spBarController.SetMaxStat;
             SPUpdate += master.spBarController.SetStat;
             SPUpdate += master.spNumController.SetStat;
         }
 
         public void UnsubscribeInstanceEvents() {
             GlobalEventManager.onServerDamageDealt -= SPOnHit;
-            MaxSPUpdate -= master.spBarController.SetMaxStat;
+            statController.MaxSPUpdate -= master.spBarController.SetMaxStat;
             SPUpdate -= master.spBarController.SetStat;
             SPUpdate -= master.spNumController.SetStat;
         }
