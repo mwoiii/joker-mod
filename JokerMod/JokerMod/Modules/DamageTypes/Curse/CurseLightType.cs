@@ -9,10 +9,10 @@ namespace JokerMod.Modules.DamageTypes {
         public static void Init() {
             damageType = DamageAPI.ReserveDamageType();
             DamageTypeCollection.damageTypes.Add(damageType);
-            Hooks.Handle_HealthComponentTakeDamageProcess_Actions += AddLightPercentageDamage;
+            Hooks.Handle_HealthComponentTakeDamageProcess_Actions += AddLightCurseDamage;
         }
 
-        private static void AddLightPercentageDamage(HealthComponent self, DamageInfo damageInfo) {
+        private static void AddLightCurseDamage(HealthComponent self, DamageInfo damageInfo) {
             if (damageInfo.HasModdedDamageType(damageType)) {
                 damageInfo.damage += self.fullCombinedHealth * 0.05f;
                 if (self.body != null) {

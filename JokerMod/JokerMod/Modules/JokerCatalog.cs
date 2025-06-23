@@ -272,6 +272,9 @@ namespace JokerMod.Modules {
         }
 
         public static bool CheckIsMask(ItemDef itemDef) {
+            if (itemDef == null) {
+                return false;
+            }
             return itemDefToPersonaDef.ContainsKey(itemDef);
         }
     }

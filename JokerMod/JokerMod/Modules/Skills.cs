@@ -23,11 +23,19 @@ namespace JokerMod.Modules {
 
             // Curse
             new EihaSkill().Init();
+            new MaeihaSkill().Init();
+            new EigaSkill().Init();
+            new MaeigaSkill().Init();
+            new EigaonSkill().Init();
+            new MaeigaonSkill().Init();
 
             // Elec
             new ZioSkill().Init();
+            new MazioSkill().Init();
             new ZiongaSkill().Init();
+            new MaziongaSkill().Init();
             new ZiodyneSkill().Init();
+            new MaziodyneSkill().Init(); ;
 
             // Psy
             new PsiSkill().Init();

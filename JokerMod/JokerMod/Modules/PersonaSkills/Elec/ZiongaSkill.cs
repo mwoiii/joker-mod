@@ -20,7 +20,7 @@ namespace JokerMod.Modules.PersonaSkills
         public override string skillNameToken => "ZIONGA";
 
         public override string skillDescription => "Fire a medium electric beam for <style=cIsDamage>4x125% damage</style>, applying <style=cIsDamage>Shock</style> " +
-            $"and <style=cIsDamage>Stun</style> for 6 seconds.";
+            $"and <style=cIsDamage>Stun</style> for a duration.";
 
         public override string skillName => "Zionga";
 

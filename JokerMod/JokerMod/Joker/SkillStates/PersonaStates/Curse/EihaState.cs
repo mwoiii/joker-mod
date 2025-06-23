@@ -12,27 +12,17 @@ namespace JokerMod.Joker.SkillStates.PersonaStates {
 
         protected override void ActivateSkill() {
             damageCoefficient = 3f;
-
             projectilePrefab = Asset.eihaPrefab;
-
-            //base.effectPrefab = Modules.Assets.SomeMuzzleEffect;
-            //targetmuzzle = "muzzleThrow"
-
+            recoilAmplitude = 0f;
+            // baseDelayBeforeFiringProjectile = 0f;
+            // force = 80f;
+            // base.effectPrefab = Modules.Assets.SomeMuzzleEffect;
+            // targetmuzzle = "muzzleThrow"
             // attackSoundString = "HenryBombThrow";
-
-            baseDelayBeforeFiringProjectile = 0f;
-
-            //proc coefficient is set on the components of the projectile prefab
-
-            projectilePrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(CurseLightType.damageType);
-            force = 80f;
-
-            //base.projectilePitchBonus = 0;
-            //base.minSpread = 0;
-            //base.maxSpread = 0;
-
-            recoilAmplitude = 0.1f;
-            bloom = 10;
+            // base.projectilePitchBonus = 0;
+            // base.minSpread = 0;
+            // base.maxSpread = 0;
+            // bloom = 10;
         }
     }
 }

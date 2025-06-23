@@ -18,7 +18,7 @@ namespace JokerMod.Modules.DamageTypes {
                 self.body.AddTimedBuff(ShockDebuff.buffDef, 4f, 1);
                 SetStateOnHurt stunComponent = self.GetComponent<SetStateOnHurt>();
                 if (stunComponent != null && stunComponent.canBeStunned) {
-                    stunComponent.SetStun(4f);
+                    stunComponent.SetStun(2f);
                 }
             }
         }

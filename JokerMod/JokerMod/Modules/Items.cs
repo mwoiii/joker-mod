@@ -27,11 +27,19 @@ namespace JokerMod.Modules {
 
             // Curse
             new ArsenePersona().Init();
+            new NuePersona().Init();
+            new LeananSidhePersona().Init();
+            new WhiteRiderPersona().Init();
+            new BelialPersona().Init();
+            new SkadiPersona().Init();
 
             // Elec
             new AgathionPersona().Init();
+            new AmeNoUzumePersona().Init();
             new NagaPersona().Init();
+            new ThunderbirdPersona().Init();
             new RajaNagaPersona().Init();
+            new DionysusPersona().Init();
 
             // Psy
             new KodamaPersona().Init();

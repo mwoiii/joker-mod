@@ -16,6 +16,8 @@ namespace JokerMod.Modules {
         public static void Init() {
             // Curse
             CurseLightType.Init();
+            CurseMediumType.Init();
+            CurseHeavyType.Init();
 
             // Elec
             ElecLightType.Init();

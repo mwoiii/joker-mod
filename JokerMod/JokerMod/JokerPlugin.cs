@@ -37,6 +37,7 @@ namespace JokerMod {
         private void OnLoadFinished() {
             DamageTypeCollection.Init();
             Hooks.AddHooks();
+            Asset.AssignDamageTypes();
         }
 
         private void InitStateMachine() {
