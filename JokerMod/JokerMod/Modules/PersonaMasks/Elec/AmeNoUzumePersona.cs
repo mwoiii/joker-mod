@@ -1,5 +1,4 @@
 ﻿using JokerMod.Joker.SkillStates;
-using JokerMod.Joker.SkillStates.PersonaStates;
 using RoR2.Skills;
 using UnityEngine;
 

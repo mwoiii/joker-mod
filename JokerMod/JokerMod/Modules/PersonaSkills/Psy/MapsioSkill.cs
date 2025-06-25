@@ -19,7 +19,7 @@ namespace JokerMod.Modules.PersonaSkills
         public override string skillNameToken => "MAPSIO";
 
         public override string skillDescription => "Emit a medium psychokinetic burst in a <style=cIsUtility>large radius</style> for " +
-            $"<style=cIsDamage>500% damage</style>, and apply <style=cIsUtility>5-10 debuffs</style> - or have a small chance to apply <style=cDeath>2-4 buffs</style>.";
+            $"<style=cIsDamage>500% damage</style>, applying <style=cIsUtility>5-12 random effects</style>.";
 
         public override string skillName => "Mapsio";
 

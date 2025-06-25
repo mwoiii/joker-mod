@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections;
 using JokerMod.Joker.Components.UI;
-using JokerMod.Joker.SkillStates;
 using JokerMod.Joker.SkillStates.PersonaStates;
 using JokerMod.Modules;
-using JokerMod.Modules.PersonaMasks;
 using RoR2;
 using RoR2.Projectile;
 using UnityEngine;
@@ -30,7 +28,6 @@ namespace JokerMod.Joker.Components {
 
         public float maskChance = 2f;
 
-        [SerializeField]
         public float testRadius = 11f;
 
         public bool skillUsed {

@@ -1,10 +1,11 @@
-﻿using JokerMod.Joker.SkillStates.BaseStates;
-using JokerMod.Joker.SkillStates.Helpers;
+﻿using JokerMod.Joker.Components.SkillHelpers;
+using JokerMod.Joker.SkillStates.BaseStates;
 using RoR2;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace JokerMod.Joker.SkillStates.PersonaStates {
+namespace JokerMod.Joker.SkillStates.PersonaStates
+{
     public class DiaState : PersonaSkillBaseState {
         public override float spCost { get; } = 3f;
 

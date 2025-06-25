@@ -2,8 +2,6 @@ using BepInEx;
 using EntityStates;
 using JokerMod.Joker.Components;
 using JokerMod.Modules;
-using JokerMod.Modules.Buffs;
-using JokerMod.Modules.DamageTypes;
 using R2API;
 using RoR2;
 using UnityEngine;

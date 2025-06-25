@@ -1,12 +1,10 @@
-﻿using JokerMod.Joker.Components;
-using JokerMod.Joker.SkillStates.BaseStates;
+﻿using JokerMod.Joker.SkillStates.BaseStates;
 using JokerMod.Modules;
-using JokerMod.Modules.DamageTypes;
-using R2API;
-using RoR2.Projectile;
 using UnityEngine;
+using JokerMod.Joker.Components.SkillHelpers;
 
-namespace JokerMod.Joker.SkillStates.PersonaStates {
+namespace JokerMod.Joker.SkillStates.PersonaStates
+{
     public class MaeihaState : PersonaSkillProjectileBaseState {
 
         public override float spCost { get; } = 10f;

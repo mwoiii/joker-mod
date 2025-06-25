@@ -1,10 +1,8 @@
 ﻿using System;
 using JokerMod.Joker.SkillStates;
-using JokerMod.Joker.SkillStates.PersonaStates;
 using UnityEngine;
 
-namespace JokerMod.Modules.PersonaSkills
-{
+namespace JokerMod.Modules.PersonaSkills {
     public class ZioSkill : PersonaSkillBase {
 
         public override Type personaSkillState => typeof(ZioState);

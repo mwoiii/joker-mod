@@ -2,8 +2,7 @@
 using RoR2.Skills;
 using UnityEngine;
 
-namespace JokerMod.Modules.PersonaMasks
-{
+namespace JokerMod.Modules.PersonaMasks {
     public class ShikiOujiPersona : PersonaBase {
 
         public override string personaNameToken => "SHIKIOUJI";

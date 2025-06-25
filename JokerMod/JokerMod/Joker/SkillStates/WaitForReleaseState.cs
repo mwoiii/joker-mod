@@ -1,12 +1,7 @@
-﻿using System;
-using System.Net.NetworkInformation;
-using EntityStates;
+﻿using EntityStates;
 //Since we are using effects from Commando's Barrage skill, we will also be using the associated namespace
 //You can also use Addressables or LegacyResourcesAPI to load whichever effects you like
-using EntityStates.Commando.CommandoWeapon;
-using JokerMod.Modules;
 using RoR2;
-using UnityEngine;
 
 namespace JokerMod.Joker.SkillStates {
     public class WaitForReleaseState : BaseState {
@@ -27,7 +22,7 @@ namespace JokerMod.Joker.SkillStates {
         }
 
         public static bool CheckSkillUpOrInterrupt(int slot, InputBankTest inputBank) {
-            switch (slot) { 
+            switch (slot) {
                 case 1:
                     if (!inputBank.skill1.down || inputBank.skill2.down || inputBank.skill3.down || inputBank.skill4.down) {
                         return true;

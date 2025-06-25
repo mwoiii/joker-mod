@@ -1,10 +1,7 @@
 ﻿using JokerMod.Joker.SkillStates.BaseStates;
-using JokerMod.Joker.SkillStates.Helpers;
 using JokerMod.Modules.DamageTypes;
-using RoR2;
-using UnityEngine;
-using UnityEngine.AddressableAssets;
 using R2API;
+using RoR2;
 using UnityEngine.Networking;
 
 namespace JokerMod.Joker.SkillStates.PersonaStates {

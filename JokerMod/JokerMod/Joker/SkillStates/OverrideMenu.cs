@@ -18,19 +18,19 @@ namespace JokerMod.Joker.SkillStates {
         protected GenericSkill utility;
         protected GenericSkill special;
 
-        private static SkillDef cancelSkill = JokerCatalog.GetSkillDefFromType(typeof(CancelState));
+        protected static SkillDef cancelSkill = JokerCatalog.GetSkillDefFromType(typeof(CancelState));
 
-        private float holdSecondaryStopwatch;
+        protected float holdSecondaryStopwatch;
 
-        private int holdSecondaryStock;
+        protected int holdSecondaryStock;
 
-        private float holdUtilityStopwatch;
+        protected float holdUtilityStopwatch;
 
-        private int holdUtilityStock;
+        protected int holdUtilityStock;
 
-        private float holdSpecialStopwatch;
+        protected float holdSpecialStopwatch;
 
-        private int holdSpecialStock;
+        protected int holdSpecialStock;
 
         public override void OnEnter() {
             base.OnEnter();

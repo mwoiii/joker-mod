@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using JokerMod.Modules.PersonaMasks;
 using RoR2;
 using RoR2.Skills;
-using Newtonsoft.Json.Utilities;
 
 namespace JokerMod.Modules {
     public static class JokerCatalog {
@@ -41,7 +40,7 @@ namespace JokerMod.Modules {
             Tier6Special = 1024,
             Tier7 = 2048,
             Tier7Special = 4096,
-            Tier8 = 8192,   
+            Tier8 = 8192,
             Tier8Special = 16384,
         }
 
@@ -210,7 +209,7 @@ namespace JokerMod.Modules {
             // failsafe 
             if (!selectedList.Any()) {
                 Log.Warning("Selected Persona tier was empty! Selecting one from nearest populated tier...");
-                
+
                 int centerIndex = Array.IndexOf(choices, selectedList);
                 int offset = 1;
 

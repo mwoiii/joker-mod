@@ -1,6 +1,6 @@
-﻿using R2API;
+﻿using JokerMod.Modules.Buffs;
+using R2API;
 using RoR2;
-using JokerMod.Modules.Buffs;
 
 namespace JokerMod.Modules.DamageTypes {
     public static class ElecHeavyType {

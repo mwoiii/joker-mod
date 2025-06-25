@@ -12,27 +12,6 @@ namespace JokerMod.Modules {
             entityStates.Add(typeof(ChargeBase));
             entityStates.Add(typeof(PersonaSkillBaseState));
             entityStates.Add(typeof(PersonaSkillProjectileBaseState));
-            entityStates.Add(typeof(EihaState));
-            entityStates.Add(typeof(MaeihaState));
-            entityStates.Add(typeof(EigaState));
-            entityStates.Add(typeof(MaeigaState));
-            entityStates.Add(typeof(EigaonState));
-            entityStates.Add(typeof(MaeigaonState));
-            entityStates.Add(typeof(ZioState));
-            entityStates.Add(typeof(MazioState));
-            entityStates.Add(typeof(ZiongaState));
-            entityStates.Add(typeof(MaziongaState));
-            entityStates.Add(typeof(ZiodyneState));
-            entityStates.Add(typeof(MaziodyneState));
-            entityStates.Add(typeof(DiaState));
-            entityStates.Add(typeof(DiaramaState));
-            entityStates.Add(typeof(DiarahanState));
-            entityStates.Add(typeof(PsiState));
-            entityStates.Add(typeof(MapsiState));
-            entityStates.Add(typeof(PsioState));
-            entityStates.Add(typeof(MapsioState));
-            entityStates.Add(typeof(PsiodyneState));
-            entityStates.Add(typeof(MapsiodyneState));
             entityStates.Add(typeof(CancelState));
             entityStates.Add(typeof(EmptyState));
             entityStates.Add(typeof(AOA));
@@ -48,6 +27,38 @@ namespace JokerMod.Modules {
             entityStates.Add(typeof(SwapPersonaSkill));
             entityStates.Add(typeof(WaitForReleaseOverrideState));
             entityStates.Add(typeof(WaitForReleaseState));
+
+            entityStates.Add(typeof(EihaState));
+            entityStates.Add(typeof(MaeihaState));
+            entityStates.Add(typeof(EigaState));
+            entityStates.Add(typeof(MaeigaState));
+            entityStates.Add(typeof(EigaonState));
+            entityStates.Add(typeof(MaeigaonState));
+
+            entityStates.Add(typeof(GaruState));
+            entityStates.Add(typeof(MagaruState));
+            entityStates.Add(typeof(GarulaState));
+            entityStates.Add(typeof(MagarulaState));
+            entityStates.Add(typeof(GarudyneState));
+            entityStates.Add(typeof(MagarudyneState));
+
+            entityStates.Add(typeof(ZioState));
+            entityStates.Add(typeof(MazioState));
+            entityStates.Add(typeof(ZiongaState));
+            entityStates.Add(typeof(MaziongaState));
+            entityStates.Add(typeof(ZiodyneState));
+            entityStates.Add(typeof(MaziodyneState));
+
+            entityStates.Add(typeof(DiaState));
+            entityStates.Add(typeof(DiaramaState));
+            entityStates.Add(typeof(DiarahanState));
+
+            entityStates.Add(typeof(PsiState));
+            entityStates.Add(typeof(MapsiState));
+            entityStates.Add(typeof(PsioState));
+            entityStates.Add(typeof(MapsioState));
+            entityStates.Add(typeof(PsiodyneState));
+            entityStates.Add(typeof(MapsiodyneState));
         }
     }
 }

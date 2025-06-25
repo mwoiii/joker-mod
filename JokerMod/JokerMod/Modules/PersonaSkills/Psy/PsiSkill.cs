@@ -18,8 +18,8 @@ namespace JokerMod.Modules.PersonaSkills
 
         public override string skillNameToken => "PSI";
 
-        public override string skillDescription => "Emit a light psychokinetic burst for <style=cIsDamage>300% damage</style>, and apply " +
-            $"<style=cIsUtility>3-8 debuffs</style> - or have a small chance to apply <style=cDeath>1-3 buffs</style>.";
+        public override string skillDescription => "Emit a light psychokinetic burst for <style=cIsDamage>300% damage</style>, applying " +
+            $"<style=cIsUtility>3-8 random effects</style>.";
 
         public override string skillName => "Psi";
 

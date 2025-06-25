@@ -1,11 +1,11 @@
-﻿using RoR2;
+﻿using System.Collections.Generic;
+using JokerMod.Modules.DamageTypes;
+using R2API;
+using RoR2;
+using RoR2.Projectile;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using System.Collections.Generic;
 using Path = System.IO.Path;
-using RoR2.Projectile;
-using R2API;
-using JokerMod.Modules.DamageTypes;
 
 namespace JokerMod.Modules {
     public static class Asset {
@@ -21,6 +21,12 @@ namespace JokerMod.Modules {
 
         public static GameObject eigaonPrefab;
 
+        public static GameObject garuPrefab;
+
+        public static GameObject garulaPrefab;
+
+        public static GameObject garudynePrefab;
+
         public static ColorCatalog.ColorIndex maskColor;
 
         public static ColorCatalog.ColorIndex maskDarkColor;
@@ -32,6 +38,8 @@ namespace JokerMod.Modules {
         public static GameObject maskPrefab;
 
         public static DamageColorIndex shockColor;
+
+        public static DamageColorIndex sweptColor;
 
         public static GameObject jokerUIPrefab;
 
@@ -57,6 +65,15 @@ namespace JokerMod.Modules {
             eigaonPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("EigaonProjectile");
             projectilePrefabs.Add(eigaonPrefab);
 
+            garuPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("GaruProjectile");
+            projectilePrefabs.Add(garuPrefab);
+
+            garulaPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("GarulaProjectile");
+            projectilePrefabs.Add(garuPrefab);
+
+            garudynePrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("GarudyneProjectile");
+            projectilePrefabs.Add(garudynePrefab);
+
             maskTierDef = mainAssetBundle.LoadAsset<ItemTierDef>("MaskTier");
             maskColor = R2API.ColorsAPI.RegisterColor(new Color(0.41f, 0.94f, 1f));
             maskDarkColor = R2API.ColorsAPI.RegisterColor(new Color(0.08f, 0.29f, 0.85f));
@@ -66,6 +83,7 @@ namespace JokerMod.Modules {
             maskPrefab = mainAssetBundle.LoadAsset<GameObject>("mask");
 
             shockColor = R2API.ColorsAPI.RegisterDamageColor(new Color(0.96f, 0.91f, 0f));
+            sweptColor = R2API.ColorsAPI.RegisterDamageColor(new Color(0.45f, 0.98f, 0.48f));
 
             jokerUIPrefab = mainAssetBundle.LoadAsset<GameObject>("JokerUI");
 
@@ -76,6 +94,11 @@ namespace JokerMod.Modules {
             eihaPrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(CurseLightType.damageType);
             eigaPrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(CurseMediumType.damageType);
             eigaonPrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(CurseHeavyType.damageType);
+
+            garuPrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(WindLightType.damageType);
+            garuPrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(IgnoreMassType.damageType);
+            garulaPrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(IgnoreMassType.damageType);
+            garudynePrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(IgnoreMassType.damageType);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace JokerMod.Modules.PersonaSkills
         public override string skillNameToken => "MAPSI";
 
         public override string skillDescription => "Emit a light psychokinetic burst in a <style=cIsUtility>large radius</style> for " +
-            $"<style=cIsDamage>300% damage</style>, and apply <style=cIsUtility>3-8 debuffs</style> - or have a small chance to apply <style=cDeath>1-3 buffs</style>.";
+            $"<style=cIsDamage>300% damage</style>, appling <style=cIsUtility>3-8 random effects</style>.";
 
         public override string skillName => "Mapsi";
 

@@ -1,11 +1,5 @@
-﻿using System;
-using EntityStates;
-using JokerMod.Joker.Components;
-using JokerMod.Joker.SkillStates.PersonaStates;
-using JokerMod.Modules;
+﻿using EntityStates;
 using RoR2;
-using RoR2.Skills;
-using UnityEngine;
 
 
 namespace JokerMod.Joker.SkillStates {
@@ -19,6 +13,7 @@ namespace JokerMod.Joker.SkillStates {
 
         public override void OnEnter() {
             base.OnEnter();
+            holdSpecialStock -= 1; // prevent opening menu for free recharge 
             EntityStateMachine.FindByCustomName(characterBody.gameObject, "Weapon").SetNextState(new LockedState());
         }
 

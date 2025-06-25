@@ -1,9 +1,5 @@
 ﻿using JokerMod.Joker.SkillStates.BaseStates;
 using JokerMod.Modules;
-using JokerMod.Modules.DamageTypes;
-using R2API;
-using RoR2.Projectile;
-using UnityEngine;
 
 namespace JokerMod.Joker.SkillStates.PersonaStates {
     public class EihaState : PersonaSkillProjectileBaseState {

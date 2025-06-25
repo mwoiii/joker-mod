@@ -29,6 +29,14 @@ namespace JokerMod.Modules {
             new EigaonSkill().Init();
             new MaeigaonSkill().Init();
 
+            // Wind
+            new GaruSkill().Init();
+            new MagaruSkill().Init();
+            new GarulaSkill().Init();
+            new MagarulaSkill().Init();
+            new GarudyneSkill().Init();
+            new MagarudyneSkill().Init();
+
             // Elec
             new ZioSkill().Init();
             new MazioSkill().Init();
@@ -44,7 +52,7 @@ namespace JokerMod.Modules {
             new MapsioSkill().Init();
             new PsiodyneSkill().Init();
             new MapsiodyneSkill().Init();
-            
+
             // Healing
             new DiaSkill().Init();
             new DiaramaSkill().Init();

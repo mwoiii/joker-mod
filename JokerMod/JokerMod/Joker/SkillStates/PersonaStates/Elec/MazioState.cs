@@ -1,12 +1,8 @@
-﻿using System;
-using EntityStates;
-using JokerMod.Joker.SkillStates.BaseStates;
+﻿using JokerMod.Joker.SkillStates.BaseStates;
 using JokerMod.Modules.DamageTypes;
 using R2API;
 using RoR2;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEngine.UI.Image;
 
 namespace JokerMod.Joker.SkillStates {
     public class MazioState : PersonaSkillBaseState {
@@ -24,7 +20,7 @@ namespace JokerMod.Joker.SkillStates {
                 owner = gameObject,
                 weapon = gameObject,
                 origin = aimRay.origin,
-                
+
                 minSpread = 0f,
                 maxSpread = 0f,
                 bulletCount = 1U,

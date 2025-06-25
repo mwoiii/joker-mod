@@ -36,7 +36,7 @@ namespace JokerMod.Joker.Components {
             primaryPersona = JokerCatalog.GetPersonaFromNameToken("ARSENE");
             secondaryPersona = JokerCatalog.GetPersonaFromNameToken("EMPTY");
             utilityPersona = JokerCatalog.GetPersonaFromNameToken("EMPTY");
-            _maxSP = 8f;
+            _maxSP = 99999f; // 8f;
         }
 
         public void ForceMaxSPUpdate() {
@@ -74,10 +74,10 @@ namespace JokerMod.Joker.Components {
                         break;
                     default:
                         droppedPersona = overstockPersona;
-                        break;                
+                        break;
                 }
                 DropAfterOverstock(droppedPersona);
-                
+
             } else {
                 Log.Error("Tried to swap a Persona when the overstock slot was empty!");
             }

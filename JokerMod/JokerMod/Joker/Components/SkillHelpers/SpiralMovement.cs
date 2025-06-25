@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using RoR2.Projectile;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace JokerMod.Joker.Components {
+namespace JokerMod.Joker.Components.SkillHelpers {
     public class SpiralMovement : MonoBehaviour {
+
+        // used for "aoe" curse skills (ma prefix)
+
         public float spiralRadius = 3f;
         public float spiralSpeed = 2f;
         public float angle = 0f;
@@ -31,7 +29,7 @@ namespace JokerMod.Joker.Components {
             Vector3 newTransform = right * rightMult + up * upMult;
 
             // apply position and store transformation
-            transform.position += newTransform; 
+            transform.position += newTransform;
             prevTransform = newTransform;
         }
     }

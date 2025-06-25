@@ -16,8 +16,17 @@ namespace JokerMod.Modules {
         public delegate void Handle_HealthComponentTakeDamageProcess(RoR2.HealthComponent self, RoR2.DamageInfo damageInfo);
         public static Handle_HealthComponentTakeDamageProcess Handle_HealthComponentTakeDamageProcess_Actions;
 
+        public delegate void Handle_HealthComponentTakeDamageForceDamageInfoBoolBool(On.RoR2.HealthComponent.orig_TakeDamageForce_DamageInfo_bool_bool orig, RoR2.HealthComponent self, RoR2.DamageInfo damageInfo, bool alwaysApply, bool disableAirControlUntilCollision);
+        public static Handle_HealthComponentTakeDamageForceDamageInfoBoolBool Handle_HealthComponentTakeDamageForceDamageInfoBoolBool_Actions;
+
+        public delegate void Handle_CharacterMotorOnLanded(RoR2.CharacterMotor self);
+        public static Handle_CharacterMotorOnLanded Handle_CharacterMotorOnLanded_Actions;
+
         public delegate void IL_Handle_GenericPickupControllerAttemptGrant(ILContext il);
         public static IL_Handle_GenericPickupControllerAttemptGrant IL_Handle_GenericPickupControllerAttemptGrant_Actions;
+
+        public delegate void IL_Handle_OverlapAttackFire(ILContext il);
+        public static IL_Handle_OverlapAttackFire IL_Handle_OverlapAttackFire_Actions;
 
         public static void AddHooks() {
             SPController.SubscribeStaticHooksAndEvents();
@@ -40,8 +49,24 @@ namespace JokerMod.Modules {
                 On.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
             }
 
+            if (Handle_HealthComponentTakeDamageProcess_Actions != null) {
+                On.RoR2.HealthComponent.TakeDamageForce_DamageInfo_bool_bool += HealthComponent_TakeDamageForceDamageInfoBoolBool;
+            }
+
+            if (Handle_CharacterMotorOnLanded_Actions != null) {
+                On.RoR2.CharacterMotor.OnLanded += CharacterMotor_OnLanded;
+            }
+
             if (IL_Handle_GenericPickupControllerAttemptGrant_Actions != null) {
                 IL.RoR2.GenericPickupController.AttemptGrant += IL_GenericPickupController_AttemptGrant;
+            }
+
+            if (IL_Handle_GenericPickupControllerAttemptGrant_Actions != null) {
+                IL.RoR2.GenericPickupController.AttemptGrant += IL_GenericPickupController_AttemptGrant;
+            }
+
+            if (IL_Handle_OverlapAttackFire_Actions != null) {
+                IL.RoR2.OverlapAttack.Fire += IL_OverlapAttack_Fire;
             }
         }
 
@@ -65,8 +90,22 @@ namespace JokerMod.Modules {
             orig(self, damageInfo);
         }
 
+        internal static void HealthComponent_TakeDamageForceDamageInfoBoolBool(On.RoR2.HealthComponent.orig_TakeDamageForce_DamageInfo_bool_bool orig, RoR2.HealthComponent self, RoR2.DamageInfo damageInfo, bool alwaysApply, bool disableAirControlUntilCollision) {
+            Handle_HealthComponentTakeDamageForceDamageInfoBoolBool_Actions.Invoke(orig, self, damageInfo, alwaysApply, disableAirControlUntilCollision);
+            // must call orig themselves
+        }
+
+        internal static void CharacterMotor_OnLanded(On.RoR2.CharacterMotor.orig_OnLanded orig, RoR2.CharacterMotor self) {
+            Handle_CharacterMotorOnLanded_Actions.Invoke(self);
+            orig(self);
+        }
+
         internal static void IL_GenericPickupController_AttemptGrant(ILContext il) {
             IL_Handle_GenericPickupControllerAttemptGrant_Actions.Invoke(il);
+        }
+
+        internal static void IL_OverlapAttack_Fire(ILContext il) {
+            IL_Handle_OverlapAttackFire_Actions.Invoke(il);
         }
 
         private static void FixSkillCooldownDisplay(RoR2.UI.SkillIcon self) {

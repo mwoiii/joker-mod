@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using JokerMod.Joker.SkillStates.BaseStates;
-using JokerMod.Joker.SkillStates.PersonaStates;
-using JokerMod.Joker.SkillStates;
-using RoR2;
-using JokerMod.Modules.Buffs;
-using R2API;
+﻿using System.Collections.Generic;
 using JokerMod.Modules.DamageTypes;
+using R2API;
 
 namespace JokerMod.Modules {
     public static class DamageTypeCollection {
@@ -18,6 +11,12 @@ namespace JokerMod.Modules {
             CurseLightType.Init();
             CurseMediumType.Init();
             CurseHeavyType.Init();
+
+            // Wind
+            WindLightType.Init();
+            WindMediumType.Init();
+            WindHeavyType.Init();
+            IgnoreMassType.Init();
 
             // Elec
             ElecLightType.Init();

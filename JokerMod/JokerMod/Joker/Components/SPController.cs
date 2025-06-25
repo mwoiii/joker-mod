@@ -86,13 +86,13 @@ namespace JokerMod.Joker.Components {
         public SPController(JokerMaster master) {
             this.master = master;
             this.statController = master.statController;
-            
+
             SubscribeInstanceEvents();
             spLevel = master.GetComponent<CharacterBody>().level;
 
             statController.ForceMaxSPUpdate();
             currentSP = statController.maxSP;
-            
+
         }
 
         ~SPController() {

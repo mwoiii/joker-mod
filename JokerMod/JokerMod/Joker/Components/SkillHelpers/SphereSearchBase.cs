@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using RoR2;
 using UnityEngine;
 
-namespace JokerMod.Joker.SkillStates.Helpers
+namespace JokerMod.Joker.Components.SkillHelpers
 {
     public abstract class SphereSearchBase
     {
@@ -32,8 +30,10 @@ namespace JokerMod.Joker.SkillStates.Helpers
 
         private readonly List<HurtBox> hurtBoxesList = new List<HurtBox>();
 
-        public void Fire() {
-            SphereSearch obj = new SphereSearch {
+        public void Fire()
+        {
+            SphereSearch obj = new SphereSearch
+            {
                 mask = LayerIndex.entityPrecise.mask,
                 origin = origin,
                 queryTriggerInteraction = QueryTriggerInteraction.Collide,
@@ -46,12 +46,15 @@ namespace JokerMod.Joker.SkillStates.Helpers
                 .GetHurtBoxes(hurtBoxesList);
 
             int i = 0;
-            for (int count = hurtBoxesList.Count; i < count; i++) {
+            for (int count = hurtBoxesList.Count; i < count; i++)
+            {
                 HandleHurtbox(hurtBoxesList[i]);
             }
 
-            if (effectPrefab != null) {
-                EffectManager.SpawnEffect(effectPrefab, new EffectData {
+            if (effectPrefab != null)
+            {
+                EffectManager.SpawnEffect(effectPrefab, new EffectData
+                {
                     origin = origin,
                     rotation = Quaternion.identity,
                     scale = fxScale

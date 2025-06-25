@@ -14,13 +14,9 @@ namespace JokerMod.Modules.DamageTypes {
             Hooks.Handle_HealthComponentTakeDamageProcess_Actions += AddMediumPsyBuffs;
         }
 
-        private static int minDebuffs = 5;
+        private static int minBuffs = 5;
 
-        private static int maxDebuffs = 10;
-
-        private static int minBuffs = 2;
-
-        private static int maxBuffs = 4;
+        private static int maxBuffs = 12;
 
         private static float buffDuration = 10f;
 
@@ -28,26 +24,23 @@ namespace JokerMod.Modules.DamageTypes {
             if (damageInfo.HasModdedDamageType(damageType)) {
                 if (self.body != null) {
                     CharacterBody? attackerBody = damageInfo.attacker?.GetComponent<CharacterBody>();
-                    if (Util.CheckRoll(80f, attackerBody.master)) {
-                        int debuffRoll = Utils.rand.Next(minDebuffs, maxDebuffs + 1);
+                    int quantityRoll = Utils.rand.Next(minBuffs, maxBuffs + 1);
 
-                        for (int i = 0; i < debuffRoll; i++) {
+                    for (int i = 0; i < quantityRoll; i++) {
+
+                        if (Util.CheckRoll(80f, attackerBody.master)) {
                             BuffDef buffDef = (BuffDef)Utils.RandomChoice(PsyLightType.debuffList);
 
                             if (buffDef.isDOT) {
-                                DotController.InflictDot(self.gameObject, damageInfo.attacker, DotController.GetDotDefIndex(buffDef), buffDuration * damageInfo.procCoefficient, 1f);
+                                DotController.InflictDot(self.gameObject, damageInfo.attacker, DotController.GetDotDefIndex(buffDef), buffDuration * damageInfo.procCoefficient, 1.5f);
                             } else if (PsyLightType.untimedDebuffList.Contains(buffDef)) {
                                 self.body?.AddBuff(buffDef);
                             } else {
                                 self.body?.AddTimedBuff(buffDef, buffDuration);
                             }
-                        }
 
-                    } else {
-                        int buffRoll = Utils.rand.Next(minBuffs, maxBuffs + 1);
-                        for (int i = 0; i < buffRoll; i++) {
+                        } else {
                             BuffDef buffDef = (BuffDef)Utils.RandomChoice(PsyLightType.buffList);
-
                             self.body?.AddTimedBuff(buffDef, buffDuration);
                         }
                     }

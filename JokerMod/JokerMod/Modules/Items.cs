@@ -4,7 +4,6 @@ using JokerMod.Joker.Components;
 using JokerMod.Modules.PersonaMasks;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using R2API;
 using RoR2;
 
 namespace JokerMod.Modules {
@@ -32,6 +31,14 @@ namespace JokerMod.Modules {
             new WhiteRiderPersona().Init();
             new BelialPersona().Init();
             new SkadiPersona().Init();
+
+            // Wind
+            new KelpiePersona().Init();
+            new NekomataPersona().Init();
+            new SandmanPersona().Init();
+            new KurumaTenguPersona().Init();
+            new FortunaPersona().Init();
+            new QuetzalcoatlPersona().Init();
 
             // Elec
             new AgathionPersona().Init();

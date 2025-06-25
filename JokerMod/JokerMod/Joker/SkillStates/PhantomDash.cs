@@ -15,16 +15,12 @@ namespace JokerMod.Joker.SkillStates {
 
         private Vector3 blinkVector = Vector3.zero;
 
-        [SerializeField]
         public float duration = 0.12f;
 
-        [SerializeField]
         public float speedCoefficient = 20f;
 
-        [SerializeField]
         public string beginSoundString = EvisDash.beginSoundString;
 
-        [SerializeField]
         public string endSoundString = EvisDash.endSoundString;
 
         protected bool exceededDuration => stopwatch >= duration;

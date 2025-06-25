@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using JokerMod.Joker.SkillStates.BaseStates;
-using JokerMod.Joker.SkillStates.PersonaStates;
-using JokerMod.Joker.SkillStates;
-using RoR2;
+﻿using System.Collections.Generic;
 using JokerMod.Modules.Buffs;
+using RoR2;
 
 namespace JokerMod.Modules {
     public static class BuffCollection {
         internal static List<BuffDef> buffDefs = new List<BuffDef>();
 
         public static void Init() {
+            SweptDebuff.Init();
             ShockDebuff.Init();
         }
     }

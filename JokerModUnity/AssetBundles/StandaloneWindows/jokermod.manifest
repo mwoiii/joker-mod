@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 565805163
+CRC: 3352731654
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: e89f27259313d4028d0530a34fd7eea0
+    Hash: d73084354036cc4498c2fcc8dcfc7dc7
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 9e1b37818762bfcc5887e85c9b358ba5
+    Hash: 56e5c2512eeda946e66c8f3f71df12de
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -32,25 +32,33 @@ ClassTypes:
 - Class: 108
   Script: {instanceID: 0}
 - Class: 114
-  Script: {fileID: 372142912, guid: d382a022563c7517aadbc92ca1060016, type: 3}
+  Script: {fileID: 1783796254, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
+- Class: 114
+  Script: {fileID: 664435192, guid: 1e00111d2f6dfa0419cef29e30f6e2db, type: 3}
 - Class: 114
   Script: {fileID: 1044368294, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
 - Class: 114
   Script: {fileID: 175070816, guid: 1e00111d2f6dfa0419cef29e30f6e2db, type: 3}
 - Class: 114
-  Script: {fileID: 1783796254, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
+  Script: {fileID: 647418741, guid: 1e00111d2f6dfa0419cef29e30f6e2db, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+- Class: 114
+  Script: {fileID: 563925768, guid: 1e00111d2f6dfa0419cef29e30f6e2db, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
 - Class: 114
   Script: {fileID: 1395413934, guid: da77c7bbf69f66ab2145560542327715, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+  Script: {fileID: 372142912, guid: d382a022563c7517aadbc92ca1060016, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
 - Class: 114
   Script: {fileID: -132178706, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
 - Class: 114
   Script: {fileID: -875252823, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
+- Class: 114
+  Script: {fileID: -1294804675, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
 - Class: 114
   Script: {fileID: -1284244208, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
 - Class: 114
@@ -68,6 +76,8 @@ ClassTypes:
 - Class: 114
   Script: {fileID: -270136354, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
 - Class: 114
+  Script: {fileID: -899414464, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
+- Class: 114
   Script: {fileID: -1819008361, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
 - Class: 114
   Script: {fileID: -1895344032, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
@@ -76,7 +86,7 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
 - Class: 114
-  Script: {fileID: 647418741, guid: 1e00111d2f6dfa0419cef29e30f6e2db, type: 3}
+  Script: {fileID: -78954976, guid: 1e00111d2f6dfa0419cef29e30f6e2db, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 135
@@ -116,6 +126,8 @@ SerializeReferenceClassIdentifiers:
   ClassName: UnityEngine.Events.PersistentCallGroup
 - AssemblyName: UnityEngine.CoreModule
   ClassName: UnityEngine.Events.UnityEvent
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Events.UnityEvent`1[UnityEngine.GameObject]
 - AssemblyName: UnityEngine.TextCoreFontEngineModule
   ClassName: UnityEngine.TextCore.FaceInfo
 - AssemblyName: UnityEngine.TextCoreFontEngineModule
@@ -135,7 +147,10 @@ Assets:
 - Assets/Joker/Skills/Eiha/EihaProjectile.prefab
 - Assets/Joker/Unshareable/Mask/mask.prefab
 - Assets/Joker/Skills/Eiga/EigaProjectile.prefab
+- Assets/Joker/Skills/Garu/GaruProjectile.prefab
 - Assets/Joker/Skills/Eigaon/EigaonProjectile.prefab
 - Assets/Joker/Mask/MaskItemDef.asset
 - Assets/Joker/UI/JokerUI.prefab
+- Assets/Joker/Skills/Garudyne/GarudyneProjectile.prefab
+- Assets/Joker/Skills/Garula/GarulaProjectile.prefab
 Dependencies: []
