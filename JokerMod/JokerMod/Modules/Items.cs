@@ -32,6 +32,14 @@ namespace JokerMod.Modules {
             new BelialPersona().Init();
             new SkadiPersona().Init();
 
+            // Fire
+            new JackoLanternPersona().Init();
+            new HuaPoPersona().Init();
+            new OrthrusPersona().Init();
+            new HellBikerPersona().Init();
+            new YatagarasuPersona().Init();
+            new MolochPersona().Init();
+
             // Wind
             new KelpiePersona().Init();
             new NekomataPersona().Init();

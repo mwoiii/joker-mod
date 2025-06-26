@@ -29,6 +29,14 @@ namespace JokerMod.Modules {
             new EigaonSkill().Init();
             new MaeigaonSkill().Init();
 
+            // Fire
+            new AgiSkill().Init();
+            new MaragiSkill().Init();
+            new AgilaoSkill().Init();
+            new MaragionSkill().Init();
+            new AgidyneSkill().Init();
+            new MaragidyneSkill().Init();
+
             // Wind
             new GaruSkill().Init();
             new MagaruSkill().Init();

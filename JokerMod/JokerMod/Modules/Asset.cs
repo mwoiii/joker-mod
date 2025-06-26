@@ -27,6 +27,14 @@ namespace JokerMod.Modules {
 
         public static GameObject garudynePrefab;
 
+        public static GameObject agiPrefab;
+
+        public static GameObject agiSpitPrefab;
+
+        public static GameObject agilaoPrefab;
+
+        public static GameObject agidynePrefab;
+
         public static ColorCatalog.ColorIndex maskColor;
 
         public static ColorCatalog.ColorIndex maskDarkColor;
@@ -74,6 +82,18 @@ namespace JokerMod.Modules {
             garudynePrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("GarudyneProjectile");
             projectilePrefabs.Add(garudynePrefab);
 
+            agiPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("AgiProjectile");
+            projectilePrefabs.Add(agiPrefab);
+
+            agiSpitPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("AgiSpitProjectile");
+            projectilePrefabs.Add(agiSpitPrefab);
+
+            agilaoPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("AgilaoProjectile");
+            projectilePrefabs.Add(agilaoPrefab);
+
+            agidynePrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("AgidyneProjectile");
+            projectilePrefabs.Add(agidynePrefab);
+
             maskTierDef = mainAssetBundle.LoadAsset<ItemTierDef>("MaskTier");
             maskColor = R2API.ColorsAPI.RegisterColor(new Color(0.41f, 0.94f, 1f));
             maskDarkColor = R2API.ColorsAPI.RegisterColor(new Color(0.08f, 0.29f, 0.85f));
@@ -99,6 +119,8 @@ namespace JokerMod.Modules {
             garuPrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(IgnoreMassType.damageType);
             garulaPrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(IgnoreMassType.damageType);
             garudynePrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(IgnoreMassType.damageType);
+
+            agiSpitPrefab.GetComponent<ProjectileImpactExplosion>().childrenProjectilePrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/Molotov/MolotovProjectileDotZone.prefab").WaitForCompletion();
         }
     }
 }

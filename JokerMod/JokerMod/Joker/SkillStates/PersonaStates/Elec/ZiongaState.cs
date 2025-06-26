@@ -76,7 +76,7 @@ namespace JokerMod.Joker.SkillStates {
                     blastAttack.Fire();
                 }
                 timesFired++;
-                yield return new WaitForSeconds(0.1f / base.attackSpeedStat);
+                yield return new WaitForSeconds(0.1f);
             }
         }
     }
