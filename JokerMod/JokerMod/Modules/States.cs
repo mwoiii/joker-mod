@@ -28,6 +28,13 @@ namespace JokerMod.Modules {
             entityStates.Add(typeof(WaitForReleaseOverrideState));
             entityStates.Add(typeof(WaitForReleaseState));
 
+            entityStates.Add(typeof(KouhaState));
+            entityStates.Add(typeof(MakouhaState));
+            entityStates.Add(typeof(KougaState));
+            entityStates.Add(typeof(MakougaState));
+            entityStates.Add(typeof(KougaonState));
+            entityStates.Add(typeof(MakougaonState));
+
             entityStates.Add(typeof(EihaState));
             entityStates.Add(typeof(MaeihaState));
             entityStates.Add(typeof(EigaState));

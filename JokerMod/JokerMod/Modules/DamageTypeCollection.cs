@@ -7,6 +7,14 @@ namespace JokerMod.Modules {
         internal static List<DamageAPI.ModdedDamageType> damageTypes = new List<DamageAPI.ModdedDamageType>();
 
         public static void Init() {
+            // Bless
+            BlessLightWeakType.Init();
+            BlessLightType.Init();
+            BlessMediumWeakType.Init();
+            BlessMediumType.Init();
+            BlessHeavyWeakType.Init();
+            BlessHeavyType.Init();
+
             // Curse
             CurseLightType.Init();
             CurseMediumType.Init();

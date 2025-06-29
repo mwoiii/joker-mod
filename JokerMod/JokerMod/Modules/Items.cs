@@ -24,6 +24,14 @@ namespace JokerMod.Modules {
         private static void InitItemDefs() {
             new EmptyPersona().Init();
 
+            // Bless
+            new AngelPersona().Init();
+            new NigiMitamaPersona().Init();
+            new MithraPersona().Init();
+            new PrincipalityPersona().Init();
+            new HorusPersona().Init();
+            new DominionPersona().Init();
+
             // Curse
             new ArsenePersona().Init();
             new NuePersona().Init();

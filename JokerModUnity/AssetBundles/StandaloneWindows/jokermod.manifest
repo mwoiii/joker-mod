@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3883026400
+CRC: 1153316927
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 0c1be2794633c43c0a6e40abe4886f26
+    Hash: f110d9c567d4062a048b1b2c3bdd2c64
   TypeTreeHash:
     serializedVersion: 2
     Hash: 32f1e97e28b8e7dbccf8d6ffedc2f870
@@ -154,22 +154,28 @@ SerializeReferenceClassIdentifiers:
   ClassName: UnityEngine.Networking.NetworkSceneId
 Assets:
 - Assets/Joker/Mask/MaskTier.asset
+- Assets/Joker/Skills/Kouga/KougaProjectile.prefab
 - Assets/Joker/Skills/Freila/FreilaExplosionProjectile.prefab
 - Assets/Joker/Skills/Eiha/EihaProjectile.prefab
 - Assets/Joker/Unshareable/Mask/mask.prefab
 - Assets/Joker/Skills/Agilao/AgilaoProjectile.prefab
+- Assets/Joker/Skills/Kouga/KougaExplosionProjectile.prefab
 - Assets/Joker/Skills/Eiga/EigaProjectile.prefab
 - Assets/Joker/Skills/Garu/GaruProjectile.prefab
 - Assets/Joker/Skills/Freila/FreilaProjectile.prefab
 - Assets/Joker/Skills/Eigaon/EigaonProjectile.prefab
 - Assets/Joker/Skills/Agi/AgiProjectile.prefab
+- Assets/Joker/Skills/Kougaon/KougaonExplosionProjectile.prefab
 - Assets/Joker/Skills/Freidyne/FreidyneExplosionProjectile.prefab
 - Assets/Joker/Mask/MaskItemDef.asset
 - Assets/Joker/UI/JokerUI.prefab
 - Assets/Joker/Skills/Agidyne/AgidyneProjectile.prefab
 - Assets/Joker/Skills/Garudyne/GarudyneProjectile.prefab
 - Assets/Joker/Skills/Agi/AgiSpitProjectile.prefab
+- Assets/Joker/Skills/Kouha/KouhaExplosionProjectile.prefab
+- Assets/Joker/Skills/Kougaon/KougaonProjectile.prefab
 - Assets/Joker/Skills/Frei/FreiProjectile.prefab
+- Assets/Joker/Skills/Kouha/KouhaProjectile.prefab
 - Assets/Joker/Skills/Frei/FreiExplosionProjectile.prefab
 - Assets/Joker/Skills/Freidyne/FreidyneProjectile.prefab
 - Assets/Joker/Skills/Garula/GarulaProjectile.prefab

@@ -21,6 +21,14 @@ namespace JokerMod.Modules {
             new EmptySkill().Init();
             new CancelSkill().Init();
 
+            // Bless
+            new KouhaSkill().Init();
+            new MakouhaSkill().Init();
+            new KougaSkill().Init();
+            new MakougaSkill().Init();
+            new KougaonSkill().Init();
+            new MakougaonSkill().Init();
+
             // Curse
             new EihaSkill().Init();
             new MaeihaSkill().Init();

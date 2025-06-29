@@ -47,6 +47,18 @@ namespace JokerMod.Modules {
 
         public static GameObject freidyneExplosionPrefab;
 
+        public static GameObject kouhaPrefab;
+
+        public static GameObject kouhaExplosionPrefab;
+
+        public static GameObject kougaPrefab;
+
+        public static GameObject kougaExplosionPrefab;
+
+        public static GameObject kougaonPrefab;
+
+        public static GameObject kougaonExplosionPrefab;
+
         public static ColorCatalog.ColorIndex maskColor;
 
         public static ColorCatalog.ColorIndex maskDarkColor;
@@ -124,6 +136,24 @@ namespace JokerMod.Modules {
             freidyneExplosionPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("FreidyneExplosionProjectile");
             projectilePrefabs.Add(freidyneExplosionPrefab);
 
+            kouhaPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("KouhaProjectile");
+            projectilePrefabs.Add(kouhaPrefab);
+
+            kouhaExplosionPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("KouhaExplosionProjectile");
+            projectilePrefabs.Add(kouhaExplosionPrefab);
+
+            kougaPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("KougaProjectile");
+            projectilePrefabs.Add(kougaPrefab);
+
+            kougaExplosionPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("KougaExplosionProjectile");
+            projectilePrefabs.Add(kougaExplosionPrefab);
+
+            kougaonPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("KougaonProjectile");
+            projectilePrefabs.Add(kougaonPrefab);
+
+            kougaonExplosionPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("KougaonExplosionProjectile");
+            projectilePrefabs.Add(kougaonExplosionPrefab);
+
 
             maskTierDef = mainAssetBundle.LoadAsset<ItemTierDef>("MaskTier");
             maskColor = R2API.ColorsAPI.RegisterColor(new Color(0.41f, 0.94f, 1f));
@@ -161,6 +191,15 @@ namespace JokerMod.Modules {
 
             freidynePrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(NukeHeavyWeakType.damageType);
             freidyneExplosionPrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(NukeHeavyType.damageType);
+
+            kouhaPrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(BlessLightWeakType.damageType);
+            kouhaExplosionPrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(BlessLightType.damageType);
+
+            kougaPrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(BlessMediumWeakType.damageType);
+            kougaExplosionPrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(BlessMediumType.damageType);
+
+            kougaonPrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(BlessHeavyWeakType.damageType);
+            kougaonExplosionPrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(BlessHeavyType.damageType);
         }
     }
 }
