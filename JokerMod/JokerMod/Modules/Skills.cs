@@ -51,7 +51,15 @@ namespace JokerMod.Modules {
             new ZiongaSkill().Init();
             new MaziongaSkill().Init();
             new ZiodyneSkill().Init();
-            new MaziodyneSkill().Init(); ;
+            new MaziodyneSkill().Init();
+
+            // Nuke
+            new FreiSkill().Init();
+            new MafreiSkill().Init();
+            new FreilaSkill().Init();
+            new MafreilaSkill().Init();
+            new FreidyneSkill().Init();
+            new MafreidyneSkill().Init();
 
             // Psy
             new PsiSkill().Init();

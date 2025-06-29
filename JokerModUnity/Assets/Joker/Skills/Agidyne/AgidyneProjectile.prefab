@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8671068567950313616}
   - component: {fileID: 8629107200699849798}
-  - component: {fileID: 6578158305082125842}
   m_Layer: 0
   m_Name: AgidyneHitbox
   m_TagString: Untagged
@@ -45,20 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 1783796254, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!136 &6578158305082125842
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1893082503103718340}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3131722159332129901
 GameObject:
   m_ObjectHideFlags: 0

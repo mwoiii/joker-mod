@@ -20,7 +20,7 @@ namespace JokerMod.Modules.DamageTypes {
         }
 
         private static void AddLightWindDamage(HealthComponent self, DamageInfo damageInfo) {
-            CharacterBody attackerBody = damageInfo.attacker?.GetComponent<CharacterBody>();
+            CharacterBody attackerBody = damageInfo?.attacker?.GetComponent<CharacterBody>();
             if (self?.body?.teamComponent?.teamIndex != null && attackerBody?.teamComponent?.teamIndex != null && damageInfo.HasModdedDamageType(damageType)) {
                 bool sameTeam = self.body.teamComponent.teamIndex == attackerBody.teamComponent.teamIndex;
                 bool isFriendlyFire = FriendlyFireManager.friendlyFireMode != FriendlyFireManager.FriendlyFireMode.Off;

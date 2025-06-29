@@ -28,6 +28,9 @@ namespace JokerMod.Modules {
         public delegate void IL_Handle_OverlapAttackFire(ILContext il);
         public static IL_Handle_OverlapAttackFire IL_Handle_OverlapAttackFire_Actions;
 
+        public delegate void IL_Handle_DotControllerEvaluateDOTStacksForType(ILContext il);
+        public static IL_Handle_DotControllerEvaluateDOTStacksForType IL_Handle_DotControllerEvaluateDOTStacksForType_Actions;
+
         public static void AddHooks() {
             SPController.SubscribeStaticHooksAndEvents();
 
@@ -68,6 +71,10 @@ namespace JokerMod.Modules {
             if (IL_Handle_OverlapAttackFire_Actions != null) {
                 IL.RoR2.OverlapAttack.Fire += IL_OverlapAttack_Fire;
             }
+
+            if (IL_Handle_DotControllerEvaluateDOTStacksForType_Actions != null) {
+                IL.RoR2.DotController.EvaluateDotStacksForType += IL_DotController_EvaluateDOTStacksForType;
+            }
         }
 
         internal static void CharacterBody_OnLevelUp(On.RoR2.CharacterBody.orig_OnLevelUp orig, RoR2.CharacterBody self) {
@@ -106,6 +113,9 @@ namespace JokerMod.Modules {
 
         internal static void IL_OverlapAttack_Fire(ILContext il) {
             IL_Handle_OverlapAttackFire_Actions.Invoke(il);
+        }
+        internal static void IL_DotController_EvaluateDOTStacksForType(ILContext il) {
+            IL_Handle_DotControllerEvaluateDOTStacksForType_Actions.Invoke(il);
         }
 
         private static void FixSkillCooldownDisplay(RoR2.UI.SkillIcon self) {

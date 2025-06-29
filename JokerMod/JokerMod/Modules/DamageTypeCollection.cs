@@ -23,6 +23,13 @@ namespace JokerMod.Modules {
             ElecMediumType.Init();
             ElecHeavyType.Init();
 
+            // Nuke
+            NukeLightWeakType.Init();
+            NukeLightType.Init();
+            NukeMediumType.Init();
+            NukeHeavyWeakType.Init();
+            NukeHeavyType.Init();
+
             // Psy
             PsyLightType.Init();
             PsyMediumType.Init();

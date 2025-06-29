@@ -60,6 +60,13 @@ namespace JokerMod.Modules {
             entityStates.Add(typeof(DiaramaState));
             entityStates.Add(typeof(DiarahanState));
 
+            entityStates.Add(typeof(FreiState));
+            entityStates.Add(typeof(MafreiState));
+            entityStates.Add(typeof(FreilaState));
+            entityStates.Add(typeof(MafreilaState));
+            entityStates.Add(typeof(FreidyneState));
+            entityStates.Add(typeof(MafreidyneState));
+
             entityStates.Add(typeof(PsiState));
             entityStates.Add(typeof(MapsiState));
             entityStates.Add(typeof(PsioState));

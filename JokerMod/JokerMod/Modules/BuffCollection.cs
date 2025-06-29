@@ -9,6 +9,7 @@ namespace JokerMod.Modules {
         public static void Init() {
             SweptDebuff.Init();
             ShockDebuff.Init();
+            IrradiatedDebuff.Init();
         }
     }
 }

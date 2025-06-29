@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 249661143
+CRC: 3883026400
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 3faf457ad4862955d2d1aa2aa5ac8860
+    Hash: 0c1be2794633c43c0a6e40abe4886f26
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 2790fc83ab29c058e38e9348b7c90187
+    Hash: 32f1e97e28b8e7dbccf8d6ffedc2f870
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -33,6 +33,8 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 114
   Script: {fileID: 1790887305, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
+- Class: 114
+  Script: {fileID: 1059019834, guid: 1e00111d2f6dfa0419cef29e30f6e2db, type: 3}
 - Class: 114
   Script: {fileID: 1783796254, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
 - Class: 114
@@ -91,7 +93,11 @@ ClassTypes:
   Script: {fileID: 664435192, guid: 1e00111d2f6dfa0419cef29e30f6e2db, type: 3}
 - Class: 114
   Script: {fileID: -78954976, guid: 1e00111d2f6dfa0419cef29e30f6e2db, type: 3}
+- Class: 114
+  Script: {fileID: 530427873, guid: 1e00111d2f6dfa0419cef29e30f6e2db, type: 3}
 - Class: 115
+  Script: {instanceID: 0}
+- Class: 134
   Script: {instanceID: 0}
 - Class: 135
   Script: {instanceID: 0}
@@ -148,17 +154,23 @@ SerializeReferenceClassIdentifiers:
   ClassName: UnityEngine.Networking.NetworkSceneId
 Assets:
 - Assets/Joker/Mask/MaskTier.asset
+- Assets/Joker/Skills/Freila/FreilaExplosionProjectile.prefab
 - Assets/Joker/Skills/Eiha/EihaProjectile.prefab
 - Assets/Joker/Unshareable/Mask/mask.prefab
 - Assets/Joker/Skills/Agilao/AgilaoProjectile.prefab
 - Assets/Joker/Skills/Eiga/EigaProjectile.prefab
 - Assets/Joker/Skills/Garu/GaruProjectile.prefab
+- Assets/Joker/Skills/Freila/FreilaProjectile.prefab
 - Assets/Joker/Skills/Eigaon/EigaonProjectile.prefab
 - Assets/Joker/Skills/Agi/AgiProjectile.prefab
+- Assets/Joker/Skills/Freidyne/FreidyneExplosionProjectile.prefab
 - Assets/Joker/Mask/MaskItemDef.asset
 - Assets/Joker/UI/JokerUI.prefab
 - Assets/Joker/Skills/Agidyne/AgidyneProjectile.prefab
 - Assets/Joker/Skills/Garudyne/GarudyneProjectile.prefab
 - Assets/Joker/Skills/Agi/AgiSpitProjectile.prefab
+- Assets/Joker/Skills/Frei/FreiProjectile.prefab
+- Assets/Joker/Skills/Frei/FreiExplosionProjectile.prefab
+- Assets/Joker/Skills/Freidyne/FreidyneProjectile.prefab
 - Assets/Joker/Skills/Garula/GarulaProjectile.prefab
 Dependencies: []

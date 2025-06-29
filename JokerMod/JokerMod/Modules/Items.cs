@@ -56,6 +56,14 @@ namespace JokerMod.Modules {
             new RajaNagaPersona().Init();
             new DionysusPersona().Init();
 
+            // Nuke
+            new ShiisaaPersona().Init();
+            new MakamiPersona().Init();
+            new PhoenixPersona().Init();
+            new MithrasPersona().Init();
+            new TitaniaPersona().Init();
+            new LilithPersona().Init();
+
             // Psy
             new KodamaPersona().Init();
             new MatadorPersona().Init();

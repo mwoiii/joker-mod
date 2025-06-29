@@ -35,6 +35,18 @@ namespace JokerMod.Modules {
 
         public static GameObject agidynePrefab;
 
+        public static GameObject freiPrefab;
+
+        public static GameObject freiExplosionPrefab;
+
+        public static GameObject freilaPrefab;
+
+        public static GameObject freilaExplosionPrefab;
+
+        public static GameObject freidynePrefab;
+
+        public static GameObject freidyneExplosionPrefab;
+
         public static ColorCatalog.ColorIndex maskColor;
 
         public static ColorCatalog.ColorIndex maskDarkColor;
@@ -94,6 +106,25 @@ namespace JokerMod.Modules {
             agidynePrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("AgidyneProjectile");
             projectilePrefabs.Add(agidynePrefab);
 
+            freiPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("FreiProjectile");
+            projectilePrefabs.Add(freiPrefab);
+
+            freiExplosionPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("FreiExplosionProjectile");
+            projectilePrefabs.Add(freiExplosionPrefab);
+
+            freilaPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("FreilaProjectile");
+            projectilePrefabs.Add(freilaPrefab);
+
+            freilaExplosionPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("FreilaExplosionProjectile");
+            projectilePrefabs.Add(freilaExplosionPrefab);
+
+            freidynePrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("FreidyneProjectile");
+            projectilePrefabs.Add(freidynePrefab);
+
+            freidyneExplosionPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("FreidyneExplosionProjectile");
+            projectilePrefabs.Add(freidyneExplosionPrefab);
+
+
             maskTierDef = mainAssetBundle.LoadAsset<ItemTierDef>("MaskTier");
             maskColor = R2API.ColorsAPI.RegisterColor(new Color(0.41f, 0.94f, 1f));
             maskDarkColor = R2API.ColorsAPI.RegisterColor(new Color(0.08f, 0.29f, 0.85f));
@@ -121,6 +152,15 @@ namespace JokerMod.Modules {
             garudynePrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(IgnoreMassType.damageType);
 
             agiSpitPrefab.GetComponent<ProjectileImpactExplosion>().childrenProjectilePrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/Molotov/MolotovProjectileDotZone.prefab").WaitForCompletion();
+
+            freiPrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(NukeLightWeakType.damageType);
+            freiExplosionPrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(NukeLightType.damageType);
+
+            freilaPrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(NukeLightWeakType.damageType);
+            freilaExplosionPrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(NukeMediumType.damageType);
+
+            freidynePrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(NukeHeavyWeakType.damageType);
+            freidyneExplosionPrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(NukeHeavyType.damageType);
         }
     }
 }
