@@ -88,7 +88,8 @@ namespace JokerMod.Joker.Components {
             this.statController = master.statController;
 
             SubscribeInstanceEvents();
-            spLevel = master.GetComponent<CharacterBody>().level;
+            // important so that setter is not called
+            _spLevel = master.GetComponent<CharacterBody>().level;
 
             statController.ForceMaxSPUpdate();
             currentSP = statController.maxSP;
@@ -104,9 +105,11 @@ namespace JokerMod.Joker.Components {
         }
 
         private static void SPUpgradeOnLevelUp(CharacterBody self) {
-            if ((bool)self.gameObject.GetComponent<JokerMaster>()) {
+            if (self?.gameObject != null) {
                 JokerMaster master = self.gameObject.GetComponent<JokerMaster>();
-                master.spController.spLevel = self.level;
+                if (master != null) {
+                    master.spController.spLevel = self.level;
+                }
             }
         }
 

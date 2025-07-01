@@ -214,7 +214,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageCoefficient: 0
   impactEffect: {fileID: 0}
-  forceVector: {x: 0, y: 1500, z: 0}
+  forceVector: {x: 0, y: 3000, z: 0}
   overlapProcCoefficient: 0
   maximumOverlapTargets: 100
   onServerHit:
@@ -296,7 +296,7 @@ MonoBehaviour:
   m_Script: {fileID: 664435192, guid: 1e00111d2f6dfa0419cef29e30f6e2db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  force: 1500
+  force: 3000
   shouldAbsY: 1
   shouldPushAllies: 1
 --- !u!114 &5065487253964716245

@@ -27,7 +27,7 @@ namespace JokerMod.Modules.Buffs {
         private static void SweptDebuffMult(HealthComponent self, DamageInfo damageInfo) {
             if (self.body != null && self.body.GetTimedBuffTotalDurationForIndex(buffDef.buffIndex, out _)) {
                 damageInfo.damageColorIndex = Asset.sweptColor;
-                damageInfo.damage *= 1.3f;
+                damageInfo.damage *= 1.5f;
             }
         }
 

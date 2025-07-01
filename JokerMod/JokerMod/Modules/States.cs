@@ -49,6 +49,9 @@ namespace JokerMod.Modules {
             entityStates.Add(typeof(AgidyneState));
             entityStates.Add(typeof(MaragidyneState));
 
+            entityStates.Add(typeof(BufuState));
+            entityStates.Add(typeof(MabufuState));
+
             entityStates.Add(typeof(GaruState));
             entityStates.Add(typeof(MagaruState));
             entityStates.Add(typeof(GarulaState));

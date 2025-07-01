@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1153316927
+CRC: 3423307665
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: f110d9c567d4062a048b1b2c3bdd2c64
+    Hash: ce7dd80db1e4e9dd4e35c881bd392a83
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 32f1e97e28b8e7dbccf8d6ffedc2f870
+    Hash: 837ac1161c916b15431a80ee39cdec94
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -47,6 +47,8 @@ ClassTypes:
   Script: {fileID: 647418741, guid: 1e00111d2f6dfa0419cef29e30f6e2db, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+- Class: 114
+  Script: {fileID: 530427873, guid: 1e00111d2f6dfa0419cef29e30f6e2db, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
 - Class: 114
@@ -93,8 +95,6 @@ ClassTypes:
   Script: {fileID: 664435192, guid: 1e00111d2f6dfa0419cef29e30f6e2db, type: 3}
 - Class: 114
   Script: {fileID: -78954976, guid: 1e00111d2f6dfa0419cef29e30f6e2db, type: 3}
-- Class: 114
-  Script: {fileID: 530427873, guid: 1e00111d2f6dfa0419cef29e30f6e2db, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 134
@@ -157,7 +157,10 @@ Assets:
 - Assets/Joker/Skills/Kouga/KougaProjectile.prefab
 - Assets/Joker/Skills/Freila/FreilaExplosionProjectile.prefab
 - Assets/Joker/Skills/Eiha/EihaProjectile.prefab
+- Assets/Joker/Skills/Bufudyne/BufudyneProjectile.prefab
+- Assets/Joker/Skills/Bufula/BufulaProjectile.prefab
 - Assets/Joker/Unshareable/Mask/mask.prefab
+- Assets/Joker/Skills/Bufu/BufuProjectile.prefab
 - Assets/Joker/Skills/Agilao/AgilaoProjectile.prefab
 - Assets/Joker/Skills/Kouga/KougaExplosionProjectile.prefab
 - Assets/Joker/Skills/Eiga/EigaProjectile.prefab

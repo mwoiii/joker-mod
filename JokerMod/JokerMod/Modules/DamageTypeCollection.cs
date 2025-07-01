@@ -20,6 +20,10 @@ namespace JokerMod.Modules {
             CurseMediumType.Init();
             CurseHeavyType.Init();
 
+            // Ice
+            IceLightType.Init();
+            IceMediumType.Init();
+
             // Wind
             WindLightType.Init();
             WindMediumType.Init();

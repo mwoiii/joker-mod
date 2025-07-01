@@ -45,6 +45,14 @@ namespace JokerMod.Modules {
             new AgidyneSkill().Init();
             new MaragidyneSkill().Init();
 
+            // Ice
+            new BufuSkill().Init();
+            new MabufuSkill().Init();
+            new BufulaSkill().Init();
+            new MabufulaSkill().Init();
+            new BufudyneSkill().Init();
+            new MabufudyneSkill().Init();
+
             // Wind
             new GaruSkill().Init();
             new MagaruSkill().Init();
@@ -131,7 +139,7 @@ namespace JokerMod.Modules {
             // Please note that it is instead recommended that you use a language file.
             // More info in https://risk-of-thunder.github.io/R2Wiki/Mod-Creation/Assets/Localization/
             LanguageAPI.Add("JOKER_SECONDARY_FIRE_NAME", "Fire!");
-            LanguageAPI.Add("JOKER_SECONDARY_FIRE_DESCRIPTION", $"<style=cIsUtility>Agile.</style> Fire a bullet for <style=cIsDamage>150% damage</style>. <style=cIsUtility>A bullet is restocked on kill.</style> Continue holding the skill to fire an additional burst, using all remaining bullets. <style=cIsDamage>The damage is proportional to the number of bullets used.</style>");
+            LanguageAPI.Add("JOKER_SECONDARY_FIRE_DESCRIPTION", $"<style=cIsUtility>Agile.</style> Fire a bullet for <style=cIsDamage>125% damage</style>. <style=cIsUtility>A bullet is restocked on kill.</style> Continue holding the skill to fire an additional burst, using all remaining bullets. <style=cIsDamage>The damage is proportional to the number of bullets used.</style>");
 
             // Now we must create a SkillDef
             SkillDef skillDef = ScriptableObject.CreateInstance<SkillDef>();
@@ -145,7 +153,7 @@ namespace JokerMod.Modules {
             skillDef.canceledFromSprinting = false;
             skillDef.cancelSprintingOnActivation = false;
             skillDef.fullRestockOnAssign = true;
-            skillDef.interruptPriority = InterruptPriority.Any;
+            skillDef.interruptPriority = InterruptPriority.PrioritySkill;
             skillDef.isCombatSkill = true;
             skillDef.mustKeyPress = true;
             skillDef.rechargeStock = 1;
@@ -192,7 +200,7 @@ namespace JokerMod.Modules {
             skillDef.canceledFromSprinting = false;
             skillDef.cancelSprintingOnActivation = false;
             skillDef.fullRestockOnAssign = true;
-            skillDef.interruptPriority = InterruptPriority.Skill;
+            skillDef.interruptPriority = InterruptPriority.PrioritySkill;
             skillDef.isCombatSkill = true;
             skillDef.mustKeyPress = true;
             skillDef.rechargeStock = 1;
@@ -231,7 +239,7 @@ namespace JokerMod.Modules {
             skillDef.canceledFromSprinting = false;
             skillDef.cancelSprintingOnActivation = false;
             skillDef.fullRestockOnAssign = true;
-            skillDef.interruptPriority = InterruptPriority.Skill;
+            skillDef.interruptPriority = InterruptPriority.PrioritySkill;
             skillDef.isCombatSkill = false;
             skillDef.mustKeyPress = true;
             skillDef.rechargeStock = 1;

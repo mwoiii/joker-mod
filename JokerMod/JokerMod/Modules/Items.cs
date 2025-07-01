@@ -48,6 +48,14 @@ namespace JokerMod.Modules {
             new YatagarasuPersona().Init();
             new MolochPersona().Init();
 
+            // Ice
+            new AsparasPersona().Init();
+            new JackFrostPersona().Init();
+            new LilimPersona().Init();
+            new ByakkoPersona().Init();
+            new KingFrostPersona().Init();
+            new YamatanoOrochiPersona().Init();
+
             // Wind
             new KelpiePersona().Init();
             new NekomataPersona().Init();
@@ -92,9 +100,11 @@ namespace JokerMod.Modules {
         }
 
         private static void AddMaskDecay(GenericPickupController self) {
-            ItemDef itemDef = ItemCatalog.GetItemDef(self.pickupIndex.pickupDef.itemIndex);
-            if (JokerCatalog.CheckIsMask(itemDef)) {
-                DestructionTimer timer = self.gameObject.AddComponent<DestructionTimer>();
+            if (self?.pickupIndex.pickupDef?.itemIndex != null) {
+                ItemDef itemDef = ItemCatalog.GetItemDef(self.pickupIndex.pickupDef.itemIndex);
+                if (JokerCatalog.CheckIsMask(itemDef)) {
+                    DestructionTimer timer = self.gameObject.AddComponent<DestructionTimer>();
+                }
             }
         }
 

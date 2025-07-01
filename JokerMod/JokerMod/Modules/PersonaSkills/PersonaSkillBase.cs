@@ -47,7 +47,7 @@ namespace JokerMod.Modules.PersonaSkills {
             skillDef.canceledFromSprinting = false;
             skillDef.cancelSprintingOnActivation = false;
             skillDef.fullRestockOnAssign = true;
-            skillDef.interruptPriority = InterruptPriority.Skill;
+            skillDef.interruptPriority = InterruptPriority.PrioritySkill;
             skillDef.isCombatSkill = isCombatSkill;
             skillDef.mustKeyPress = true;
             skillDef.rechargeStock = 1;
@@ -58,9 +58,7 @@ namespace JokerMod.Modules.PersonaSkills {
             skillDef.skillName = $"JOKER_SKILL_{skillNameToken}_NAME";
             skillDef.skillNameToken = $"JOKER_SKILL_{skillNameToken}_NAME";
 
-            // temporary
             JokerCatalog.AddSkill(personaSkillState, skillDef);
-            // ContentAddition.AddSkillDef(skillDef);
         }
     }
 }

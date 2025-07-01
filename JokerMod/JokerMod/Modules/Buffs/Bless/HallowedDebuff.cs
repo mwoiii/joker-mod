@@ -27,7 +27,7 @@ namespace JokerMod.Modules.Buffs {
             if (self.body != null && self.body.GetTimedBuffTotalDurationForIndex(buffDef.buffIndex, out _)) {
                 HealthComponent attackerHealth = damageInfo.attacker?.GetComponent<HealthComponent>();
                 if (attackerHealth != null) {
-                    attackerHealth.Heal(damageInfo.damage * 0.015f, default(ProcChainMask));
+                    attackerHealth.Heal(damageInfo.damage * 0.1f, default(ProcChainMask));
                 }
             }
         }

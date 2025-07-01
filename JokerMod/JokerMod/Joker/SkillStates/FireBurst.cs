@@ -47,7 +47,7 @@ namespace JokerMod.Joker.SkillStates {
                 maxSpread = 0f,
                 bulletCount = 1U,
                 procCoefficient = 1f,
-                damage = characterBody.damage * 2f * stock,
+                damage = characterBody.damage * 1.5f * stock,
                 force = 5,
                 radius = 5f,
                 falloffModel = BulletAttack.FalloffModel.DefaultBullet,

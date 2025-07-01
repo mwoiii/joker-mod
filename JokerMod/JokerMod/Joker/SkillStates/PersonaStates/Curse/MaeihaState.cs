@@ -1,10 +1,10 @@
-﻿using JokerMod.Joker.SkillStates.BaseStates;
+﻿using JokerMod.Joker.Components.SkillHelpers;
+using JokerMod.Joker.SkillStates.BaseStates;
 using JokerMod.Modules;
+using RoR2;
 using UnityEngine;
-using JokerMod.Joker.Components.SkillHelpers;
 
-namespace JokerMod.Joker.SkillStates.PersonaStates
-{
+namespace JokerMod.Joker.SkillStates.PersonaStates {
     public class MaeihaState : PersonaSkillProjectileBaseState {
 
         public override float spCost { get; } = 10f;
@@ -24,10 +24,17 @@ namespace JokerMod.Joker.SkillStates.PersonaStates
                 spiralMovement.angle = i * 120f * Mathf.Deg2Rad;
                 base.FireProjectile();
             }
+            Object.Destroy(projectilePrefab);
         }
 
         public override Ray ModifyProjectileAimRay(Ray aimRay) {
-            aimRay.origin += Vector3.up * 4f;
+            Vector3 newOrigin = aimRay.origin + Vector3.up * 4f;
+
+            // center should hit original target still
+            if (Physics.Raycast(aimRay, out RaycastHit hitInfo, 500f, LayerIndex.world.mask)) {
+                aimRay.direction = (hitInfo.point - newOrigin).normalized;
+            }
+            aimRay.origin = newOrigin;
             return aimRay;
         }
     }
