@@ -5,6 +5,7 @@ using JokerMod.Modules.PersonaMasks;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
+using UnityEngine;
 
 namespace JokerMod.Modules {
     public static class Items {
@@ -90,8 +91,18 @@ namespace JokerMod.Modules {
 
             // Healing
             new PixiePersona().Init();
+            new KushiMitamaPersona().Init();
             new HighPixiePersona().Init();
+            new KikuriHimePersona().Init();
             new SarasvatiPersona().Init();
+            new LakshmiPersona().Init();
+        }
+
+        public static void CreateRandomMaskDroplet(float level, Vector3 position) {
+            GenericPickupController.CreatePickupInfo pickupInfo = default(GenericPickupController.CreatePickupInfo);
+            pickupInfo.pickupIndex = PickupCatalog.FindPickupIndex(JokerCatalog.RollForMask(level).itemDef.itemIndex);
+            pickupInfo.position = position;
+            PickupDropletController.CreatePickupDroplet(pickupInfo, position, Vector3.zero);
         }
 
         private static void InitItemHooks() {

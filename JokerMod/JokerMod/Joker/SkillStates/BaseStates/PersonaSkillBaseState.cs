@@ -6,13 +6,15 @@ namespace JokerMod.Joker.SkillStates.BaseStates {
 
         protected JokerMaster master;
 
-        public virtual float spCost { get; }
+        public virtual float baseSPCost { get; }
 
         protected bool canFire;
 
         protected float baseDuration = 0.2f;
 
         protected float duration;
+
+        public PersonaSkillBaseState() { }
 
         public override void OnEnter() {
 
@@ -25,9 +27,8 @@ namespace JokerMod.Joker.SkillStates.BaseStates {
                 return;
             }
 
-            if (master.spController.currentSP >= spCost) {
+            if (master.statController.TryCastSkill(baseSPCost)) {
                 master.skillUsed = true;
-                master.spController.currentSP -= spCost;
                 canFire = true;
             }
 

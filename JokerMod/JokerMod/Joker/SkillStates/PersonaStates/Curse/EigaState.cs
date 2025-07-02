@@ -1,24 +1,12 @@
-﻿using JokerMod.Joker.SkillStates.BaseStates;
-using JokerMod.Modules;
+﻿using JokerMod.Modules;
+using UnityEngine;
 
 namespace JokerMod.Joker.SkillStates.PersonaStates {
-    public class EigaState : PersonaSkillProjectileBaseState {
+    public class EigaState : EihaState {
 
-        public override float spCost { get; } = 8f;
+        public override float baseSPCost { get; } = 8f;
 
-        protected override void ActivateSkill() {
-            damageCoefficient = 5f;
-            projectilePrefab = Asset.eigaPrefab;
-            recoilAmplitude = 0f;
-            // baseDelayBeforeFiringProjectile = 0f;
-            // force = 80f;
-            // base.effectPrefab = Modules.Assets.SomeMuzzleEffect;
-            // targetmuzzle = "muzzleThrow"
-            // attackSoundString = "HenryBombThrow";
-            // base.projectilePitchBonus = 0;
-            // base.minSpread = 0;
-            // base.maxSpread = 0;
-            // bloom = 10;
-        }
+        protected override GameObject projectilePrefab => Asset.eigaPrefab;
+
     }
 }

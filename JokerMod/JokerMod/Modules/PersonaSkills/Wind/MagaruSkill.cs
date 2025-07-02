@@ -18,7 +18,7 @@ namespace JokerMod.Modules.PersonaSkills {
         public override string skillNameToken => "MAGARU";
 
         public override string skillDescription => "Encompass yourself with 5 light wind cyclones, dealing <style=cIsDamage>300% damage</style> each, " +
-            "inflicting <style=cIsDamage>Swept</style>, and <style=cIsUtility>pushing</style> all nearby entities.";
+            "inflicting <style=cIsDamage>swept</style>, and <style=cIsUtility>pushing</style> all nearby entities.";
 
         public override string skillName => "Magaru";
 

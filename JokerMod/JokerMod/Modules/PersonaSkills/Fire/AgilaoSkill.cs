@@ -17,7 +17,7 @@ namespace JokerMod.Modules.PersonaSkills {
 
         public override string skillNameToken => "AGILAO";
 
-        public override string skillDescription => "Detonate a medium fire blast for <style=cIsDamage>4x125% damage</style>, applying <style=cIsDamage>Burn</style>, " +
+        public override string skillDescription => "Detonate a medium fire blast for <style=cIsDamage>4x125% damage</style>, applying <style=cIsDamage>burn</style>, " +
             $"and despositing <style=cIsDamage>blazing areas</style> nearby.";
 
         public override string skillName => "Agilao";

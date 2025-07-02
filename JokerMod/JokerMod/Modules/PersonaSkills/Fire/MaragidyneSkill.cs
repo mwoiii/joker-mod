@@ -17,7 +17,7 @@ namespace JokerMod.Modules.PersonaSkills {
 
         public override string skillNameToken => "MARAGIDYNE";
 
-        public override string skillDescription => "Detonate 3 heavy fire blasts for <style=cIsDamage>8x100% damage</style> each, applying <style=cIsDamage>Burn</style>, " +
+        public override string skillDescription => "Detonate 3 heavy fire blasts for <style=cIsDamage>8x100% damage</style> each, applying <style=cIsDamage>burn</style>, " +
             $"and despositing <style=cIsDamage>blazing areas</style> nearby.";
 
         public override string skillName => "Maragidyne";

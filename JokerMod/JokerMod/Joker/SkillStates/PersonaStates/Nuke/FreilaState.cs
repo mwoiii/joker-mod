@@ -1,15 +1,12 @@
-﻿using JokerMod.Joker.SkillStates.BaseStates;
-using JokerMod.Modules;
+﻿using JokerMod.Modules;
+using UnityEngine;
 
 namespace JokerMod.Joker.SkillStates.PersonaStates {
-    public class FreilaState : PersonaSkillProjectileBaseState {
+    public class FreilaState : FreiState {
 
-        public override float spCost { get; } = 8f;
+        public override float baseSPCost { get; } = 8f;
 
-        protected override void ActivateSkill() {
-            damageCoefficient = 1f;
-            projectilePrefab = Asset.freilaPrefab;
-            recoilAmplitude = 0f;
-        }
+        protected override GameObject projectilePrefab => Asset.freilaPrefab;
+
     }
 }

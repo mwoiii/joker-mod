@@ -48,7 +48,6 @@ namespace JokerMod {
             // temporary
             // but also like
             // this entire method is temporary
-            mercBodyPrefab.AddComponent<AOAController>();
             mercBodyPrefab.AddComponent<JokerMaster>();
         }
     }

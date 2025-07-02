@@ -4,7 +4,7 @@ using UnityEngine;
 namespace JokerMod.Joker.SkillStates {
     public class KougaState : KouhaState {
 
-        public override float spCost { get; } = 8f;
+        public override float baseSPCost { get; } = 8f;
 
         protected override GameObject projectilePrefab => Asset.kougaPrefab;
     }

@@ -2,32 +2,42 @@
 using JokerMod.Joker.SkillStates.BaseStates;
 using JokerMod.Modules;
 using RoR2;
+using RoR2.Projectile;
 using UnityEngine;
 
 namespace JokerMod.Joker.SkillStates.PersonaStates {
-    public class MaeihaState : PersonaSkillProjectileBaseState {
+    public class MaeihaState : PersonaSkillBaseState {
 
-        public override float spCost { get; } = 10f;
+        public override float baseSPCost { get; } = 10f;
+
+        protected virtual GameObject projectilePrefab => Asset.eihaPrefab;
 
         private const float dispersion = 2f;
 
-        protected SpiralMovement spiralMovement;
-
         protected override void ActivateSkill() {
-            damageCoefficient = 3f;
-            recoilAmplitude = 0f;
-            projectilePrefab = Object.Instantiate(Asset.eihaPrefab);
-            spiralMovement = projectilePrefab.AddComponent<SpiralMovement>();
-        }
-        public override void FireProjectile() {
+            Ray aimRay = GetAimRay();
+            StartAimMode(aimRay, 2f, false);
+            aimRay = ModifyAimRay(aimRay);
+
+            bool crit = RollCrit();
+
             for (int i = 0; i < 3; i++) {
+                GameObject projectile = Object.Instantiate(Asset.eihaPrefab);
+                SpiralMovement spiralMovement = projectile.AddComponent<SpiralMovement>();
                 spiralMovement.angle = i * 120f * Mathf.Deg2Rad;
-                base.FireProjectile();
+                ProjectileManager.instance.FireProjectile(new FireProjectileInfo {
+                    damage = characterBody.damage,
+                    crit = crit,
+                    position = aimRay.origin,
+                    rotation = Quaternion.LookRotation(aimRay.direction),
+                    procChainMask = default(ProcChainMask),
+                    owner = gameObject,
+                    projectilePrefab = projectilePrefab
+                });
             }
-            Object.Destroy(projectilePrefab);
         }
 
-        public override Ray ModifyProjectileAimRay(Ray aimRay) {
+        private Ray ModifyAimRay(Ray aimRay) {
             Vector3 newOrigin = aimRay.origin + Vector3.up * 4f;
 
             // center should hit original target still

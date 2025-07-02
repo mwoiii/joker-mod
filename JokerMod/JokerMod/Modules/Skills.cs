@@ -87,8 +87,11 @@ namespace JokerMod.Modules {
 
             // Healing
             new DiaSkill().Init();
+            new MediaSkill().Init();
             new DiaramaSkill().Init();
+            new MediaramaSkill().Init();
             new DiarahanSkill().Init();
+            new MediarahanSkill().Init();
 
         }
 
@@ -187,7 +190,7 @@ namespace JokerMod.Modules {
 
             LanguageAPI.Add("JOKER_UTILITY_PDASH_NAME", "Phantom Dash");
             LanguageAPI.Add("JOKER_UTILITY_PDASH_DESCRIPTION", $"Dash forward a short distance, <style=cIsUtility>gaining immunity for the duration</style>. " +
-                $"Hold the skill to instead perform an <style=cIsDamage>All-Out Attack</style>, unleashing a flurry of <style=cIsDamage>90% damage slayer</style> " +
+                $"Hold the skill to instead perform an <style=cIsDamage>All-Out Attack</style>, unleashing a flurry of <style=cIsDamage>80% damage slayer</style> " +
                 $"attacks on all nearby enemies. <style=cIsUtility>Slain enemies have an increased chance of dropping a mask, and reduce the skill cooldown</style>.");
 
             SkillDef skillDef = ScriptableObject.CreateInstance<SkillDef>();

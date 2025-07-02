@@ -18,7 +18,7 @@ namespace JokerMod.Modules.PersonaSkills {
         public override string skillNameToken => "FREILA";
 
         public override string skillDescription => "Cast a medium nuke projectile which detonates after 1 second for <style=cIsDamage>500% damage</style>. Permanently " +
-            "applies <style=cIsDamage>Irradiated</style>, and applies <style=cIsDamage>Weak</style> for 8 seconds.";
+            "applies <style=cIsDamage>irradiated</style>, and applies <style=cIsDamage>weak</style> for 8 seconds.";
 
         public override string skillName => "Freila";
 

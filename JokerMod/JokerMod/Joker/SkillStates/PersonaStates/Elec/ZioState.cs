@@ -7,7 +7,7 @@ using UnityEngine;
 namespace JokerMod.Joker.SkillStates {
     public class ZioState : PersonaSkillBaseState {
 
-        public override float spCost { get; } = 4f;
+        public override float baseSPCost { get; } = 4f;
 
         protected override void ActivateSkill() {
 

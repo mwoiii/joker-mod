@@ -5,7 +5,7 @@ using UnityEngine;
 namespace JokerMod.Modules.PersonaMasks {
     public class HighPixiePersona : PersonaBase {
 
-        public override string personaNameToken => "HIGH_PIXIE";
+        public override string personaNameToken => "HIGHPIXIE";
 
         public override string personaName => "High Pixie";
 

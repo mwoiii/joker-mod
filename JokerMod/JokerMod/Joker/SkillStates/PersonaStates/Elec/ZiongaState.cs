@@ -8,7 +8,7 @@ using UnityEngine;
 namespace JokerMod.Joker.SkillStates {
     public class ZiongaState : PersonaSkillBaseState {
 
-        public override float spCost { get; } = 8f;
+        public override float baseSPCost { get; } = 8f;
 
         private bool crit;
 

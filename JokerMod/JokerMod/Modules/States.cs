@@ -11,7 +11,6 @@ namespace JokerMod.Modules {
         public static void Register() {
             entityStates.Add(typeof(ChargeBase));
             entityStates.Add(typeof(PersonaSkillBaseState));
-            entityStates.Add(typeof(PersonaSkillProjectileBaseState));
             entityStates.Add(typeof(CancelState));
             entityStates.Add(typeof(EmptyState));
             entityStates.Add(typeof(AOA));
@@ -67,8 +66,11 @@ namespace JokerMod.Modules {
             entityStates.Add(typeof(MaziodyneState));
 
             entityStates.Add(typeof(DiaState));
+            entityStates.Add(typeof(MediaState));
             entityStates.Add(typeof(DiaramaState));
+            entityStates.Add(typeof(MediaramaState));
             entityStates.Add(typeof(DiarahanState));
+            entityStates.Add(typeof(MediarahanState));
 
             entityStates.Add(typeof(FreiState));
             entityStates.Add(typeof(MafreiState));

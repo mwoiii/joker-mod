@@ -6,7 +6,15 @@ using RoR2;
 using UnityEngine;
 
 namespace JokerMod.Joker.Components {
-    public class PersonaStatController : MonoBehaviour {
+
+    /// <summary>
+    /// Holds stats related to Joker that need to persist between stages, including
+    /// Persona stock and max SP.
+    /// </summary>
+    /// <remarks>
+    /// Also contains methods to handle the aforementioned stats.
+    /// </remarks>
+    public class JokerStatController : MonoBehaviour {
 
         public PersonaDef primaryPersona;
 
@@ -32,11 +40,36 @@ namespace JokerMod.Joker.Components {
 
         public event Action<float> MaxSPUpdate;
 
+        /// <summary>
+        /// Compares the base SP cost to the minimum SP spend - if it is smaller, the minimum
+        /// spend is preferred.
+        /// </summary>
+        /// <param name="baseSPCost">The base cost of the skill being casted.</param>
+        /// <returns>The preferred cost, being either the base cost or the minimum spend.</returns>
+        public float GetSPCost(float baseSPCost) {
+            return Mathf.Max(Mathf.Floor(0.3f * _maxSP), baseSPCost);
+        }
+
+        /// <summary>
+        /// Gets the final SP cost and checks if current SP is sufficient, subtracting
+        /// from the total and returning true if so. Otherwise, just return false.
+        /// </summary>
+        /// <param name="baseSPCost">The base cost of the skill being casted.</param>
+        /// <returns>Bool indicating whether or not the skill execution should proceeed.</returns>
+        public bool TryCastSkill(float baseSPCost) {
+            float spCost = GetSPCost(baseSPCost);
+            if (master.spController.currentSP >= spCost) {
+                master.spController.currentSP -= spCost;
+                return true;
+            }
+            return false;
+        }
+
         private void Awake() {
             primaryPersona = JokerCatalog.GetPersonaFromNameToken("ARSENE");
             secondaryPersona = JokerCatalog.GetPersonaFromNameToken("EMPTY");
             utilityPersona = JokerCatalog.GetPersonaFromNameToken("EMPTY");
-            _maxSP = 99999f; // 8f;
+            _maxSP = 8f; // 99999f;
         }
 
         public void ForceMaxSPUpdate() {
@@ -46,6 +79,9 @@ namespace JokerMod.Joker.Components {
         public void ReceivePersona(ItemDef itemDef) {
             PersonaDef persona = JokerCatalog.GetPersonaFromItemDef(itemDef);
             if (!TryAssignPersona(persona)) {
+                if (overstockPersona != null) {
+                    DropAfterOverstock(overstockPersona);
+                }
                 overstockPersona = persona;
                 EntityStateMachine.FindByCustomName(master.gameObject, "Charge").SetNextState(new SwapPersonaSkill(master.skillMenuActive));
             }
@@ -115,6 +151,32 @@ namespace JokerMod.Joker.Components {
                 skill.SetSkillOverride(master.gameObject, personaDef.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
             }
             personaSlot = personaDef;
+        }
+
+        public void UpdateAndDisplaySPCosts() {
+            if (primaryPersona != null && primaryPersona.baseSPCost > 0) {
+                master.skill1CostController.gameObject.SetActive(true);
+                float skill1Cost = GetSPCost(primaryPersona.baseSPCost);
+                master.skill1CostController.SetStat(skill1Cost);
+            }
+
+            if (secondaryPersona != null && secondaryPersona.baseSPCost > 0) {
+                master.skill2CostController.gameObject.SetActive(true);
+                float skill2Cost = GetSPCost(secondaryPersona.baseSPCost);
+                master.skill2CostController.SetStat(skill2Cost);
+            }
+
+            if (utilityPersona != null && utilityPersona.baseSPCost > 0) {
+                master.skill3CostController.gameObject.SetActive(true);
+                float skill3Cost = GetSPCost(utilityPersona.baseSPCost);
+                master.skill3CostController.SetStat(skill3Cost);
+            }
+        }
+
+        public void HideSPCosts() {
+            master.skill1CostController.gameObject.SetActive(false);
+            master.skill2CostController.gameObject.SetActive(false);
+            master.skill3CostController.gameObject.SetActive(false);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace JokerMod.Joker.SkillStates {
 
         public static float duration = 1.4f;
 
-        public static float damageCoefficient = 0.9f;
+        public virtual float damageCoefficient => 0.8f;
 
         public static float damageFrequency = 10f;
 
@@ -55,7 +55,11 @@ namespace JokerMod.Joker.SkillStates {
 
         private CameraTargetParams.AimRequest aimRequest;
 
-        private AOAController attackHandler;
+        protected AOAController attackHandler;
+
+        protected virtual void StartHitHandling() {
+            attackHandler.StartExecution();
+        }
 
         public override void OnEnter() {
             base.OnEnter();
@@ -64,7 +68,7 @@ namespace JokerMod.Joker.SkillStates {
 
             // When AOA triggers, reset skill cooldown
             // and start listening to global deaths
-            attackHandler.StartExecution();
+            StartHitHandling();
 
             CreateBlinkEffect(Util.GetCorePosition(gameObject));
             Util.PlayAttackSpeedSound(beginSoundString, gameObject, 1.2f);

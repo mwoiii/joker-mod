@@ -17,7 +17,7 @@ namespace JokerMod.Modules.PersonaSkills {
 
         public override string skillNameToken => "AGI";
 
-        public override string skillDescription => "Detonate a light fire blast for <style=cIsDamage>300% damage</style>, applying <style=cIsDamage>Burn</style>, " +
+        public override string skillDescription => "Detonate a light fire blast for <style=cIsDamage>300% damage</style>, applying <style=cIsDamage>burn</style>, " +
             $"and despositing <style=cIsDamage>blazing areas</style> nearby."; // for <style=cIsDamage>Stun</style> for a short duration.";
 
         public override string skillName => "Agi";

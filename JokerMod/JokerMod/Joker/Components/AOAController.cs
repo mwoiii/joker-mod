@@ -1,16 +1,30 @@
 ﻿using System;
+using JokerMod.Modules;
 using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace JokerMod.Joker.Components {
+
+    /// <summary>
+    /// Holds stats related to All-Out Attacks, such as the different charge levels
+    /// and subscribing/unsubscribing events for unique behaviour during the attack.
+    /// </summary>
     public class AOAController : MonoBehaviour {
 
         public float cooldownThreshold = 25f;
 
         public float stopwatch;
 
-        public bool IsAvailable => stopwatch >= cooldownThreshold;
+        public float currentStrongCharge;
+
+        public bool StandardIsAvailable => stopwatch >= cooldownThreshold;
+
+        public bool StrongIsAvailable => currentStrongCharge >= maxStrongCharge;
+
+        private bool executingStrong;
+
+        private bool aoaKillDidOccur;
 
         private CharacterBody characterBody;
 
@@ -20,15 +34,35 @@ namespace JokerMod.Joker.Components {
 
         private const float maskChanceMult = 2.5f;
 
-        public void StartExecution() {
+        private const float maxStrongCharge = 100f;
+
+        private const float onHitStrongCharge = 0.5f;
+
+        public void StartExecution(bool isStrong = false) {
             GlobalEventManager.onCharacterDeathGlobal += AOAOnKill;
+            GlobalEventManager.onServerDamageDealt += AOAChargeOnHit;
             master.maskChance *= maskChanceMult;
             stopwatch = 0f;
+
+            if (isStrong) {
+                executingStrong = true;
+                currentStrongCharge = 0f;
+            }
         }
 
         public void StopExecution() {
             GlobalEventManager.onCharacterDeathGlobal -= AOAOnKill;
+            GlobalEventManager.onServerDamageDealt -= AOAChargeOnHit;
             master.maskChance /= maskChanceMult;
+
+            if (executingStrong) {
+                executingStrong = false;
+                if (aoaKillDidOccur) {
+                    Items.CreateRandomMaskDroplet(characterBody.level, characterBody.transform.position);
+                }
+            }
+
+            aoaKillDidOccur = false;
         }
 
         private void Start() {
@@ -37,6 +71,11 @@ namespace JokerMod.Joker.Components {
             master = gameObject.GetComponent<JokerMaster>();
             master.aoaBarController.SetMaxStat(cooldownThreshold);
             stopwatch = cooldownThreshold;
+
+            // apart from you
+            // idiot
+            master.aoaStrongBarController.SetMaxStat(maxStrongCharge);
+            master.aoaStrongBarController.SetStat(0f);
         }
 
         private void FixedUpdate() {
@@ -53,11 +92,19 @@ namespace JokerMod.Joker.Components {
 
             if ((bool)damageReport.attackerBody) {
                 if (damageReport.attackerBody == characterBody) {
-                    // Reduce cooldown per kill
                     MultiplyCooldown(cooldownMult);
-                    // Gain SP per kill
                     master.spController.AOAKillRestoreSP();
+                    currentStrongCharge += 2f;
+                    master.aoaStrongBarController.SetStat(Math.Clamp(currentStrongCharge, 0f, maxStrongCharge));
+                    aoaKillDidOccur = true;
                 }
+            }
+        }
+
+        private void AOAChargeOnHit(DamageReport damageReport) {
+            if ((bool)damageReport.attacker && damageReport.attacker == master.gameObject) {
+                currentStrongCharge += onHitStrongCharge * damageReport.damageInfo.procCoefficient;
+                master.aoaStrongBarController.SetStat(Math.Clamp(currentStrongCharge, 0f, maxStrongCharge));
             }
         }
 

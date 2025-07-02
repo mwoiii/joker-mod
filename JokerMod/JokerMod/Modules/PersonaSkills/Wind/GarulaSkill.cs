@@ -17,7 +17,7 @@ namespace JokerMod.Modules.PersonaSkills {
 
         public override string skillNameToken => "GARULA";
 
-        public override string skillDescription => "Summon a medium wind cyclone for <style=cIsDamage>500% damage</style>, inflicting <style=cIsDamage>Swept</style>, " +
+        public override string skillDescription => "Summon a medium wind cyclone for <style=cIsDamage>500% damage</style>, inflicting <style=cIsDamage>swept</style>, " +
             "and <style=cIsUtility>pushing</style> all nearby entities.";
 
         public override string skillName => "Garula";

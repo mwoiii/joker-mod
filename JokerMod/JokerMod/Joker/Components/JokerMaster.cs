@@ -9,6 +9,15 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 namespace JokerMod.Joker.Components {
+
+    /// <summary>
+    /// Initialises all the custom mechanisms for the Joker survivor, and also
+    /// acts as a point of communication for the different components.
+    /// </summary>
+    /// <remarks>
+    /// A new JokerMaster component is generated each stage - use PersonaStatController
+    /// for data that needs to persist between stages.
+    /// </remarks>
     public class JokerMaster : MonoBehaviour {
         public SPController spController;
 
@@ -18,11 +27,19 @@ namespace JokerMod.Joker.Components {
 
         public StatBarController aoaBarController;
 
+        public StatBarController aoaStrongBarController;
+
         public StatBarController spBarController;
 
         public StatNumberController spNumController;
 
-        public PersonaStatController statController;
+        public StatNumberController skill1CostController;
+
+        public StatNumberController skill2CostController;
+
+        public StatNumberController skill3CostController;
+
+        public JokerStatController statController;
 
         private bool _skillUsed;
 
@@ -65,18 +82,15 @@ namespace JokerMod.Joker.Components {
 
                     // mask item dropping
                     if (damageReport.victimBody != null && RoR2.Util.CheckRoll(maskChance, attackerBody.master)) {
-                        GenericPickupController.CreatePickupInfo pickupInfo = default(GenericPickupController.CreatePickupInfo);
-                        pickupInfo.pickupIndex = PickupCatalog.FindPickupIndex(JokerCatalog.RollForMask(attackerBody.level).itemDef.itemIndex);
-                        pickupInfo.position = damageReport.victimBody.transform.position;
-                        PickupDropletController.CreatePickupDroplet(pickupInfo, damageReport.victimBody.transform.position, Vector3.zero);
+                        Items.CreateRandomMaskDroplet(attackerBody.level, damageReport.victimBody.transform.position);
                     }
                 }
             }
         }
 
-
         private void Awake() {
             GlobalEventManager.onCharacterDeathGlobal += JokerOnKills;
+            gameObject.AddComponent<AOAController>();
             CreateUI();
 
             // spController requires UI to be fully initialised as it wants to instantly access components
@@ -84,9 +98,9 @@ namespace JokerMod.Joker.Components {
         }
 
         private void Start() {
-            PersonaStatController checkStatController = GetComponent<CharacterBody>().master.GetComponent<PersonaStatController>();
+            JokerStatController checkStatController = GetComponent<CharacterBody>().master.GetComponent<JokerStatController>();
             if (checkStatController == null) {
-                statController = GetComponent<CharacterBody>().master.gameObject.AddComponent<PersonaStatController>();
+                statController = GetComponent<CharacterBody>().master.gameObject.AddComponent<JokerStatController>();
             } else {
                 statController = checkStatController;
             }
@@ -98,9 +112,14 @@ namespace JokerMod.Joker.Components {
             GameObject UI = GameObject.Find("HUDSimple(Clone)/MainContainer/MainUIArea/SpringCanvas/BottomRightCluster");
             jokerUI.transform.SetParent(UI.transform, false);
 
-            aoaBarController = jokerUI.transform.Find("AOABarShadow/AOABar")?.GetComponent<StatBarController>();
-            spBarController = jokerUI.transform.Find("SPBarShadow/SPBar")?.GetComponent<StatBarController>();
-            spNumController = jokerUI.transform.Find("SPAmount")?.GetComponent<StatNumberController>();
+            aoaBarController = jokerUI.transform.Find("AOABarShadow/AOABar").GetComponent<StatBarController>();
+            aoaStrongBarController = jokerUI.transform.Find("AOABarShadow/StrongAOABar").GetComponent<StatBarController>();
+            spBarController = jokerUI.transform.Find("SPBarShadow/SPBar").GetComponent<StatBarController>();
+            spNumController = jokerUI.transform.Find("SPAmount").GetComponent<StatNumberController>();
+
+            skill1CostController = jokerUI.transform.Find("SPCosts/Skill1").GetComponent<StatNumberController>();
+            skill2CostController = jokerUI.transform.Find("SPCosts/Skill2").GetComponent<StatNumberController>();
+            skill3CostController = jokerUI.transform.Find("SPCosts/Skill3").GetComponent<StatNumberController>();
         }
 
         private IEnumerator OnUIStarted() {

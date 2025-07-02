@@ -134,7 +134,9 @@ namespace JokerMod.Joker.SkillStates {
         }
         */
 
-        private const float AOA_THRESHOLD = 0.8f;
+        private const float AOA_THRESHOLD = 0.5f;
+
+        private const float AOA_STRONG_THRESHOLD = 1.4f;
 
         protected override void AssignSkill() {
             skill = skillLocator.utility;
@@ -146,7 +148,13 @@ namespace JokerMod.Joker.SkillStates {
                 return;
             }
 
-            if (fixedAge >= AOA_THRESHOLD && GetComponent<AOAController>().IsAvailable) {
+            AOAController aoaController = GetComponent<AOAController>();
+
+            if (fixedAge >= AOA_STRONG_THRESHOLD && aoaController.StrongIsAvailable) {
+                AOADash nextState = new AOADash(true);
+                EntityStateMachine.FindByCustomName(characterBody.gameObject, "Body").SetNextState(nextState);
+                outer.SetNextStateToMain();
+            } else if (fixedAge >= AOA_THRESHOLD && aoaController.StandardIsAvailable) {
                 AOADash nextState = new AOADash();
                 EntityStateMachine.FindByCustomName(characterBody.gameObject, "Body").SetNextState(nextState);
                 outer.SetNextStateToMain();

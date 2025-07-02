@@ -1,7 +1,7 @@
 ﻿namespace JokerMod.Joker.SkillStates {
     public class MakouhaState : KouhaState {
 
-        public override float spCost { get; } = 10f;
+        public override float baseSPCost { get; } = 10f;
 
         protected override int startPitch => -22;
 

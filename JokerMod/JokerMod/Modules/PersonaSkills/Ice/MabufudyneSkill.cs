@@ -20,7 +20,7 @@ namespace JokerMod.Modules.PersonaSkills {
         public override string skillDescription => "Hail down heavy ice particles all around for <style=cIsDamage>20x200% damage</style>, inflicting " +
             "<style=cIsDamage>frost</style> and <style=cIsDamage>freeze</style>.";
 
-        public override string skillName => "Mabufula";
+        public override string skillName => "Mabufudyne";
 
     }
 }

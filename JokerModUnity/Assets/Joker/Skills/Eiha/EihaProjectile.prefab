@@ -2503,7 +2503,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   falloffModel: 0
   blastRadius: 12
-  blastDamageCoefficient: 1
+  blastDamageCoefficient: 3
   blastProcCoefficient: 1
   blastAttackerFiltering: 0
   bonusBlastForce: {x: 0, y: 600, z: 0}

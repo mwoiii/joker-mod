@@ -36,6 +36,7 @@ namespace JokerMod.Joker.SkillStates {
             base.OnEnter();
 
             master = GetComponent<JokerMaster>();
+            master.statController.UpdateAndDisplaySPCosts();
             master.skillMenuActive = true;
             master.skillUsed = false;
             master.EnemySlainDuringMenu += KillInMenu;
@@ -62,6 +63,7 @@ namespace JokerMod.Joker.SkillStates {
 
         public override void OnExit() {
             master.skillMenuActive = false;
+            master.statController.HideSPCosts();
             master.EnemySlainDuringMenu -= KillInMenu;
 
             if (isAuthority && skillLocator != null) {

@@ -1,10 +1,8 @@
 ﻿using System;
 using JokerMod.Joker.SkillStates;
-using JokerMod.Joker.SkillStates.PersonaStates;
 using UnityEngine;
 
-namespace JokerMod.Modules.PersonaSkills
-{
+namespace JokerMod.Modules.PersonaSkills {
     public class MaziodyneSkill : PersonaSkillBase {
 
         public override Type personaSkillState => typeof(MaziodyneState);
@@ -19,8 +17,8 @@ namespace JokerMod.Modules.PersonaSkills
 
         public override string skillNameToken => "MAZIODYNE";
 
-        public override string skillDescription => "Fire 3 heavy electric beams for <style=cIsDamage>8x100% damage</style> each, applying <style=cIsDamage>Shock</style> " +
-            $"and <style=cIsDamage>Stun</style> for a long duration.";
+        public override string skillDescription => "Fire 3 heavy electric beams for <style=cIsDamage>8x100% damage</style> each, applying <style=cIsDamage>shock</style> " +
+            $"and <style=cIsDamage>stun</style> for a long duration.";
 
         public override string skillName => "Maziodyne";
 

@@ -3,15 +3,21 @@ using JokerMod.Modules;
 using RoR2;
 
 namespace JokerMod.Joker.Components {
+
+    /// <summary>
+    /// Handles the gaining, progression, and usage of the SP resource.
+    /// </summary>
+    /// <remarks>
+    /// Max SP is stored in JokerStatController, as it is information that needs to
+    /// be stored across stages.
+    /// </remarks>
     public class SPController {
 
         private JokerMaster master;
 
-        private PersonaStatController statController;
+        private JokerStatController statController;
 
         public event Action<float> SPUpdate;
-
-        // max sp is handled by personastatcontroller so it persists between stages
 
         private float _currentSP;
 

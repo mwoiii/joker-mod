@@ -7,7 +7,7 @@ using UnityEngine;
 namespace JokerMod.Joker.SkillStates.PersonaStates {
     public class GaruState : PersonaSkillBaseState {
 
-        public override float spCost { get; } = 4f;
+        public override float baseSPCost { get; } = 4f;
 
         protected virtual GameObject projectilePrefab => Asset.garuPrefab;
 

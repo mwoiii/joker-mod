@@ -10,6 +10,8 @@ namespace JokerMod.Modules.PersonaMasks {
 
         public ItemDef itemDef { get; private set; }
 
+        public float baseSPCost { get; private set; }
+
         public abstract string personaNameToken { get; }
 
         public abstract string personaName { get; }

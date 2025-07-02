@@ -4,10 +4,9 @@ using RoR2;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace JokerMod.Joker.SkillStates.PersonaStates
-{
+namespace JokerMod.Joker.SkillStates.PersonaStates {
     public class DiarahanState : PersonaSkillBaseState {
-        public override float spCost { get; } = 18f;
+        public override float baseSPCost { get; } = 18f;
 
         private static GameObject seekerVFX = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC2/Seeker/MeditateSuccessVFX.prefab").WaitForCompletion();
 
@@ -19,7 +18,7 @@ namespace JokerMod.Joker.SkillStates.PersonaStates
             healingPulse.radius = 15f;
             healingPulse.effectPrefab = seekerVFX;
             healingPulse.fxScale = 1f;
-            healingPulse.teamIndex = TeamIndex.Player;
+            healingPulse.teamIndex = characterBody.teamComponent.teamIndex;
             healingPulse.overShield = 0f;
             healingPulse.Fire();
         }

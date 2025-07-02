@@ -7,7 +7,7 @@ namespace JokerMod.Modules.PersonaMasks {
 
         public override string personaNameToken => "JACKFROST";
 
-        public override string personaName => "JackFrost";
+        public override string personaName => "Jack Frost";
 
         public override SkillDef skillDef => JokerCatalog.GetSkillDefFromType(typeof(MabufuState));
 

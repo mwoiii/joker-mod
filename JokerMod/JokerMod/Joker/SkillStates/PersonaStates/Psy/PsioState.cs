@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 
 namespace JokerMod.Joker.SkillStates.PersonaStates {
     public class PsioState : PersonaSkillBaseState {
-        public override float spCost { get; } = 8f;
+        public override float baseSPCost { get; } = 8f;
 
         // private static GameObject seekerVFX = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC2/Seeker/MeditateSuccessVFX.prefab").WaitForCompletion();
 

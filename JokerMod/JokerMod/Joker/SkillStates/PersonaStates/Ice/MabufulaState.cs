@@ -4,7 +4,7 @@ using UnityEngine;
 namespace JokerMod.Joker.SkillStates.PersonaStates {
     public class MabufulaState : MabufuState {
 
-        public override float spCost { get; } = 16f;
+        public override float baseSPCost { get; } = 16f;
 
         protected override GameObject projectilePrefab => Asset.bufulaPrefab;
 
