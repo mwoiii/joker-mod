@@ -29,7 +29,7 @@ namespace JokerMod.Modules.Buffs {
             buffDef.isDebuff = true;
             buffDef.isDOT = true;
 
-            BuffCollection.buffDefs.Add(buffDef);
+            Content.AddBuffDef(buffDef);
 
             DotController.DotDef dotDef = new() {
                 associatedBuff = buffDef,

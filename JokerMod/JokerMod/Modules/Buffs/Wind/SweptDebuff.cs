@@ -21,7 +21,7 @@ namespace JokerMod.Modules.Buffs {
             buffDef.isDebuff = true;
             buffDef.isDOT = false;
 
-            BuffCollection.buffDefs.Add(buffDef);
+            Content.AddBuffDef(buffDef);
         }
 
         private static void SweptDebuffMult(HealthComponent self, DamageInfo damageInfo) {

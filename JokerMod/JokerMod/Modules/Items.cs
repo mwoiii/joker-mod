@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using JokerMod.Joker.Components;
 using JokerMod.Modules.PersonaMasks;
 using Mono.Cecil.Cil;
@@ -10,8 +9,6 @@ using UnityEngine;
 namespace JokerMod.Modules {
     public static class Items {
 
-        internal static List<ItemTierDef> itemTierDefs = new List<ItemTierDef>();
-
         public static void Init() {
             InitTierDefs();
             InitItemDefs();
@@ -19,7 +16,7 @@ namespace JokerMod.Modules {
         }
 
         private static void InitTierDefs() {
-            itemTierDefs.Add(Asset.maskTierDef);
+            ContentPacks.itemTierDefs.Add(Asset.maskTierDef);
         }
 
         private static void InitItemDefs() {

@@ -83,7 +83,7 @@ namespace JokerMod.Joker.Components {
                     DropAfterOverstock(overstockPersona);
                 }
                 overstockPersona = persona;
-                EntityStateMachine.FindByCustomName(master.gameObject, "Charge").SetNextState(new SwapPersonaSkill(master.skillMenuActive));
+                EntityStateMachine.FindByCustomName(master.gameObject, "Charge").SetNextState(new OverstockMenu(master.skillMenuActive));
             }
         }
 
@@ -91,7 +91,7 @@ namespace JokerMod.Joker.Components {
             return primaryPersona.itemDef == itemDef || secondaryPersona.itemDef == itemDef || utilityPersona.itemDef == itemDef;
         }
 
-        public void SwapPersona(int slot) {
+        public void SwapPersonaWithOverstock(int slot) {
             SkillLocator skillLocator = master.GetComponent<SkillLocator>();
             if (overstockPersona != null) {
                 PersonaDef droppedPersona = null;
@@ -116,6 +116,57 @@ namespace JokerMod.Joker.Components {
 
             } else {
                 Log.Error("Tried to swap a Persona when the overstock slot was empty!");
+            }
+        }
+
+        public void SwapPersonaSlots(int slot1, int slot2) {
+            if (slot1 != slot2) {
+                if (Mathf.Max(slot1, slot2) > 3 || Mathf.Min(slot1, slot2) < 1) {
+                    Log.Warning($"Aborting attempt to swap invalid slots {slot1}, {slot2}");
+                    return;
+                }
+
+                SkillLocator skillLocator = master.GetComponent<SkillLocator>();
+                ref PersonaDef firstSlotRef = ref primaryPersona; // dummy
+                PersonaDef holdFirstPersona = null;
+                GenericSkill firstSlotSkill = null;
+
+                PersonaDef holdSecondPersona = null;
+
+                switch (slot1) {
+                    case 1:
+                        holdFirstPersona = primaryPersona;
+                        firstSlotRef = ref primaryPersona;
+                        firstSlotSkill = skillLocator.primary;
+                        break;
+                    case 2:
+                        holdFirstPersona = secondaryPersona;
+                        firstSlotRef = ref secondaryPersona;
+                        firstSlotSkill = skillLocator.secondary;
+                        break;
+                    case 3:
+                        holdFirstPersona = utilityPersona;
+                        firstSlotRef = ref utilityPersona;
+                        firstSlotSkill = skillLocator.utility;
+                        break;
+                }
+
+                switch (slot2) {
+                    case 1:
+                        holdSecondPersona = primaryPersona;
+                        AssignPersonaToSlot(ref primaryPersona, holdFirstPersona, skillLocator.primary);
+                        break;
+                    case 2:
+                        holdSecondPersona = secondaryPersona;
+                        AssignPersonaToSlot(ref secondaryPersona, holdFirstPersona, skillLocator.secondary);
+                        break;
+                    case 3:
+                        holdSecondPersona = utilityPersona;
+                        AssignPersonaToSlot(ref utilityPersona, holdFirstPersona, skillLocator.utility);
+                        break;
+                }
+
+                AssignPersonaToSlot(ref firstSlotRef, holdSecondPersona, firstSlotSkill);
             }
         }
 
@@ -158,18 +209,24 @@ namespace JokerMod.Joker.Components {
                 master.skill1CostController.gameObject.SetActive(true);
                 float skill1Cost = GetSPCost(primaryPersona.baseSPCost);
                 master.skill1CostController.SetStat(skill1Cost);
+            } else {
+                master.skill1CostController.gameObject.SetActive(false);
             }
 
             if (secondaryPersona != null && secondaryPersona.baseSPCost > 0) {
                 master.skill2CostController.gameObject.SetActive(true);
                 float skill2Cost = GetSPCost(secondaryPersona.baseSPCost);
                 master.skill2CostController.SetStat(skill2Cost);
+            } else {
+                master.skill2CostController.gameObject.SetActive(false);
             }
 
             if (utilityPersona != null && utilityPersona.baseSPCost > 0) {
                 master.skill3CostController.gameObject.SetActive(true);
                 float skill3Cost = GetSPCost(utilityPersona.baseSPCost);
                 master.skill3CostController.SetStat(skill3Cost);
+            } else {
+                master.skill3CostController.gameObject.SetActive(false);
             }
         }
 

@@ -15,7 +15,7 @@ namespace JokerMod.Joker.SkillStates {
 
         public static float duration = 1.4f;
 
-        public virtual float damageCoefficient => 0.8f;
+        public virtual float damageCoefficient => JokerStaticValues.aoaDamageCoefficient;
 
         public static float damageFrequency = 10f;
 

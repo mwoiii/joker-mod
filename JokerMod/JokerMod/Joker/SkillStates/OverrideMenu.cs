@@ -9,7 +9,7 @@ using UnityEngine;
 
 
 namespace JokerMod.Joker.SkillStates {
-    public class OverrideMenu : BaseState {
+    public class OverrideMenu : BaseSkillState {
 
         protected JokerMaster master;
 

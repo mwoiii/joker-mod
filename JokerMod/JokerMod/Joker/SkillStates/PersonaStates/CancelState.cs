@@ -1,7 +1,18 @@
-﻿using EntityStates;
+﻿namespace JokerMod.Joker.SkillStates.PersonaStates {
+    public class CancelState : OverrideMenu {
+        public override void FixedUpdate() {
+            base.FixedUpdate();
+            if (!isAuthority) {
+                return;
+            }
 
-
-namespace JokerMod.Joker.SkillStates.PersonaStates {
-    public class CancelState : BaseState {
+            if (IsKeyDownAuthority() && fixedAge >= ChargeSpecial.SWAP_THRESHOLD) {
+                SwapSlotMenu nextState = new SwapSlotMenu(true);
+                base.inputBank.skill4.hasPressBeenClaimed = true;
+                outer.SetNextState(nextState);
+            } else if (!IsKeyDownAuthority()) {
+                outer.SetNextStateToMain();
+            }
+        }
     }
 }

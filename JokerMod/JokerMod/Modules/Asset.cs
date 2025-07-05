@@ -5,10 +5,15 @@ using RoR2;
 using RoR2.Projectile;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Networking;
 using Path = System.IO.Path;
 
 namespace JokerMod.Modules {
     public static class Asset {
+
+        //cache bundles if multiple characters use the same one
+        internal static Dictionary<string, AssetBundle> loadedBundles = new Dictionary<string, AssetBundle>();
+
         public static AssetBundle mainAssetBundle;
 
         internal static string assetBundleName = "jokermod";
@@ -81,10 +86,6 @@ namespace JokerMod.Modules {
 
         public static GameObject jokerUIPrefab;
 
-        // temporary
-
-        public static GameObject mercBodyPrefab;
-
         internal static string assemblyDir {
             get {
                 return Path.GetDirectoryName(JokerPlugin.pluginInfo.Location);
@@ -92,83 +93,55 @@ namespace JokerMod.Modules {
         }
 
         public static void PopulateAssets() {
-            mainAssetBundle = AssetBundle.LoadFromFile(Path.Combine(assemblyDir, assetBundleName));
+            eihaPrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "EihaProjectile");
 
-            eihaPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("EihaProjectile");
-            projectilePrefabs.Add(eihaPrefab);
+            eigaPrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "EigaProjectile");
 
-            eigaPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("EigaProjectile");
-            projectilePrefabs.Add(eigaPrefab);
+            eigaonPrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "EigaonProjectile");
 
-            eigaonPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("EigaonProjectile");
-            projectilePrefabs.Add(eigaonPrefab);
+            garuPrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "GaruProjectile");
 
-            garuPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("GaruProjectile");
-            projectilePrefabs.Add(garuPrefab);
+            garulaPrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "GarulaProjectile");
 
-            garulaPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("GarulaProjectile");
-            projectilePrefabs.Add(garuPrefab);
+            garudynePrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "GarudyneProjectile");
 
-            garudynePrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("GarudyneProjectile");
-            projectilePrefabs.Add(garudynePrefab);
+            agiPrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "AgiProjectile");
 
-            agiPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("AgiProjectile");
-            projectilePrefabs.Add(agiPrefab);
+            agiSpitPrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "AgiSpitProjectile");
 
-            agiSpitPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("AgiSpitProjectile");
-            projectilePrefabs.Add(agiSpitPrefab);
+            agilaoPrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "AgilaoProjectile");
 
-            agilaoPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("AgilaoProjectile");
-            projectilePrefabs.Add(agilaoPrefab);
+            agidynePrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "AgidyneProjectile");
 
-            agidynePrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("AgidyneProjectile");
-            projectilePrefabs.Add(agidynePrefab);
+            freiPrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "FreiProjectile");
 
-            freiPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("FreiProjectile");
-            projectilePrefabs.Add(freiPrefab);
+            freiExplosionPrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "FreiExplosionProjectile");
 
-            freiExplosionPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("FreiExplosionProjectile");
-            projectilePrefabs.Add(freiExplosionPrefab);
+            freilaPrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "FreilaProjectile");
 
-            freilaPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("FreilaProjectile");
-            projectilePrefabs.Add(freilaPrefab);
+            freilaExplosionPrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "FreilaExplosionProjectile");
 
-            freilaExplosionPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("FreilaExplosionProjectile");
-            projectilePrefabs.Add(freilaExplosionPrefab);
+            freidynePrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "FreidyneProjectile");
 
-            freidynePrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("FreidyneProjectile");
-            projectilePrefabs.Add(freidynePrefab);
+            freidyneExplosionPrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "FreidyneExplosionProjectile");
 
-            freidyneExplosionPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("FreidyneExplosionProjectile");
-            projectilePrefabs.Add(freidyneExplosionPrefab);
+            kouhaPrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "KouhaProjectile");
 
-            kouhaPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("KouhaProjectile");
-            projectilePrefabs.Add(kouhaPrefab);
+            kouhaExplosionPrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "KouhaExplosionProjectile");
 
-            kouhaExplosionPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("KouhaExplosionProjectile");
-            projectilePrefabs.Add(kouhaExplosionPrefab);
+            kougaPrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "KougaProjectile");
 
-            kougaPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("KougaProjectile");
-            projectilePrefabs.Add(kougaPrefab);
+            kougaExplosionPrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "KougaExplosionProjectile");
 
-            kougaExplosionPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("KougaExplosionProjectile");
-            projectilePrefabs.Add(kougaExplosionPrefab);
+            kougaonPrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "KougaonProjectile");
 
-            kougaonPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("KougaonProjectile");
-            projectilePrefabs.Add(kougaonPrefab);
+            kougaonExplosionPrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "KougaonExplosionProjectile");
 
-            kougaonExplosionPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("KougaonExplosionProjectile");
-            projectilePrefabs.Add(kougaonExplosionPrefab);
+            bufuPrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "BufuProjectile");
 
-            bufuPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("BufuProjectile");
-            projectilePrefabs.Add(bufuPrefab);
+            bufulaPrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "BufulaProjectile");
 
-            bufulaPrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("BufulaProjectile");
-            projectilePrefabs.Add(bufulaPrefab);
-
-            bufudynePrefab = Asset.mainAssetBundle.LoadAsset<GameObject>("BufudyneProjectile");
-            projectilePrefabs.Add(bufudynePrefab);
-
+            bufudynePrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "BufudyneProjectile");
 
             maskTierDef = mainAssetBundle.LoadAsset<ItemTierDef>("MaskTier");
             maskColor = R2API.ColorsAPI.RegisterColor(new Color(0.41f, 0.94f, 1f));
@@ -182,8 +155,6 @@ namespace JokerMod.Modules {
             sweptColor = R2API.ColorsAPI.RegisterDamageColor(new Color(0.45f, 0.98f, 0.48f));
 
             jokerUIPrefab = mainAssetBundle.LoadAsset<GameObject>("JokerUI");
-
-            mercBodyPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Merc/MercBody.prefab").WaitForCompletion();
         }
 
         public static void AssignDamageTypes() {
@@ -215,6 +186,134 @@ namespace JokerMod.Modules {
             bufuPrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(IceLightType.damageType);
             bufulaPrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(IceMediumType.damageType);
             bufudynePrefab.GetComponent<ProjectileDamage>().damageType.AddModdedDamageType(IceMediumType.damageType);
+        }
+
+        internal static AssetBundle LoadAssetBundle(string bundleName) {
+
+            if (bundleName == "myassetbundle") {
+                Log.Error($"AssetBundle name hasn't been changed. not loading any assets to avoid conflicts.\nMake sure to rename your assetbundle filename and rename the AssetBundleName field in your character setup code ");
+                return null;
+            }
+
+            if (loadedBundles.ContainsKey(bundleName)) {
+                return loadedBundles[bundleName];
+            }
+
+            AssetBundle assetBundle = null;
+            try {
+                assetBundle = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(JokerPlugin.instance.Info.Location), "AssetBundles", bundleName));
+            } catch (System.Exception e) {
+                Log.Error($"Error loading asset bundle, {bundleName}. Your asset bundle must be in a folder next to your mod dll called 'AssetBundles'. Follow the guide to build and install your mod correctly!\n{e}");
+            }
+
+            loadedBundles[bundleName] = assetBundle;
+
+            mainAssetBundle = assetBundle;
+
+            return assetBundle;
+
+        }
+
+        internal static GameObject CloneTracer(string originalTracerName, string newTracerName) {
+            if (RoR2.LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/Tracers/" + originalTracerName) == null)
+                return null;
+
+            GameObject newTracer = PrefabAPI.InstantiateClone(RoR2.LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/Tracers/" + originalTracerName), newTracerName, true);
+
+            if (!newTracer.GetComponent<EffectComponent>()) newTracer.AddComponent<EffectComponent>();
+            if (!newTracer.GetComponent<VFXAttributes>()) newTracer.AddComponent<VFXAttributes>();
+            if (!newTracer.GetComponent<NetworkIdentity>()) newTracer.AddComponent<NetworkIdentity>();
+
+            newTracer.GetComponent<Tracer>().speed = 250f;
+            newTracer.GetComponent<Tracer>().length = 50f;
+
+            Modules.Content.CreateAndAddEffectDef(newTracer);
+
+            return newTracer;
+        }
+
+        internal static void ConvertAllRenderersToHopooShader(GameObject objectToConvert) {
+            if (!objectToConvert) return;
+
+            foreach (MeshRenderer i in objectToConvert.GetComponentsInChildren<MeshRenderer>()) {
+                if (i) {
+                    if (i.sharedMaterial) {
+                        i.sharedMaterial.ConvertDefaultShaderToHopoo();
+                    }
+                }
+            }
+
+            foreach (SkinnedMeshRenderer i in objectToConvert.GetComponentsInChildren<SkinnedMeshRenderer>()) {
+                if (i) {
+                    if (i.sharedMaterial) {
+                        i.sharedMaterial.ConvertDefaultShaderToHopoo();
+                    }
+                }
+            }
+        }
+
+        internal static GameObject LoadCrosshair(string crosshairName) {
+            GameObject loadedCrosshair = RoR2.LegacyResourcesAPI.Load<GameObject>("Prefabs/Crosshair/" + crosshairName + "Crosshair");
+            if (loadedCrosshair == null) {
+                Log.Error($"could not load crosshair with the name {crosshairName}. defaulting to Standard");
+
+                return RoR2.LegacyResourcesAPI.Load<GameObject>("Prefabs/Crosshair/StandardCrosshair");
+            }
+
+            return loadedCrosshair;
+        }
+
+        internal static GameObject LoadEffect(this AssetBundle assetBundle, string resourceName, bool parentToTransform) => LoadEffect(assetBundle, resourceName, "", parentToTransform);
+        internal static GameObject LoadEffect(this AssetBundle assetBundle, string resourceName, string soundName = "", bool parentToTransform = false) {
+            GameObject newEffect = assetBundle.LoadAsset<GameObject>(resourceName);
+
+            if (!newEffect) {
+                Log.ErrorAssetBundle(resourceName, assetBundle.name);
+                return null;
+            }
+
+            newEffect.AddComponent<DestroyOnTimer>().duration = 12;
+            newEffect.AddComponent<NetworkIdentity>();
+            newEffect.AddComponent<VFXAttributes>().vfxPriority = VFXAttributes.VFXPriority.Always;
+            EffectComponent effect = newEffect.AddComponent<EffectComponent>();
+            effect.applyScale = false;
+            effect.effectIndex = EffectIndex.Invalid;
+            effect.parentToReferencedTransform = parentToTransform;
+            effect.positionAtReferencedTransform = true;
+            effect.soundName = soundName;
+
+            Modules.Content.CreateAndAddEffectDef(newEffect);
+
+            return newEffect;
+        }
+
+        internal static GameObject CreateProjectileGhostPrefab(this AssetBundle assetBundle, string ghostName) {
+            GameObject ghostPrefab = assetBundle.LoadAsset<GameObject>(ghostName);
+            if (ghostPrefab == null) {
+                Log.Error($"Failed to load ghost prefab {ghostName}");
+            }
+            if (!ghostPrefab.GetComponent<NetworkIdentity>()) ghostPrefab.AddComponent<NetworkIdentity>();
+            if (!ghostPrefab.GetComponent<ProjectileGhostController>()) ghostPrefab.AddComponent<ProjectileGhostController>();
+
+            Modules.Asset.ConvertAllRenderersToHopooShader(ghostPrefab);
+
+            return ghostPrefab;
+        }
+
+        internal static GameObject CloneProjectilePrefab(string prefabName, string newPrefabName) {
+            GameObject newPrefab = PrefabAPI.InstantiateClone(RoR2.LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/" + prefabName), newPrefabName);
+            return newPrefab;
+        }
+
+        internal static GameObject LoadAndAddProjectilePrefab(this AssetBundle assetBundle, string newPrefabName) {
+            GameObject newPrefab = assetBundle.LoadAsset<GameObject>(newPrefabName);
+            if (newPrefab == null) {
+                Log.ErrorAssetBundle(newPrefabName, assetBundle.name);
+                return null;
+            }
+
+            Content.AddProjectilePrefab(newPrefab);
+            return newPrefab;
         }
     }
 }

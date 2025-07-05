@@ -1,90 +1,93 @@
-﻿using System;
-using System.Collections.Generic;
-using JokerMod.Joker.SkillStates;
+﻿using JokerMod.Joker.SkillStates;
 using JokerMod.Joker.SkillStates.BaseStates;
 using JokerMod.Joker.SkillStates.PersonaStates;
 
 namespace JokerMod.Modules {
     public static class States {
-        internal static List<Type> entityStates = new List<Type>();
 
         public static void Register() {
-            entityStates.Add(typeof(ChargeBase));
-            entityStates.Add(typeof(PersonaSkillBaseState));
-            entityStates.Add(typeof(CancelState));
-            entityStates.Add(typeof(EmptyState));
-            entityStates.Add(typeof(AOA));
-            entityStates.Add(typeof(AOADash));
-            entityStates.Add(typeof(ChargeSecondary));
-            entityStates.Add(typeof(ChargeUtility));
-            entityStates.Add(typeof(Fire));
-            entityStates.Add(typeof(FireBurst));
-            entityStates.Add(typeof(LockedState));
-            entityStates.Add(typeof(OverrideMenu));
-            entityStates.Add(typeof(PhantomDash));
-            entityStates.Add(typeof(SlashFlurry));
-            entityStates.Add(typeof(SwapPersonaSkill));
-            entityStates.Add(typeof(WaitForReleaseOverrideState));
-            entityStates.Add(typeof(WaitForReleaseState));
+            Content.AddEntityState(typeof(ChargeBase));
+            Content.AddEntityState(typeof(PersonaSkillBaseState));
+            Content.AddEntityState(typeof(CancelState));
+            Content.AddEntityState(typeof(EmptyState));
+            Content.AddEntityState(typeof(AOA));
+            Content.AddEntityState(typeof(AOADash));
+            Content.AddEntityState(typeof(ChargeSecondary));
+            Content.AddEntityState(typeof(ChargeUtility));
+            Content.AddEntityState(typeof(ChargeSpecial));
+            Content.AddEntityState(typeof(Fire));
+            Content.AddEntityState(typeof(FireBurst));
+            Content.AddEntityState(typeof(LockedState));
+            Content.AddEntityState(typeof(OverrideMenu));
+            Content.AddEntityState(typeof(PhantomDash));
+            Content.AddEntityState(typeof(SlashFlurry));
+            Content.AddEntityState(typeof(OverstockMenu));
+            Content.AddEntityState(typeof(WaitForReleaseOverrideState));
+            Content.AddEntityState(typeof(WaitForReleaseState));
+            Content.AddEntityState(typeof(SwapSlotMenu));
 
-            entityStates.Add(typeof(KouhaState));
-            entityStates.Add(typeof(MakouhaState));
-            entityStates.Add(typeof(KougaState));
-            entityStates.Add(typeof(MakougaState));
-            entityStates.Add(typeof(KougaonState));
-            entityStates.Add(typeof(MakougaonState));
+            Content.AddEntityState(typeof(KouhaState));
+            Content.AddEntityState(typeof(MakouhaState));
+            Content.AddEntityState(typeof(KougaState));
+            Content.AddEntityState(typeof(MakougaState));
+            Content.AddEntityState(typeof(KougaonState));
+            Content.AddEntityState(typeof(MakougaonState));
 
-            entityStates.Add(typeof(EihaState));
-            entityStates.Add(typeof(MaeihaState));
-            entityStates.Add(typeof(EigaState));
-            entityStates.Add(typeof(MaeigaState));
-            entityStates.Add(typeof(EigaonState));
-            entityStates.Add(typeof(MaeigaonState));
+            Content.AddEntityState(typeof(EihaState));
+            Content.AddEntityState(typeof(MaeihaState));
+            Content.AddEntityState(typeof(EigaState));
+            Content.AddEntityState(typeof(MaeigaState));
+            Content.AddEntityState(typeof(EigaonState));
+            Content.AddEntityState(typeof(MaeigaonState));
 
-            entityStates.Add(typeof(AgiState));
-            entityStates.Add(typeof(MaragiState));
-            entityStates.Add(typeof(AgilaoState));
-            entityStates.Add(typeof(MaragionState));
-            entityStates.Add(typeof(AgidyneState));
-            entityStates.Add(typeof(MaragidyneState));
+            Content.AddEntityState(typeof(AgiState));
+            Content.AddEntityState(typeof(MaragiState));
+            Content.AddEntityState(typeof(AgilaoState));
+            Content.AddEntityState(typeof(MaragionState));
+            Content.AddEntityState(typeof(AgidyneState));
+            Content.AddEntityState(typeof(MaragidyneState));
 
-            entityStates.Add(typeof(BufuState));
-            entityStates.Add(typeof(MabufuState));
+            Content.AddEntityState(typeof(BufuState));
+            Content.AddEntityState(typeof(MabufuState));
+            Content.AddEntityState(typeof(BufulaState));
+            Content.AddEntityState(typeof(MabufulaState));
+            Content.AddEntityState(typeof(BufudyneState));
+            Content.AddEntityState(typeof(MabufudyneState));
 
-            entityStates.Add(typeof(GaruState));
-            entityStates.Add(typeof(MagaruState));
-            entityStates.Add(typeof(GarulaState));
-            entityStates.Add(typeof(MagarulaState));
-            entityStates.Add(typeof(GarudyneState));
-            entityStates.Add(typeof(MagarudyneState));
+            Content.AddEntityState(typeof(GaruState));
+            Content.AddEntityState(typeof(MagaruState));
+            Content.AddEntityState(typeof(GarulaState));
+            Content.AddEntityState(typeof(MagarulaState));
+            Content.AddEntityState(typeof(GarudyneState));
+            Content.AddEntityState(typeof(MagarudyneState));
 
-            entityStates.Add(typeof(ZioState));
-            entityStates.Add(typeof(MazioState));
-            entityStates.Add(typeof(ZiongaState));
-            entityStates.Add(typeof(MaziongaState));
-            entityStates.Add(typeof(ZiodyneState));
-            entityStates.Add(typeof(MaziodyneState));
+            Content.AddEntityState(typeof(ZioState));
+            Content.AddEntityState(typeof(MazioState));
+            Content.AddEntityState(typeof(ZiongaState));
+            Content.AddEntityState(typeof(MaziongaState));
+            Content.AddEntityState(typeof(ZiodyneState));
+            Content.AddEntityState(typeof(MaziodyneState));
 
-            entityStates.Add(typeof(DiaState));
-            entityStates.Add(typeof(MediaState));
-            entityStates.Add(typeof(DiaramaState));
-            entityStates.Add(typeof(MediaramaState));
-            entityStates.Add(typeof(DiarahanState));
-            entityStates.Add(typeof(MediarahanState));
+            Content.AddEntityState(typeof(DiaState));
+            Content.AddEntityState(typeof(MediaState));
+            Content.AddEntityState(typeof(DiaramaState));
+            Content.AddEntityState(typeof(MediaramaState));
+            Content.AddEntityState(typeof(DiarahanState));
+            Content.AddEntityState(typeof(MediarahanState));
 
-            entityStates.Add(typeof(FreiState));
-            entityStates.Add(typeof(MafreiState));
-            entityStates.Add(typeof(FreilaState));
-            entityStates.Add(typeof(MafreilaState));
-            entityStates.Add(typeof(FreidyneState));
-            entityStates.Add(typeof(MafreidyneState));
+            Content.AddEntityState(typeof(FreiState));
+            Content.AddEntityState(typeof(MafreiState));
+            Content.AddEntityState(typeof(FreilaState));
+            Content.AddEntityState(typeof(MafreilaState));
+            Content.AddEntityState(typeof(FreidyneState));
+            Content.AddEntityState(typeof(MafreidyneState));
 
-            entityStates.Add(typeof(PsiState));
-            entityStates.Add(typeof(MapsiState));
-            entityStates.Add(typeof(PsioState));
-            entityStates.Add(typeof(MapsioState));
-            entityStates.Add(typeof(PsiodyneState));
-            entityStates.Add(typeof(MapsiodyneState));
+            Content.AddEntityState(typeof(PsiState));
+            Content.AddEntityState(typeof(MapsiState));
+            Content.AddEntityState(typeof(PsioState));
+            Content.AddEntityState(typeof(MapsioState));
+            Content.AddEntityState(typeof(PsiodyneState));
+            Content.AddEntityState(typeof(MapsiodyneState));
         }
     }
 }

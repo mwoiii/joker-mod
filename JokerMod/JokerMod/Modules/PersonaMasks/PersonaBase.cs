@@ -64,7 +64,7 @@ namespace JokerMod.Modules.PersonaMasks {
 
             personaDef.itemDef = itemDef;
 
-            JokerCatalog.itemDefs.Add(itemDef);
+            ContentPacks.itemDefs.Add(itemDef);
 
             // temporary
             // ItemAPI.Add(new CustomItem(itemDef, new ItemDisplayRuleDict(null)));

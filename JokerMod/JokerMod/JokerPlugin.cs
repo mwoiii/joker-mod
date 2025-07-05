@@ -1,54 +1,64 @@
+using System.Security;
+using System.Security.Permissions;
 using BepInEx;
-using EntityStates;
-using JokerMod.Joker.Components;
+using JokerMod.Joker;
 using JokerMod.Modules;
 using R2API;
+using R2API.Utils;
 using RoR2;
-using UnityEngine;
-using UnityEngine.AddressableAssets;
+
+[module: UnverifiableCode]
+[assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
 
 namespace JokerMod {
     [BepInDependency(R2API.ContentManagement.R2APIContentManager.PluginGUID)]
     [BepInDependency(LanguageAPI.PluginGUID)]
 
-    [BepInPlugin(
-        "com.Miyowi.JokerMod",
-        "JokerMod",
-        "1.0.0")]
+    [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
+    [BepInPlugin(MODUID, MODNAME, MODVERSION)]
     public class JokerPlugin : BaseUnityPlugin {
+
+        public const string MODUID = "com.Miyowi.JokerMod";
+        public const string MODNAME = "JokerMod";
+        public const string MODVERSION = "1.0.0";
+
         public static PluginInfo pluginInfo;
 
+        public const string DEVELOPER_PREFIX = "MIYOWI";
+
+        public static JokerPlugin instance;
+
         public void Awake() {
+            instance = this;
+
             pluginInfo = Info;
 
             Log.Init(Logger);
-            Asset.PopulateAssets();
-            InitStateMachine();
-            BuffCollection.Init();
+
             States.Register();
-            Skills.Init();
+
+            // used when you want to properly set up language folders
+            Modules.Language.Init();
+
+            // character initialization
+            new JokerSurvivor().Initialize();
+
+            Asset.PopulateAssets();
+
+            BuffCollection.Init();
+
             Items.Init();
-            new ContentPackProvider().Register();
+
             RoR2Application.onLoadFinished += OnLoadFinished;
+
+            // make a content pack and add it. this has to be last
+            new Modules.ContentPacks().Initialize();
         }
 
         private void OnLoadFinished() {
             DamageTypeCollection.Init();
             Hooks.AddHooks();
             Asset.AssignDamageTypes();
-        }
-
-        private void InitStateMachine() {
-            GameObject mercBodyPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Merc/MercBody.prefab").WaitForCompletion();
-
-            EntityStateMachine chargeMachine = mercBodyPrefab.AddComponent<EntityStateMachine>();
-            chargeMachine.customName = "Charge";
-            chargeMachine.mainStateType = new SerializableEntityStateType(typeof(EntityStates.Idle));
-
-            // temporary
-            // but also like
-            // this entire method is temporary
-            mercBodyPrefab.AddComponent<JokerMaster>();
         }
     }
 }

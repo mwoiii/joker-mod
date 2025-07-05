@@ -96,6 +96,8 @@ namespace JokerMod.Joker.Components {
             SubscribeInstanceEvents();
             // important so that setter is not called
             _spLevel = master.GetComponent<CharacterBody>().level;
+            onHitSP = 0.005f * statController.maxSP;
+            onKillSP = 0.05f * statController.maxSP;
 
             statController.ForceMaxSPUpdate();
             currentSP = statController.maxSP;
