@@ -7,6 +7,7 @@ namespace JokerMod.Joker.Components.Animation {
         // for utilising p5s anims:
         // units are incorrect when applying to transform
         // need to scale down only what gets added to the transform - not the whole animation
+        // this only really works in the menu lol getting it to work ingame is sloppy
 
         // ratio: 1:88.5 (approx 0.0113)
         public float rootMotionScale = 0.0113f;

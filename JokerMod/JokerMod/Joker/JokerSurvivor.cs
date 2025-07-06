@@ -57,6 +57,11 @@ namespace JokerMod.Joker {
             {
                 childName = "JokerMask",
                 material = assetBundle.LoadMaterial("JokerMat"),
+            },
+            new CustomRendererInfo
+            {
+                childName = "Knife",
+                material = assetBundle.LoadMaterial("JokerMat"),
             }
         };
 
@@ -115,7 +120,7 @@ namespace JokerMod.Joker {
 
         public void AddHitboxes() {
             //example of how to create a HitBoxGroup. see summary for more details
-            // Prefabs.SetupHitBoxGroup(characterModelObject, "SwordGroup", "SwordHitbox");
+            Prefabs.SetupHitBoxGroup(characterModelObject, "KnifeGroup", "KnifeHitbox");
         }
 
         public override void InitializeEntityStateMachines() {
@@ -212,7 +217,7 @@ namespace JokerMod.Joker {
                     true
                 ));
             //custom Skilldefs can have additional fields that you can set manually
-            primarySkillDef1.stepCount = 2;
+            primarySkillDef1.stepCount = 6;
             primarySkillDef1.stepGraceDuration = 0.5f;
 
             Skills.AddPrimarySkills(bodyPrefab, primarySkillDef1);

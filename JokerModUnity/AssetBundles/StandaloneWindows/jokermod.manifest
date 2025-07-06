@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 278290640
+CRC: 743183223
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 4179b7c3e7b31ce9f0b91e97870d27e7
+    Hash: 30527735b8c430109cd95228978fbc6c
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 26ec3331c1dca72443f8a05250c70e0e
+    Hash: bea51838890d7581fb38d35e31604905
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -26,6 +26,8 @@ ClassTypes:
 - Class: 48
   Script: {instanceID: 0}
 - Class: 54
+  Script: {instanceID: 0}
+- Class: 65
   Script: {instanceID: 0}
 - Class: 74
   Script: {instanceID: 0}
@@ -175,12 +177,11 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: com.unity.multiplayer-hlapi.Runtime
   ClassName: UnityEngine.Networking.NetworkSceneId
 Assets:
-- Assets/Joker/Unshareable/JokerSurvivor/P5SJoker/JokerDisplay.prefab
 - Assets/Joker/Mask/MaskTier.asset
 - Assets/Joker/Skills/Kouga/KougaProjectile.prefab
 - Assets/Joker/Skills/Freila/FreilaExplosionProjectile.prefab
-- Assets/Joker/Unshareable/JokerSurvivor/P5SJoker/mdlJoker.prefab
 - Assets/Joker/Unshareable/HenryExample/HenryAssets/FBX/Bomb.fbx
+- Assets/Joker/Unshareable/JokerSurvivor/P5SJoker/mdlJoker.prefab
 - Assets/Joker/Unshareable/HenryExample/HenryAssets/FBX/SwordSwingMesh.fbx
 - Assets/Joker/Skills/Eiha/EihaProjectile.prefab
 - Assets/Joker/Skills/Bufudyne/BufudyneProjectile.prefab
@@ -196,6 +197,7 @@ Assets:
 - Assets/Joker/Skills/Freila/FreilaProjectile.prefab
 - Assets/Joker/Skills/Eigaon/EigaonProjectile.prefab
 - Assets/Joker/Skills/Agi/AgiProjectile.prefab
+- Assets/Joker/Unshareable/JokerSurvivor/P5SJoker/JokerDisplay.prefab
 - Assets/Joker/Skills/Kougaon/KougaonExplosionProjectile.prefab
 - Assets/Joker/Skills/Freidyne/FreidyneExplosionProjectile.prefab
 - Assets/Joker/Mask/MaskItemDef.asset

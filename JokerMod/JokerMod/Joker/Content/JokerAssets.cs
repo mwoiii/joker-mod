@@ -25,7 +25,8 @@ namespace JokerMod.Joker {
 
             swordHitSoundEvent = Content.CreateAndAddNetworkSoundEventDef("HenrySwordHit");
 
-            //CreateEffects();
+            swordSwingEffect = _assetBundle.LoadEffect("HenrySwordSwingEffect", true);
+            swordHitImpactEffect = _assetBundle.LoadEffect("ImpactHenrySlash");
 
             CreateProjectiles();
         }
