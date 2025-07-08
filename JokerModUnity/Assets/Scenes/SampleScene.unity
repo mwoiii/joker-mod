@@ -486,10 +486,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Joker
       objectReference: {fileID: 0}
-    - target: {fileID: 1226399547507747275, guid: f452eda84055a0b4cb9996cd0efb3289, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1226399547507747281, guid: f452eda84055a0b4cb9996cd0efb3289, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -700,6 +696,10 @@ PrefabInstance:
     - target: {fileID: 4571896338321182285, guid: e2aa051407f02724ba3765c4bf8e2833, type: 3}
       propertyPath: m_Name
       value: JokerDisplay
+      objectReference: {fileID: 0}
+    - target: {fileID: 4571896338321182291, guid: e2aa051407f02724ba3765c4bf8e2833, type: 3}
+      propertyPath: xyOnly
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4571896338321182295, guid: e2aa051407f02724ba3765c4bf8e2833, type: 3}
       propertyPath: m_RootOrder

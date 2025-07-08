@@ -120,7 +120,7 @@ namespace JokerMod.Joker {
 
         public void AddHitboxes() {
             //example of how to create a HitBoxGroup. see summary for more details
-            Prefabs.SetupHitBoxGroup(characterModelObject, "KnifeGroup", "KnifeHitbox");
+            Prefabs.SetupHitBoxGroup(characterModelObject, "KnifeGroup", ["KnifeHitbox1", "KnifeHitbox2"]);
         }
 
         public override void InitializeEntityStateMachines() {
@@ -218,7 +218,7 @@ namespace JokerMod.Joker {
                 ));
             //custom Skilldefs can have additional fields that you can set manually
             primarySkillDef1.stepCount = 6;
-            primarySkillDef1.stepGraceDuration = 0.5f;
+            primarySkillDef1.stepGraceDuration = 0.2f;
 
             Skills.AddPrimarySkills(bodyPrefab, primarySkillDef1);
         }

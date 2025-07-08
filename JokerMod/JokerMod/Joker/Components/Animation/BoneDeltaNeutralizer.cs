@@ -1,11 +1,13 @@
-﻿namespace JokerMod.Joker.Components.Animation {
-    using UnityEngine;
+﻿using UnityEngine;
 
+namespace JokerMod.Joker.Components.Animation {
     public class BoneDeltaNeutralizer : MonoBehaviour {
 
         // for utilising p5s anims:
         // allows transform to start at correct initial position
         // and prevents motion from getting double stacked
+
+        public bool xyOnly;
 
         public Transform bone;
         public Transform root;
@@ -41,9 +43,58 @@
             }
 
             // Fix bone in place
-            bone.localPosition = fixedBoneLocation;
+            if (xyOnly) {
+                bone.localPosition = new Vector3(fixedBoneLocation.x, bone.localPosition.y, fixedBoneLocation.z);
+            } else {
+                bone.localPosition = fixedBoneLocation;
+            }
             //Vector3 boneNegationDelta = bone.localPosition - initialLocalPosition;
             //bone.localPosition -= boneNegationDelta;
         }
     }
 }
+
+/*
+namespace JokerMod.Joker.Components.Animation {
+    using UnityEngine;
+
+    public class BoneDeltaNeutralizer : MonoBehaviour {
+
+        // for utilising p5s anims:
+        // allows mesh to start at correct initial position
+        // and then prevents motion from getting double stacked
+
+        public Transform bone;
+        private Vector3 initialLocalPosition;
+        private bool initialized = false;
+
+        private Animator animator;
+        private int lastStateHash;
+
+        void Awake() {
+            animator = GetComponent<Animator>();
+        }
+
+        void LateUpdate() {
+            AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
+            int currentHash = state.fullPathHash;
+
+            // Detect animation state change
+            if (currentHash != lastStateHash) {
+                initialized = false;
+                lastStateHash = currentHash;
+            }
+
+            if (!initialized) {
+                initialLocalPosition = bone.localPosition;
+                initialized = true;
+                return;
+            }
+
+            // Subtract excess motion from bone
+            Vector3 delta = bone.localPosition - initialLocalPosition;
+            bone.localPosition -= delta;
+        }
+    }
+}
+*/
