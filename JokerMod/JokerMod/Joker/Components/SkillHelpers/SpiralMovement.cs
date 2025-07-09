@@ -3,7 +3,7 @@
 namespace JokerMod.Joker.Components.SkillHelpers {
     public class SpiralMovement : MonoBehaviour {
 
-        // used for "aoe" curse skills (ma prefix)
+        // used for "aoe" curse skills
 
         public float spiralRadius = 3f;
         public float spiralSpeed = 2f;

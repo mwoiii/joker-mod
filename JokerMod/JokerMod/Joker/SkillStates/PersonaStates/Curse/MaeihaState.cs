@@ -22,7 +22,7 @@ namespace JokerMod.Joker.SkillStates.PersonaStates {
             bool crit = RollCrit();
 
             for (int i = 0; i < 3; i++) {
-                GameObject projectile = Object.Instantiate(Asset.eihaPrefab);
+                GameObject projectile = Object.Instantiate(projectilePrefab);
                 SpiralMovement spiralMovement = projectile.AddComponent<SpiralMovement>();
                 spiralMovement.angle = i * 120f * Mathf.Deg2Rad;
                 ProjectileManager.instance.FireProjectile(new FireProjectileInfo {
@@ -32,9 +32,11 @@ namespace JokerMod.Joker.SkillStates.PersonaStates {
                     rotation = Quaternion.LookRotation(aimRay.direction),
                     procChainMask = default(ProcChainMask),
                     owner = gameObject,
-                    projectilePrefab = projectilePrefab
+                    projectilePrefab = projectile
                 });
+                Destroy(projectile);
             }
+
         }
 
         private Ray ModifyAimRay(Ray aimRay) {

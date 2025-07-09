@@ -217,7 +217,7 @@ namespace JokerMod.Joker {
                     true
                 ));
             //custom Skilldefs can have additional fields that you can set manually
-            primarySkillDef1.stepCount = 6;
+            primarySkillDef1.stepCount = 11;
             primarySkillDef1.stepGraceDuration = 0.2f;
 
             Skills.AddPrimarySkills(bodyPrefab, primarySkillDef1);

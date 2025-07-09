@@ -697,8 +697,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: JokerDisplay
       objectReference: {fileID: 0}
-    - target: {fileID: 4571896338321182291, guid: e2aa051407f02724ba3765c4bf8e2833, type: 3}
-      propertyPath: xyOnly
+    - target: {fileID: 4571896338321182285, guid: e2aa051407f02724ba3765c4bf8e2833, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4571896338321182295, guid: e2aa051407f02724ba3765c4bf8e2833, type: 3}

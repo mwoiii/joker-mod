@@ -1,32 +1,58 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using EntityStates;
+using JokerMod.Joker.Components.Animation;
 using JokerMod.Modules.BaseStates;
 using RoR2;
+using RoR2.Skills;
 using UnityEngine;
 
 namespace JokerMod.Joker.SkillStates {
 
     public class SlashFlurry : BaseMeleeAttack {
 
-        private class SubstepAction {
+        public class SubstepAction {
             public float occurrenceTime;
             public float forwardMovement;
+            public float upwardMovement;
+            public float rightMovement;
             public float smoothMovementStart;
             public float smoothMovementEnd;
             public bool shouldRepeatMovement;
             public bool shouldResetHitbox;
+            public bool negateBoneY;
             public float damageCoefficient;
             public float procCoefficient;
+            public float nonRepeatYVelocity;
 
             public int substepCount;
 
-            public SubstepAction(float occurrenceTime, float forwardMovement, float smoothMovementStart = 0f, float smoothMovementEnd = 0f, bool shouldRepeatMovement = true,
-                                 bool shouldResetHitbox = false, float damageCoefficient = float.NegativeInfinity, float procCoefficient = float.NegativeInfinity) {
+            /// <summary>
+            /// Creates a data container for a substep action.
+            /// </summary>
+            /// <param name="occurrenceTime">Time in seconds when this event should occur during its animation at base speed (attack speed scaling is automatic).</param>
+            /// <param name="forwardMovement">The rate at which the player will be moved forward during the substep. Repeats if shouldRepeatMovement is true (default).</param>
+            /// <param name="upwardMovement">The rate at which the player will be moved upward during the substep. Repeats if shouldRepeatMovement is true (default).</param>
+            /// <param name="rightMovement">The rate at which the player will be moved to the right during the substep. Repeats if shouldRepeatMovement is true (default).</param>
+            /// <param name="smoothMovementStart">The starting boundary of smooth movement. Shape is a linear up and down slope, with start and end being 0, and middle being the peak.</param>
+            /// <param name="smoothMovementEnd">The end boundary of smooth movement. Shape is a linear up and down slope, with start and end being 0, and middle being the peak.</param>
+            /// <param name="shouldRepeatMovement">Whether or not the specified movements should repeat until the next substep.</param>
+            /// <param name="shouldResetHitbox">Whether or not the attack hitbox should forget all healthcomponents, allowing it to hit the same enemies again.</param>
+            /// <param name="negateBoneY">Whether or not Y movement on the root bone should be negated until the next substep.</param>
+            /// <param name="damageCoefficient">Damage that the attack should deal from this point onward, unless it is changed by a future substep.</param>
+            /// <param name="procCoefficient">Proc coefficient that the attack should have from this point onward, unless it is changed by a future substep.</param>
+            public SubstepAction(float occurrenceTime, float forwardMovement, float upwardMovement = 0f, float rightMovement = 0f, float smoothMovementStart = 0f,
+                                 float smoothMovementEnd = 0f, bool shouldRepeatMovement = true, bool shouldResetHitbox = false, bool negateBoneY = false,
+                                 float damageCoefficient = float.NegativeInfinity, float procCoefficient = float.NegativeInfinity) {
                 this.occurrenceTime = occurrenceTime;
                 this.forwardMovement = forwardMovement;
+                this.upwardMovement = upwardMovement;
+                this.rightMovement = rightMovement;
                 this.smoothMovementStart = smoothMovementStart;
                 this.shouldRepeatMovement = shouldRepeatMovement;
                 this.smoothMovementEnd = smoothMovementEnd;
                 this.shouldResetHitbox = shouldResetHitbox;
+                this.negateBoneY = negateBoneY;
                 this.damageCoefficient = damageCoefficient;
                 this.procCoefficient = procCoefficient;
 
@@ -38,7 +64,14 @@ namespace JokerMod.Joker.SkillStates {
 
         private List<SubstepAction> substepActions;
 
+        private bool justJumped;
+
+        private BoneDeltaNeutralizer boneDeltaNeutralizer;
+
+        private float yMovement;
+
         public override void OnEnter() {
+
             hitboxGroupName = "KnifeGroup";
 
             damageType = DamageTypeCombo.GenericPrimary;
@@ -70,6 +103,7 @@ namespace JokerMod.Joker.SkillStates {
             impactSound = JokerAssets.swordHitSoundEvent.index;
 
             currentSubstepCount = -1;
+            boneDeltaNeutralizer = modelLocator?.modelTransform?.GetComponent<BoneDeltaNeutralizer>();
 
             switch (swingIndex + 1) {
                 case 1:
@@ -113,41 +147,106 @@ namespace JokerMod.Joker.SkillStates {
                     attackEndPercentTime = 0.63f; // 1.008
                     earlyExitPercentTime = 0.79f; // 1.264
                     InitCombo6SubstepActions();
+                    OverrideStep(0);
+                    break;
+                case 7:
+                    baseDuration = 1.23f;
+                    attackStartPercentTime = 0.24f;
+                    attackEndPercentTime = 0.41f;
+                    earlyExitPercentTime = 0.80f;
+                    InitCombo7SubstepActions();
+                    OverrideStep(0);
+                    break;
+                case 8:
+                    baseDuration = 1.13f;
+                    attackStartPercentTime = 0.23f;
+                    attackEndPercentTime = 0.53f;
+                    earlyExitPercentTime = 0.7f;
+                    InitCombo8SubstepActions();
+                    OverrideStep(0);
+                    break;
+                case 10:
+                    baseDuration = 1.4f;
+                    attackStartPercentTime = 0.16f;
+                    attackEndPercentTime = 0.52f;
+                    earlyExitPercentTime = 0.69f;
+                    InitCombo10SubstepActions();
+                    OverrideStep(0);
+                    break;
+                case 11:
+                    baseDuration = 1.6f;
+                    attackStartPercentTime = 0.25f;
+                    attackEndPercentTime = 0.65f;
+                    earlyExitPercentTime = 0.77f;
+                    InitCombo11SubstepActions();
+                    OverrideStep(0);
                     break;
             }
+
+            characterBody.onJump += SetJustJumped;
 
             base.OnEnter();
         }
 
         public override void FixedUpdate() {
             base.FixedUpdate();
+            bool holdingMoveOnEnd = outer.CanInterruptState(InterruptPriority.Any) && (inputBank.rawMoveUp.down || inputBank.rawMoveUp.down || inputBank.rawMoveLeft.down || inputBank.rawMoveRight.down);
+            if (justJumped || holdingMoveOnEnd) {
+                PlayCrossfade("FullBody, Override", "BufferEmpty", 0.4f);
+                if (justJumped) {
+                    characterBody.StartCoroutine(HoldOnJumpInterrupt());
+                }
+                outer.SetNextStateToMain();
+                return;
+            }
+
+            // finishers
+            if (inputBank.activateEquipment.justPressed && swingIndex < 5) {
+                OverrideStep(swingIndex + 6);
+            }
 
             bool fireEnded = stopwatch >= duration * attackEndPercentTime;
-            if (!fireEnded) {
-                if ((bool)characterMotor) {
-                    characterMotor.velocity *= 0.1f;
-                }
-                UpdateSubstepAction();
+            if (!fireEnded && (bool)characterMotor) {
+                characterMotor.velocity.x *= 0.1f;
+                characterMotor.velocity.z *= 0.1f;
             }
+
+            UpdateSubstepAction();
+            justJumped = false;
+        }
+
+        private IEnumerator HoldOnJumpInterrupt() {
+            skillLocator.primary.skillDef.mustKeyPress = true;
+            while (inputBank.skill1.down) {
+                yield return null;
+            }
+            skillLocator.primary.skillDef.mustKeyPress = false;
+        }
+
+        private void SetJustJumped() {
+            justJumped = true;
         }
 
         private void UpdateSubstepAction() {
-            // theoretically could function erroneously if two substep actions are too close to each other
-            // so don't do that
 
             for (int i = substepActions.Count - 1; i >= 0; i--) {
                 SubstepAction action = substepActions[i];
                 bool shouldBreak = false;
                 bool shouldMove = false;
                 float forwardMovement = 0f;
+                float upwardMovement = 0f;
+                float rightMovement = 0f;
                 float smoothMovementStart = 0f;
                 float smoothMovementEnd = 0f;
+
                 if ((action.occurrenceTime / baseDuration) * duration <= stopwatch) {
 
                     // if it might be the currently executing substep (movement only), get movement data
                     if (action.substepCount != -1 && currentSubstepCount == action.substepCount) {
                         shouldMove = true;
                         forwardMovement = action.forwardMovement;
+                        upwardMovement = action.upwardMovement;
+                        rightMovement = action.rightMovement;
                         smoothMovementStart = action.smoothMovementStart;
                         smoothMovementEnd = action.smoothMovementEnd;
                     }
@@ -171,8 +270,17 @@ namespace JokerMod.Joker.SkillStates {
                         }
 
                         forwardMovement = action.forwardMovement;
+                        upwardMovement = action.upwardMovement;
+                        rightMovement = action.rightMovement;
                         smoothMovementStart = action.smoothMovementStart;
                         smoothMovementEnd = action.smoothMovementEnd;
+
+                        if (boneDeltaNeutralizer != null) {
+                            if (boneDeltaNeutralizer.negateY != action.negateBoneY) {
+                                Log.Info($"flipping from {action.negateBoneY} to {!action.negateBoneY}");
+                            }
+                            boneDeltaNeutralizer.negateY = action.negateBoneY;
+                        }
 
                         if (action.shouldResetHitbox) {
                             attack.ResetIgnoredHealthComponents();
@@ -187,7 +295,22 @@ namespace JokerMod.Joker.SkillStates {
                 }
 
                 if (shouldMove) {
-                    ApplySmoothedMovement(characterDirection.forward * (forwardMovement * GetDeltaTime()), smoothMovementStart, smoothMovementEnd);
+                    Vector3 movement = characterDirection.forward * (forwardMovement * GetDeltaTime()) +
+                                       Vector3.up * (upwardMovement * GetDeltaTime()) +
+                                       Vector3.Cross(Vector3.up, characterDirection.forward).normalized * (rightMovement * GetDeltaTime());
+
+                    float previousYMovement = 0f;
+
+                    if (upwardMovement != 0f) {
+                        characterMotor.Motor.ForceUnground();
+                    } else {
+                        previousYMovement = yMovement;
+                    }
+
+                    ApplySmoothedMovement(movement, smoothMovementStart, smoothMovementEnd);
+                    characterMotor.velocity.y = previousYMovement / GetDeltaTime();
+
+                    // Log.Info($"setting y vel to {previousYMovement / GetDeltaTime()} ({previousYMovement} / {GetDeltaTime()})");
                 }
 
                 if (shouldBreak) {
@@ -205,7 +328,7 @@ namespace JokerMod.Joker.SkillStates {
                 ),
                 new SubstepAction(
                     occurrenceTime: 0f,
-                    forwardMovement: 12f,
+                    forwardMovement: 15f,
                     smoothMovementStart: 0f,
                     smoothMovementEnd: 0.25f
                 )
@@ -221,7 +344,7 @@ namespace JokerMod.Joker.SkillStates {
                 ),
                 new SubstepAction(
                     occurrenceTime: 0f,
-                    forwardMovement: 9f,
+                    forwardMovement: 11f,
                     smoothMovementStart: 0f,
                     smoothMovementEnd: 0.54f,
                     damageCoefficient: 1.2f
@@ -238,7 +361,7 @@ namespace JokerMod.Joker.SkillStates {
                 ),
                 new SubstepAction(
                     occurrenceTime: 0.2f,
-                    forwardMovement: 17f,
+                    forwardMovement: 21f,
                     smoothMovementStart: 0.2f,
                     smoothMovementEnd: 0.40f,
                     damageCoefficient: 1.4f
@@ -255,7 +378,7 @@ namespace JokerMod.Joker.SkillStates {
                 ),
                 new SubstepAction(
                     occurrenceTime: 0.27f,
-                    forwardMovement: 7f,
+                    forwardMovement: 15f,
                     smoothMovementStart: 0.27f,
                     smoothMovementEnd: 0.42f,
                     damageCoefficient: 1.6f
@@ -272,7 +395,7 @@ namespace JokerMod.Joker.SkillStates {
                 ),
                 new SubstepAction(
                     occurrenceTime: 0.43f,
-                    forwardMovement: 12f,
+                    forwardMovement: 15f,
                     smoothMovementStart: 0.1f,
                     smoothMovementEnd: 0.68f,
                     shouldResetHitbox: true
@@ -296,7 +419,7 @@ namespace JokerMod.Joker.SkillStates {
                 ),
                 new SubstepAction(
                     occurrenceTime: 0.7f,
-                    forwardMovement: 7f,
+                    forwardMovement: 9f,
                     smoothMovementStart: 0.1f,
                     smoothMovementEnd: 0.8f,
                     shouldResetHitbox: true,
@@ -304,24 +427,142 @@ namespace JokerMod.Joker.SkillStates {
                 ),
                 new SubstepAction(
                     occurrenceTime: 0.57f,
-                    forwardMovement: 7f,
+                    forwardMovement: 9f,
                     smoothMovementStart: 0.1f,
                     smoothMovementEnd: 0.8f,
                     shouldResetHitbox: true
                 ),
                 new SubstepAction(
                     occurrenceTime: 0.43f,
-                    forwardMovement: 7f,
+                    forwardMovement: 9f,
                     smoothMovementStart: 0.1f,
                     smoothMovementEnd: 0.8f,
                     shouldResetHitbox: true
                 ),
                 new SubstepAction(
                     occurrenceTime: 0.1f,
-                    forwardMovement: 7f,
+                    forwardMovement: 9f,
                     smoothMovementStart: 0.1f,
                     smoothMovementEnd: 0.8f,
                     damageCoefficient: 0.8f
+                )
+            };
+        }
+
+        // ^ main combo ^
+        // v finishers v
+
+        private void InitCombo7SubstepActions() {
+            substepActions = new List<SubstepAction> {
+                new SubstepAction(
+                    occurrenceTime: 0.49f,
+                    forwardMovement: 0f,
+                    upwardMovement: 0f,
+                    shouldRepeatMovement: false,
+                    negateBoneY: true
+                ),
+                new SubstepAction(
+                    occurrenceTime: 0.29f,
+                    forwardMovement: 8f,
+                    upwardMovement: 150f,
+                    smoothMovementStart: 0.09f,
+                    smoothMovementEnd: 0.52f,
+                    negateBoneY: true
+                ),
+                new SubstepAction(
+                    occurrenceTime: 0.1f,
+                    forwardMovement: 0f,
+                    negateBoneY: true
+                )
+            };
+        }
+
+        private void InitCombo8SubstepActions() {
+            substepActions = new List<SubstepAction> {
+                new SubstepAction(
+                    occurrenceTime: 0.36f,
+                    forwardMovement: 0f,
+                    shouldRepeatMovement: false
+                ),
+                new SubstepAction(
+                    occurrenceTime: 0.26f,
+                    forwardMovement: 230f,
+                    smoothMovementStart: 0.16f,
+                    smoothMovementEnd: 0.56f,
+                    damageCoefficient: 2.5f
+                )
+            };
+        }
+
+        private void InitCombo10SubstepActions() {
+            substepActions = new List<SubstepAction> {
+                new SubstepAction(
+                    occurrenceTime: 0.63f,
+                    forwardMovement: 0f,
+                    rightMovement: 0f,
+                    shouldRepeatMovement: false
+                ),
+                new SubstepAction(
+                    occurrenceTime: 0.5f,
+                    forwardMovement: 184f,
+                    rightMovement: 276f,
+                    smoothMovementStart: 0.5f,
+                    smoothMovementEnd: 0.89f,
+                    shouldResetHitbox: true,
+                    damageCoefficient: 3f
+                ),
+                new SubstepAction(
+                    occurrenceTime: 0.3f,
+                    forwardMovement: 0f,
+                    rightMovement: 0f,
+                    shouldRepeatMovement: false
+                ),
+                new SubstepAction(
+                    occurrenceTime: 0.2f,
+                    forwardMovement: 70f,
+                    rightMovement: -100f,
+                    smoothMovementStart: 0.1f,
+                    smoothMovementEnd: 0.5f,
+                    damageCoefficient: 2.5f
+                )
+            };
+        }
+
+        private void InitCombo11SubstepActions() {
+            substepActions = new List<SubstepAction> {
+                new SubstepAction(
+                    occurrenceTime: 0.76f,
+                    forwardMovement: 0f,
+                    upwardMovement: 0f,
+                    negateBoneY: true,
+                    shouldRepeatMovement: false
+                ),
+                new SubstepAction(
+                    occurrenceTime: 0.66f,
+                    forwardMovement: 40f,
+                    upwardMovement: 50f,
+                    smoothMovementStart: 0.56f,
+                    smoothMovementEnd: 0.81f,
+                    damageCoefficient: 4f,
+                    negateBoneY: true,
+                    shouldResetHitbox: true
+                ),
+                new SubstepAction(
+                    occurrenceTime: 0.5f,
+                    forwardMovement: 0f,
+                    upwardMovement: 0f,
+                    shouldRepeatMovement: false,
+                    negateBoneY: true,
+                    shouldResetHitbox: true
+                ),
+                new SubstepAction(
+                    occurrenceTime: 0.36f,
+                    forwardMovement: 40f,
+                    upwardMovement: 25f,
+                    smoothMovementStart: 0.36f,
+                    smoothMovementEnd: 0.55f,
+                    negateBoneY: true,
+                    damageCoefficient: 3f
                 )
             };
         }
@@ -336,18 +577,24 @@ namespace JokerMod.Joker.SkillStates {
                 Vector3 smoothedMovement;
 
                 if (stopwatch < middleTime) {
-                    smoothedMovement = movement * Mathf.InverseLerp(0f, middleTime, stopwatch);
+                    smoothedMovement = movement * Mathf.InverseLerp(start, middleTime, stopwatch);
                 } else {
-                    smoothedMovement = movement * Mathf.InverseLerp(baseDuration, middleTime, stopwatch);
+                    smoothedMovement = movement * Mathf.InverseLerp(end, middleTime, stopwatch);
                 }
 
                 characterMotor.velocity = Vector3.zero;
+                yMovement = smoothedMovement.y;
                 characterMotor.rootMotion += smoothedMovement;
             }
         }
 
         protected override void PlayAttackAnimation() {
-            PlayCrossfade("FullBody, Override", "AttackCombo" + (1 + swingIndex), playbackRateParam, duration, 0.1f * duration);
+            int comboNum = 1 + swingIndex;
+            if (comboNum <= 6) {
+                PlayCrossfade("FullBody, Override", $"AttackCombo{comboNum}", playbackRateParam, duration, 0.1f * duration);
+            } else {
+                PlayCrossfade("FullBody, Override", $"AttackCombo{comboNum % 6}Finisher", playbackRateParam, duration, 0.1f * duration);
+            }
         }
 
         protected override void PlaySwingEffect() {
@@ -358,8 +605,25 @@ namespace JokerMod.Joker.SkillStates {
             base.OnHitEnemyAuthority();
         }
 
+        private void OverrideStep(int step) {
+            SteppedSkillDef.InstanceData instanceData = (SteppedSkillDef.InstanceData)skillLocator.primary.skillInstanceData;
+            instanceData.step = step;
+            skillLocator.primary.skillInstanceData = instanceData;
+        }
+
         public override void OnExit() {
             base.OnExit();
+            characterBody.StartCoroutine(WaitBeforeResetYNegation());
+            if (stopwatch < duration) {
+                PlayCrossfade("FullBody, Override", "BufferEmpty", 0.4f);
+            }
+        }
+
+        // made specifically for combo 1 finisher
+        // if you start moving before it finishes it would lead to severe animation jank
+        private IEnumerator WaitBeforeResetYNegation() {
+            yield return new WaitForSeconds(0.4f);
+            boneDeltaNeutralizer.negateY = false;
         }
     }
 }

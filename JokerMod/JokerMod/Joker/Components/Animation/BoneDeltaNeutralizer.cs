@@ -6,8 +6,20 @@ namespace JokerMod.Joker.Components.Animation {
         // for utilising p5s anims:
         // allows transform to start at correct initial position
         // and prevents motion from getting double stacked
+        [SerializeField]
+        private bool _negateY;
 
-        public bool xyOnly;
+        public bool negateY {
+            get {
+                return _negateY;
+            }
+            set {
+                if (_negateY == true && _negateY != value) {
+                    stopwatch = 0;
+                }
+                _negateY = value;
+            }
+        }
 
         public Transform bone;
         public Transform root;
@@ -16,6 +28,11 @@ namespace JokerMod.Joker.Components.Animation {
         private Animator animator;
         private int lastStateHash;
         private Vector3 fixedBoneLocation;
+        private Vector3 currentBoneLocation;
+        private Vector3 startBoneLocation;
+
+        private float stopwatch;
+        private const float crossfadeDuration = 1f;
 
         void Awake() {
             animator = GetComponent<Animator>();
@@ -23,6 +40,8 @@ namespace JokerMod.Joker.Components.Animation {
         }
 
         void LateUpdate() {
+            stopwatch += Time.deltaTime;
+
             AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
             int currentHash = state.fullPathHash;
 
@@ -30,6 +49,8 @@ namespace JokerMod.Joker.Components.Animation {
             if (currentHash != lastStateHash) {
                 initialized = false;
                 lastStateHash = currentHash;
+                currentBoneLocation = fixedBoneLocation;
+                startBoneLocation = fixedBoneLocation;
             }
 
             if (!initialized) {
@@ -42,14 +63,23 @@ namespace JokerMod.Joker.Components.Animation {
                 initialized = true;
             }
 
-            // Fix bone in place
-            if (xyOnly) {
-                bone.localPosition = new Vector3(fixedBoneLocation.x, bone.localPosition.y, fixedBoneLocation.z);
+            if (!negateY) {
+                // when toggled during an animation, interpolate between fixed and non-fixed
+                float yPos;
+                if (stopwatch <= crossfadeDuration) {
+                    float offset = (bone.localPosition.y - startBoneLocation.y) * Mathf.InverseLerp(0f, crossfadeDuration, stopwatch);
+                    yPos = startBoneLocation.y + offset;
+                } else {
+                    yPos = bone.localPosition.y;
+                }
+
+                bone.localPosition = new Vector3(fixedBoneLocation.x, yPos, fixedBoneLocation.z);
+                currentBoneLocation = bone.localPosition;
             } else {
-                bone.localPosition = fixedBoneLocation;
+                // when toggled during an animation, maintaining the gained offset
+                bone.localPosition = currentBoneLocation;
+                startBoneLocation = currentBoneLocation;
             }
-            //Vector3 boneNegationDelta = bone.localPosition - initialLocalPosition;
-            //bone.localPosition -= boneNegationDelta;
         }
     }
 }
