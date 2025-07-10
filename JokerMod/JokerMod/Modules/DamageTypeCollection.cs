@@ -16,9 +16,13 @@ namespace JokerMod.Modules {
             BlessHeavyType.Init();
 
             // Curse
+            CurseLightWeakType.Init();
             CurseLightType.Init();
             CurseMediumType.Init();
             CurseHeavyType.Init();
+
+            // Fire
+            FireLightWeakType.Init();
 
             // Ice
             IceLightType.Init();
@@ -31,6 +35,7 @@ namespace JokerMod.Modules {
             IgnoreMassType.Init();
 
             // Elec
+            ElecLightWeakType.Init();
             ElecLightType.Init();
             ElecMediumType.Init();
             ElecHeavyType.Init();

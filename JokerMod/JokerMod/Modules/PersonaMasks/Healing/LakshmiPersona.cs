@@ -15,5 +15,6 @@ namespace JokerMod.Modules.PersonaMasks {
 
         public override JokerCatalog.DropTables dropTables => JokerCatalog.DropTables.Tier6 | JokerCatalog.DropTables.Tier7;
 
+        public override PersonaDef.SkillType skillType => PersonaDef.SkillType.HealHeavy;
     }
 }

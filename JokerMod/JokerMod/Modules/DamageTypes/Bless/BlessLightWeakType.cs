@@ -10,10 +10,10 @@ namespace JokerMod.Modules.DamageTypes {
         public static void Init() {
             damageType = DamageAPI.ReserveDamageType();
             DamageTypeCollection.damageTypes.Add(damageType);
-            Hooks.Handle_HealthComponentTakeDamageProcess_Actions += AddBlessMediumWeakBuff;
+            Hooks.Handle_HealthComponentTakeDamageProcess_Actions += AddBlessLightWeakBuff;
         }
 
-        private static void AddBlessMediumWeakBuff(HealthComponent self, DamageInfo damageInfo) {
+        private static void AddBlessLightWeakBuff(HealthComponent self, DamageInfo damageInfo) {
             if (self.body != null && damageInfo.HasModdedDamageType(damageType)) {
                 self.body.AddTimedBuff(HallowedDebuff.buffDef, 6f);
             }

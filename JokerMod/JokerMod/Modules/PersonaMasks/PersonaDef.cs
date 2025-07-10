@@ -7,6 +7,36 @@ using UnityEngine;
 namespace JokerMod.Modules.PersonaMasks {
     public class PersonaDef : ScriptableObject {
 
+        public enum SkillType {
+            Phys,
+            Gun,
+            Fire,
+            Ice,
+            Elec,
+            Wind,
+            Psy,
+            Nuke,
+            Bless,
+            Curse,
+            Almighty,
+            HealLight,
+            HealMedium,
+            HealHeavy,
+            HealCleanse,
+            BuffAtk,
+            BuffDef,
+            BuffSpd,
+            BuffAll,
+            DebuffAtk,
+            DebuffDef,
+            DebuffSpd,
+            DebuffAll,
+            Sleep,
+            Forget,
+            Charm,
+            Passive,
+        }
+
         public string personaNameToken;
 
         public SkillDef skillDef;
@@ -19,6 +49,8 @@ namespace JokerMod.Modules.PersonaMasks {
 
         public float baseSPCost;
 
+        public SkillType skillType;
+
         public static PersonaDef CreatePersonaDefFromInfo(PersonaDefInfo personaDefInfo) {
             PersonaDef personaDef = (PersonaDef)ScriptableObject.CreateInstance(typeof(PersonaDef));
             personaDef.name = personaDefInfo.personaNameToken;
@@ -28,6 +60,7 @@ namespace JokerMod.Modules.PersonaMasks {
             personaDef.modelPrefab = personaDefInfo.modelPrefab;
             personaDef.dropTables = personaDefInfo.dropTables;
             personaDef.baseSPCost = ((PersonaSkillBaseState)Activator.CreateInstance(personaDef.skillDef.activationState.stateType)).baseSPCost;
+            personaDef.skillType = personaDefInfo.skillType;
             return personaDef;
         }
     }

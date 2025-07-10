@@ -1,6 +1,6 @@
 ﻿namespace JokerMod.Joker {
     public static class JokerStaticValues {
-        public const float slashFlurryDamageCoefficient = 1f;
+        public const float slashFlurryDamageCoefficient = 1.2f;
 
         public const float fireDamageCoefficient = 1.25f;
 

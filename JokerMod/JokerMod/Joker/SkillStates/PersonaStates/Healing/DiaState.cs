@@ -8,7 +8,7 @@ namespace JokerMod.Joker.SkillStates.PersonaStates {
     public class DiaState : PersonaSkillBaseState {
         public override float baseSPCost { get; } = 3f;
 
-        private static GameObject seekerVFX = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC2/Seeker/MeditateSuccessVFX.prefab").WaitForCompletion();
+        public static GameObject seekerVFX = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC2/Seeker/MeditateSuccessVFX.prefab").WaitForCompletion();
 
         protected override void ActivateSkill() {
             CharacterBody characterBody = GetComponent<CharacterBody>();

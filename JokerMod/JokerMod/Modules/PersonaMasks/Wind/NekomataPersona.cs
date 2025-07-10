@@ -15,5 +15,6 @@ namespace JokerMod.Modules.PersonaMasks {
 
         public override JokerCatalog.DropTables dropTables => JokerCatalog.DropTables.Tier2 | JokerCatalog.DropTables.Tier3;
 
+        public override PersonaDef.SkillType skillType => PersonaDef.SkillType.Wind;
     }
 }

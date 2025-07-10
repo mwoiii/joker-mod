@@ -15,5 +15,7 @@ namespace JokerMod.Modules.PersonaMasks {
 
         public override JokerCatalog.DropTables dropTables => JokerCatalog.DropTables.Tier4 | JokerCatalog.DropTables.Tier5;
 
+        public override PersonaDef.SkillType skillType => PersonaDef.SkillType.Bless;
+
     }
 }
