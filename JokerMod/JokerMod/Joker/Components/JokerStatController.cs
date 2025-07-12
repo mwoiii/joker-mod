@@ -26,6 +26,8 @@ namespace JokerMod.Joker.Components {
 
         public PersonaDef overstockPersona;
 
+        public bool isUsingPrimary;
+
         private float _maxSP;
 
         public float maxSP {

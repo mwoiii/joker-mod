@@ -1,4 +1,5 @@
 ﻿using JokerMod.Joker.Components;
+using JokerMod.Joker.SkillStates;
 using MonoMod.Cil;
 
 namespace JokerMod.Modules {
@@ -31,10 +32,14 @@ namespace JokerMod.Modules {
         public delegate void IL_Handle_DotControllerEvaluateDOTStacksForType(ILContext il);
         public static IL_Handle_DotControllerEvaluateDOTStacksForType IL_Handle_DotControllerEvaluateDOTStacksForType_Actions;
 
+        public delegate void IL_Handle_EquipmentSlotExecute(ILContext il);
+        public static IL_Handle_EquipmentSlotExecute IL_Handle_EquipmentSlotExecute_Actions;
+
         public static void AddHooks() {
             SPController.SubscribeStaticHooksAndEvents();
 
             Handle_SkillIconUpdate_Actions += FixSkillCooldownDisplay;
+            IL_Handle_EquipmentSlotExecute_Actions += SlashFlurry.RejectEquipmentExecution;
 
             if (Handle_CharacterBodyOnLevelUp_Actions != null) {
                 On.RoR2.CharacterBody.OnLevelUp += CharacterBody_OnLevelUp;
@@ -74,6 +79,10 @@ namespace JokerMod.Modules {
 
             if (IL_Handle_DotControllerEvaluateDOTStacksForType_Actions != null) {
                 IL.RoR2.DotController.EvaluateDotStacksForType += IL_DotController_EvaluateDOTStacksForType;
+            }
+
+            if (IL_Handle_EquipmentSlotExecute_Actions != null) {
+                IL.RoR2.EquipmentSlot.Execute += IL_EquipmentSlot_Execute;
             }
         }
 
@@ -116,6 +125,9 @@ namespace JokerMod.Modules {
         }
         internal static void IL_DotController_EvaluateDOTStacksForType(ILContext il) {
             IL_Handle_DotControllerEvaluateDOTStacksForType_Actions.Invoke(il);
+        }
+        internal static void IL_EquipmentSlot_Execute(ILContext il) {
+            IL_Handle_EquipmentSlotExecute_Actions.Invoke(il);
         }
 
         private static void FixSkillCooldownDisplay(RoR2.UI.SkillIcon self) {

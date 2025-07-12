@@ -5,6 +5,7 @@ using JokerMod.Joker.SkillStates.PersonaStates;
 using JokerMod.Modules;
 using RoR2;
 using RoR2.Projectile;
+using RoR2.Skills;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -40,6 +41,18 @@ namespace JokerMod.Joker.Components {
         public StatNumberController skill3CostController;
 
         public JokerStatController statController;
+
+        public CharacterBody characterBody;
+
+        public bool primaryResetTimerActive {
+            get {
+                SteppedSkillDef steppedSkillDef = characterBody?.skillLocator?.primary?.skillDef as SteppedSkillDef;
+                if (steppedSkillDef != null) {
+                    return steppedSkillDef.stepResetTimer < steppedSkillDef.stepGraceDuration;
+                }
+                return false;
+            }
+        }
 
         private bool _skillUsed;
 
@@ -98,9 +111,10 @@ namespace JokerMod.Joker.Components {
         }
 
         private void Start() {
-            JokerStatController checkStatController = GetComponent<CharacterBody>().master.GetComponent<JokerStatController>();
+            characterBody = GetComponent<CharacterBody>();
+            JokerStatController checkStatController = characterBody.master.GetComponent<JokerStatController>();
             if (checkStatController == null) {
-                statController = GetComponent<CharacterBody>().master.gameObject.AddComponent<JokerStatController>();
+                statController = characterBody.master.gameObject.AddComponent<JokerStatController>();
             } else {
                 statController = checkStatController;
             }
@@ -133,12 +147,26 @@ namespace JokerMod.Joker.Components {
         }
 
         private void Update() {
+            bool triedActivateFinisher = characterBody != null && characterBody.inputBank.activateEquipment.justPressed && primaryResetTimerActive;
+            if (triedActivateFinisher) {
+                SteppedSkillDef.InstanceData instanceData = (SteppedSkillDef.InstanceData)characterBody?.skillLocator?.primary?.skillInstanceData;
+                if (instanceData != null) {
+                    if (instanceData.step > 0 && instanceData.step <= 5) {
+                        instanceData.step += 5;
+                        characterBody.skillLocator.primary.skillInstanceData = instanceData;
+                        characterBody.skillLocator.primary.ExecuteIfReady();
+                    }
+                } else {
+                    Log.Warning("instanceData was null! Couldn't access current step..");
+                }
+            }
+
             if (Input.GetKeyDown(KeyCode.F2)) {
                 // you WON!! THE [free] TEST EIHA
                 Log.Info($"CONGRATS!!!");
                 var freeState = new EihaState();
                 Asset.eihaPrefab.GetComponent<ProjectileImpactExplosion>().blastRadius = testRadius;
-                EntityStateMachine.FindByCustomName(GetComponent<CharacterBody>().gameObject, "Weapon").SetNextState(new EihaState());
+                EntityStateMachine.FindByCustomName(characterBody.gameObject, "Weapon").SetNextState(new EihaState());
             }
         }
     }

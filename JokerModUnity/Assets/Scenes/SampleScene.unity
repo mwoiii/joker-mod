@@ -486,6 +486,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Joker
       objectReference: {fileID: 0}
+    - target: {fileID: 1226399547507747275, guid: f452eda84055a0b4cb9996cd0efb3289, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1226399547507747281, guid: f452eda84055a0b4cb9996cd0efb3289, type: 3}
       propertyPath: m_RootOrder
       value: 5
