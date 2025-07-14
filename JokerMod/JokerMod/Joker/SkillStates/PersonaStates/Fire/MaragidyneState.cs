@@ -1,11 +1,14 @@
 ﻿using JokerMod.Joker.SkillStates.BaseStates;
 using JokerMod.Modules;
+using JokerMod.Modules.PersonaSkills;
 using RoR2;
 using RoR2.Projectile;
 using UnityEngine;
 
 namespace JokerMod.Joker.SkillStates.PersonaStates {
     public class MaragidyneState : PersonaSkillBaseState {
+
+        public override SkillTypes.SkillType skillType => SkillTypes.SkillType.Fire;
 
         public override float baseSPCost { get; } = 22f;
 

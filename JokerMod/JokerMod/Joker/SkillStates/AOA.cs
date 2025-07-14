@@ -4,7 +4,9 @@ using EntityStates;
 using EntityStates.Merc;
 using JokerMod.Joker.Components;
 using RoR2;
+using RoR2.Audio;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
 
 namespace JokerMod.Joker.SkillStates {
@@ -21,13 +23,15 @@ namespace JokerMod.Joker.SkillStates {
 
         public static float procCoefficient = 0.8f;
 
-        public static string beginSoundString = Evis.beginSoundString;
+        public static AkEventIdArg beginSound = JokerAssets.thrashStartSoundEvent.akId;
 
-        public static string endSoundString = Evis.endSoundString;
+        public static AkEventIdArg stopSound = JokerAssets.thrashStopSoundEvent.akId;
+
+        public static NetworkSoundEventIndex endSound = JokerAssets.thrashFinisherSoundEvent.index;
 
         public static float maxRadius = 24f;
 
-        public static GameObject hitEffectPrefab = Evis.hitEffectPrefab;
+        public static GameObject hitEffectPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Dagger/DaggerImpact.prefab").WaitForCompletion();
 
         public static string slashSoundString = Evis.slashSoundString;
 
@@ -71,7 +75,7 @@ namespace JokerMod.Joker.SkillStates {
             StartHitHandling();
 
             CreateBlinkEffect(Util.GetCorePosition(gameObject));
-            Util.PlayAttackSpeedSound(beginSoundString, gameObject, 1.2f);
+            EntitySoundManager.EmitSoundServer(beginSound, gameObject);
             crit = Util.CheckRoll(critStat, characterBody.master);
             modelTransform = GetModelTransform();
             if ((bool)modelTransform) {
@@ -167,7 +171,9 @@ namespace JokerMod.Joker.SkillStates {
         }
 
         public override void OnExit() {
-            Util.PlaySound(endSoundString, gameObject);
+            EntitySoundManager.EmitSoundServer(stopSound, gameObject);
+            EffectManager.SimpleSoundEffect(endSound, gameObject.transform.position, true);
+
             CreateBlinkEffect(Util.GetCorePosition(gameObject));
             modelTransform = GetModelTransform();
             if ((bool)modelTransform) {
@@ -197,8 +203,6 @@ namespace JokerMod.Joker.SkillStates {
 
             // Stop listening to global deaths
             attackHandler.StopExecution();
-
-            Util.PlaySound(endSoundString, gameObject);
             SmallHop(characterMotor, smallHopVelocity);
             base.OnExit();
         }

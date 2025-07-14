@@ -431,7 +431,10 @@ namespace JokerMod.Modules {
         }
 
         private static void SetupFootstepController(GameObject model) {
-            FootstepHandler footstepHandler = model.AddComponent<FootstepHandler>();
+            FootstepHandler footstepHandler = model.GetComponent<FootstepHandler>();
+            if (footstepHandler == null) {
+                footstepHandler = model.AddComponent<FootstepHandler>();
+            }
             footstepHandler.baseFootstepString = "Play_player_footstep";
             footstepHandler.sprintFootstepOverrideString = "";
             footstepHandler.enableFootstepDust = true;

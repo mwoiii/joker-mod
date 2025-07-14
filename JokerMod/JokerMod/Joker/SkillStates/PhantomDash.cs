@@ -1,7 +1,7 @@
 ﻿using EntityStates;
 using EntityStates.Huntress;
-using EntityStates.Merc;
 using RoR2;
+using RoR2.Audio;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -19,9 +19,7 @@ namespace JokerMod.Joker.SkillStates {
 
         public float speedCoefficient = 20f;
 
-        public string beginSoundString = EvisDash.beginSoundString;
-
-        public string endSoundString = EvisDash.endSoundString;
+        public AkEventIdArg beginSound = JokerAssets.dashSoundEvent.akId;
 
         protected bool exceededDuration => stopwatch >= duration;
 
@@ -39,7 +37,7 @@ namespace JokerMod.Joker.SkillStates {
             skillLocator.utility.rechargeStopwatch = 0f;
             skillLocator.utility.DeductStock(1);
 
-            Util.PlaySound(beginSoundString, gameObject);
+            EntitySoundManager.EmitSoundServer(beginSound, gameObject);
             modelTransform = GetModelTransform();
             if ((bool)modelTransform) {
                 characterModel = modelTransform.GetComponent<CharacterModel>();
@@ -87,7 +85,6 @@ namespace JokerMod.Joker.SkillStates {
 
         public override void OnExit() {
             if (!outer.destroying) {
-                Util.PlaySound(endSoundString, gameObject);
                 CreateBlinkEffect(Util.GetCorePosition(gameObject));
                 modelTransform = GetModelTransform();
                 if ((bool)modelTransform) {

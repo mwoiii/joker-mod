@@ -1,11 +1,14 @@
 ﻿using JokerMod.Joker.SkillStates.BaseStates;
 using JokerMod.Modules.DamageTypes;
+using JokerMod.Modules.PersonaSkills;
 using R2API;
 using RoR2;
 using UnityEngine.Networking;
 
 namespace JokerMod.Joker.SkillStates.PersonaStates {
     public class PsiState : PersonaSkillBaseState {
+
+        public override SkillTypes.SkillType skillType => SkillTypes.SkillType.Psy;
         public override float baseSPCost { get; } = 4f;
 
         // private static GameObject seekerVFX = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC2/Seeker/MeditateSuccessVFX.prefab").WaitForCompletion();

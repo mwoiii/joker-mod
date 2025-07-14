@@ -1,5 +1,6 @@
 ﻿using EntityStates;
 using JokerMod.Joker.Components;
+using JokerMod.Modules.PersonaSkills;
 
 namespace JokerMod.Joker.SkillStates.BaseStates {
     public abstract class PersonaSkillBaseState : BaseState {
@@ -7,6 +8,8 @@ namespace JokerMod.Joker.SkillStates.BaseStates {
         protected JokerMaster master;
 
         public virtual float baseSPCost { get; }
+
+        public virtual SkillTypes.SkillType skillType => SkillTypes.SkillType.Passive;
 
         protected bool canFire;
 
@@ -28,6 +31,11 @@ namespace JokerMod.Joker.SkillStates.BaseStates {
             }
 
             if (master.statController.TryCastSkill(baseSPCost)) {
+                if (skillType.IsSupportType()) {
+                    master.voiceController.TryPlayRandomNetworkedSound(JokerAssets.castSkillSupportSoundEvents, characterBody.gameObject);
+                } else {
+                    master.voiceController.TryPlayRandomNetworkedSound(JokerAssets.castSkillAttackSoundEvents, characterBody.gameObject);
+                }
                 master.skillUsed = true;
                 canFire = true;
             }

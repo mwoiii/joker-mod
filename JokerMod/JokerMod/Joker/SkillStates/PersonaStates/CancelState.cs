@@ -1,5 +1,6 @@
 ﻿namespace JokerMod.Joker.SkillStates.PersonaStates {
     public class CancelState : OverrideMenu {
+
         public override void FixedUpdate() {
             base.FixedUpdate();
             if (!isAuthority) {

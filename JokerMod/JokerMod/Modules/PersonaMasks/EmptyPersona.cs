@@ -15,6 +15,6 @@ namespace JokerMod.Modules.PersonaMasks {
 
         public override JokerCatalog.DropTables dropTables => 0;
 
-        public override PersonaDef.SkillType skillType => PersonaDef.SkillType.Passive;
+
     }
 }

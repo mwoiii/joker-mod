@@ -4,6 +4,7 @@ using JokerMod.Joker.Components;
 using JokerMod.Joker.SkillStates.PersonaStates;
 using JokerMod.Modules;
 using RoR2;
+using RoR2.Audio;
 using RoR2.Skills;
 using UnityEngine;
 
@@ -32,6 +33,8 @@ namespace JokerMod.Joker.SkillStates {
 
         protected int holdSpecialStock;
 
+        protected bool shouldPlaySFX;
+
         public override void OnEnter() {
             base.OnEnter();
 
@@ -40,6 +43,11 @@ namespace JokerMod.Joker.SkillStates {
             master.skillMenuActive = true;
             master.skillUsed = false;
             master.EnemySlainDuringMenu += KillInMenu;
+
+            if (shouldPlaySFX) {
+                master.voiceController.TryPlayRandomNetworkedSound(JokerAssets.summonPersonaSoundEvents, characterBody.gameObject, true);
+                EntitySoundManager.EmitSoundLocal(JokerAssets.unleashSoundEvent.akId, characterBody.gameObject);
+            }
 
             primary = skillLocator.primary;
             secondary = skillLocator.secondary;

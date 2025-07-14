@@ -1,41 +1,12 @@
 ﻿using System;
 using JokerMod.Joker.SkillStates.BaseStates;
+using JokerMod.Modules.PersonaSkills;
 using RoR2;
 using RoR2.Skills;
 using UnityEngine;
 
 namespace JokerMod.Modules.PersonaMasks {
     public class PersonaDef : ScriptableObject {
-
-        public enum SkillType {
-            Phys,
-            Gun,
-            Fire,
-            Ice,
-            Elec,
-            Wind,
-            Psy,
-            Nuke,
-            Bless,
-            Curse,
-            Almighty,
-            HealLight,
-            HealMedium,
-            HealHeavy,
-            HealCleanse,
-            BuffAtk,
-            BuffDef,
-            BuffSpd,
-            BuffAll,
-            DebuffAtk,
-            DebuffDef,
-            DebuffSpd,
-            DebuffAll,
-            Sleep,
-            Forget,
-            Charm,
-            Passive,
-        }
 
         public string personaNameToken;
 
@@ -49,7 +20,7 @@ namespace JokerMod.Modules.PersonaMasks {
 
         public float baseSPCost;
 
-        public SkillType skillType;
+        public SkillTypes.SkillType skillType;
 
         public static PersonaDef CreatePersonaDefFromInfo(PersonaDefInfo personaDefInfo) {
             PersonaDef personaDef = (PersonaDef)ScriptableObject.CreateInstance(typeof(PersonaDef));
@@ -59,8 +30,9 @@ namespace JokerMod.Modules.PersonaMasks {
             personaDef.itemDef = personaDefInfo.itemDef;
             personaDef.modelPrefab = personaDefInfo.modelPrefab;
             personaDef.dropTables = personaDefInfo.dropTables;
-            personaDef.baseSPCost = ((PersonaSkillBaseState)Activator.CreateInstance(personaDef.skillDef.activationState.stateType)).baseSPCost;
-            personaDef.skillType = personaDefInfo.skillType;
+            PersonaSkillBaseState skill = (PersonaSkillBaseState)Activator.CreateInstance(personaDef.skillDef.activationState.stateType);
+            personaDef.baseSPCost = skill.baseSPCost;
+            personaDef.skillType = skill.skillType;
             return personaDef;
         }
     }

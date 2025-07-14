@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using JokerMod.Joker.SkillStates.BaseStates;
 using JokerMod.Modules.DamageTypes;
+using JokerMod.Modules.PersonaSkills;
 using R2API;
 using RoR2;
 using UnityEngine;
 
 namespace JokerMod.Joker.SkillStates {
     public class MaziongaState : PersonaSkillBaseState {
+
+        public override SkillTypes.SkillType skillType => SkillTypes.SkillType.Elec;
 
         public override float baseSPCost { get; } = 16f;
 

@@ -1,5 +1,9 @@
-﻿namespace JokerMod.Joker.SkillStates {
+﻿using JokerMod.Modules.PersonaSkills;
+
+namespace JokerMod.Joker.SkillStates {
     public class MakouhaState : KouhaState {
+
+        public override SkillTypes.SkillType skillType => SkillTypes.SkillType.Bless;
 
         public override float baseSPCost { get; } = 10f;
 

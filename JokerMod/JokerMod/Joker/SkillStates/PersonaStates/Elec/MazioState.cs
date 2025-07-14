@@ -1,5 +1,6 @@
 ﻿using JokerMod.Joker.SkillStates.BaseStates;
 using JokerMod.Modules.DamageTypes;
+using JokerMod.Modules.PersonaSkills;
 using R2API;
 using RoR2;
 using UnityEngine;
@@ -7,6 +8,7 @@ using UnityEngine;
 namespace JokerMod.Joker.SkillStates {
     public class MazioState : PersonaSkillBaseState {
 
+        public override SkillTypes.SkillType skillType => SkillTypes.SkillType.Elec;
         public override float baseSPCost { get; } = 10f;
 
         protected override void ActivateSkill() {

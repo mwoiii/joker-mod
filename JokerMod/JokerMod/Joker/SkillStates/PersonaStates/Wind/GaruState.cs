@@ -1,5 +1,6 @@
 ﻿using JokerMod.Joker.SkillStates.BaseStates;
 using JokerMod.Modules;
+using JokerMod.Modules.PersonaSkills;
 using RoR2;
 using RoR2.Projectile;
 using UnityEngine;
@@ -7,6 +8,7 @@ using UnityEngine;
 namespace JokerMod.Joker.SkillStates.PersonaStates {
     public class GaruState : PersonaSkillBaseState {
 
+        public override SkillTypes.SkillType skillType => SkillTypes.SkillType.Wind;
         public override float baseSPCost { get; } = 4f;
 
         protected virtual GameObject projectilePrefab => Asset.garuPrefab;

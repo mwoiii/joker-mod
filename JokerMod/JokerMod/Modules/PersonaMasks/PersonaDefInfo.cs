@@ -14,7 +14,5 @@ namespace JokerMod.Modules.PersonaMasks {
         public GameObject modelPrefab;
 
         public JokerCatalog.DropTables dropTables;
-
-        public PersonaDef.SkillType skillType;
     }
 }

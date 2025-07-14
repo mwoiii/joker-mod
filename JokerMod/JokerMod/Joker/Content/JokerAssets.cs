@@ -7,28 +7,90 @@ namespace JokerMod.Joker {
     public static class JokerAssets {
         // particle effects
         public static GameObject swordSwingEffect;
+
         public static GameObject swordHitImpactEffect;
 
         public static GameObject bombExplosionEffect;
 
         // networked hit sounds
-        public static NetworkSoundEventDef swordHitSoundEvent;
+        public static NetworkSoundEventDef[] castSkillAttackSoundEvents;
+
+        public static NetworkSoundEventDef[] castSkillSupportSoundEvents;
+
+        public static NetworkSoundEventDef[] summonPersonaSoundEvents;
+
+        public static NetworkSoundEventDef primarySoundEvent;
+
+        public static NetworkSoundEventDef fireSoundEvent;
+
+        public static NetworkSoundEventDef unleashSoundEvent;
+
+        public static NetworkSoundEventDef dashSoundEvent;
+
+        public static NetworkSoundEventDef thrashStartSoundEvent;
+
+        public static NetworkSoundEventDef thrashStopSoundEvent;
+
+        public static NetworkSoundEventDef thrashFinisherSoundEvent;
 
         //projectiles
         public static GameObject bombProjectilePrefab;
 
         private static AssetBundle _assetBundle;
 
+
         public static void Init(AssetBundle assetBundle) {
 
             _assetBundle = assetBundle;
 
-            swordHitSoundEvent = Content.CreateAndAddNetworkSoundEventDef("HenrySwordHit");
+            CreateSounds();
 
-            swordSwingEffect = _assetBundle.LoadEffect("HenrySwordSwingEffect", true);
-            swordHitImpactEffect = _assetBundle.LoadEffect("ImpactHenrySlash");
+            // swordSwingEffect = _assetBundle.LoadEffect("HenrySwordSwingEffect", true);
+            // swordHitImpactEffect = _assetBundle.LoadEffect("ImpactHenrySlash");
 
             CreateProjectiles();
+        }
+
+        private static void CreateSounds() {
+            castSkillAttackSoundEvents = [
+                Content.CreateAndAddNetworkSoundEventDef("Play_GoDown"),
+                Content.CreateAndAddNetworkSoundEventDef("Play_Hm"),
+                Content.CreateAndAddNetworkSoundEventDef("Play_Hmph"),
+                Content.CreateAndAddNetworkSoundEventDef("Play_RavageThem"),
+                Content.CreateAndAddNetworkSoundEventDef("Play_There"),
+                Content.CreateAndAddNetworkSoundEventDef("Play_You_reMine"),
+            ];
+
+            castSkillSupportSoundEvents = [
+                Content.CreateAndAddNetworkSoundEventDef("Play_There01"),
+                Content.CreateAndAddNetworkSoundEventDef("Play_Alright"),
+                Content.CreateAndAddNetworkSoundEventDef("Play_Alright2"),
+            ];
+
+            summonPersonaSoundEvents = [
+                Content.CreateAndAddNetworkSoundEventDef("Play_Persona"),
+                Content.CreateAndAddNetworkSoundEventDef("Play_Persona2"),
+                Content.CreateAndAddNetworkSoundEventDef("Play_Persona3"),
+                Content.CreateAndAddNetworkSoundEventDef("Play_Persona4"),
+                Content.CreateAndAddNetworkSoundEventDef("Play_Persona5"),
+                Content.CreateAndAddNetworkSoundEventDef("Play_ItsTime"),
+                Content.CreateAndAddNetworkSoundEventDef("Play_LetsGo"),
+                Content.CreateAndAddNetworkSoundEventDef("Play_Come"),
+            ];
+
+            primarySoundEvent = Content.CreateAndAddNetworkSoundEventDef("Play_RandomSlash");
+
+            fireSoundEvent = Content.CreateAndAddNetworkSoundEventDef("Play_Fire");
+
+            unleashSoundEvent = Content.CreateAndAddNetworkSoundEventDef("Play_Unleash");
+
+            dashSoundEvent = Content.CreateAndAddNetworkSoundEventDef("Play_RandomDash");
+
+            thrashStartSoundEvent = Content.CreateAndAddNetworkSoundEventDef("Play_Thrashing");
+
+            thrashStopSoundEvent = Content.CreateAndAddNetworkSoundEventDef("Stop_Thrashing");
+
+            thrashFinisherSoundEvent = Content.CreateAndAddNetworkSoundEventDef("Play_ThrashingFinisher");
         }
 
         #region effects

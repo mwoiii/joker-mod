@@ -44,6 +44,8 @@ namespace JokerMod.Joker.Components {
 
         public CharacterBody characterBody;
 
+        public VoiceController voiceController;
+
         public bool primaryResetTimerActive {
             get {
                 SteppedSkillDef steppedSkillDef = characterBody?.skillLocator?.primary?.skillDef as SteppedSkillDef;
@@ -119,6 +121,7 @@ namespace JokerMod.Joker.Components {
                 statController = checkStatController;
             }
             statController.master = this;
+            voiceController = statController.voiceController;
         }
 
         private void CreateUI() {
@@ -160,6 +163,8 @@ namespace JokerMod.Joker.Components {
                     Log.Warning("instanceData was null! Couldn't access current step..");
                 }
             }
+
+            voiceController.UnpausedUpdate();
 
             if (Input.GetKeyDown(KeyCode.F2)) {
                 // you WON!! THE [free] TEST EIHA

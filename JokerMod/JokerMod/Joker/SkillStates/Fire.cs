@@ -31,7 +31,7 @@ namespace JokerMod.Joker.SkillStates {
             aimRay = GetAimRay();
             StartAimMode(aimRay, 2f, false);
             // base.PlayAnimation("Gesture Additive, Right", "FirePistol, Right");
-            Util.PlaySound(FireBarrage.fireBarrageSoundString, gameObject);
+            EffectManager.SimpleSoundEffect(JokerAssets.fireSoundEvent.index, gameObject.transform.position, true);
             AddRecoil(-0.6f, 0.6f, -0.6f, 0.6f);
 
             // movement if airborne

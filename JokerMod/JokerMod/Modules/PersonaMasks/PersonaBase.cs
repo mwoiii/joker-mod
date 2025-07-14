@@ -22,8 +22,6 @@ namespace JokerMod.Modules.PersonaMasks {
 
         public abstract JokerCatalog.DropTables dropTables { get; }
 
-        public abstract PersonaDef.SkillType skillType { get; }
-
         public virtual void Init() {
             CreateLang();
             CreatePersona();
@@ -39,8 +37,7 @@ namespace JokerMod.Modules.PersonaMasks {
                 skillDef = skillDef,
                 itemDef = itemDef,
                 modelPrefab = modelPrefab,
-                dropTables = dropTables,
-                skillType = skillType
+                dropTables = dropTables
             });
 
             itemDef = ScriptableObject.CreateInstance<ItemDef>();

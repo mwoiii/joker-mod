@@ -7,12 +7,13 @@ using JokerMod.Joker.Components.SkillHelpers;
 using JokerMod.Joker.SkillStates.PersonaStates;
 using JokerMod.Modules.BaseStates;
 using JokerMod.Modules.DamageTypes;
-using JokerMod.Modules.PersonaMasks;
+using JokerMod.Modules.PersonaSkills;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using R2API;
 using RoR2;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace JokerMod.Joker.SkillStates {
 
@@ -54,10 +55,9 @@ namespace JokerMod.Joker.SkillStates {
             hitSoundString = "";
             muzzleString = swingIndex % 2 == 0 ? "SwingLeft" : "SwingRight";
             playbackRateParam = "Slash.playbackRate";
-            swingEffectPrefab = JokerAssets.swordSwingEffect;
-            hitEffectPrefab = JokerAssets.swordHitImpactEffect;
-
-            impactSound = JokerAssets.swordHitSoundEvent.index;
+            //swingEffectPrefab = JokerAssets.swordSwingEffect;
+            hitEffectPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Dagger/DaggerImpact.prefab").WaitForCompletion();
+            impactSound = JokerAssets.primarySoundEvent.index;
 
             // Log.Info($"swingIndex: {swingIndex}");
             if (!isGrounded && swingIndex == 0) {
@@ -439,51 +439,51 @@ namespace JokerMod.Joker.SkillStates {
 
             if (statController != null) {
                 switch (statController.primaryPersona.skillType) {
-                    case PersonaDef.SkillType.Phys:
+                    case SkillTypes.SkillType.Phys:
                         break;
 
-                    case PersonaDef.SkillType.Gun:
+                    case SkillTypes.SkillType.Gun:
                         break;
 
-                    case PersonaDef.SkillType.Fire:
+                    case SkillTypes.SkillType.Fire:
                         blastAttack.AddModdedDamageType(FireLightWeakType.damageType);
                         break;
 
-                    case PersonaDef.SkillType.Ice:
+                    case SkillTypes.SkillType.Ice:
                         blastAttack.AddModdedDamageType(IceLightType.damageType);
                         break;
 
 
-                    case PersonaDef.SkillType.Elec:
+                    case SkillTypes.SkillType.Elec:
                         blastAttack.AddModdedDamageType(ElecLightWeakType.damageType);
                         break;
 
 
-                    case PersonaDef.SkillType.Wind:
+                    case SkillTypes.SkillType.Wind:
                         blastAttack.AddModdedDamageType(IgnoreMassType.damageType);
                         blastAttack.baseForce = 800f;
                         break;
 
-                    case PersonaDef.SkillType.Psy:
+                    case SkillTypes.SkillType.Psy:
                         blastAttack.AddModdedDamageType(PsyLightWeakType.damageType);
                         break;
 
-                    case PersonaDef.SkillType.Nuke:
+                    case SkillTypes.SkillType.Nuke:
                         blastAttack.AddModdedDamageType(NukeLightWeakType.damageType);
                         break;
 
-                    case PersonaDef.SkillType.Bless:
+                    case SkillTypes.SkillType.Bless:
                         blastAttack.AddModdedDamageType(BlessLightWeakType.damageType);
                         break;
 
-                    case PersonaDef.SkillType.Curse:
+                    case SkillTypes.SkillType.Curse:
                         blastAttack.AddModdedDamageType(CurseLightWeakType.damageType);
                         break;
 
-                    case PersonaDef.SkillType.Almighty:
+                    case SkillTypes.SkillType.Almighty:
                         break;
 
-                    case PersonaDef.SkillType.HealLight:
+                    case SkillTypes.SkillType.HealLight:
                         blastAttack = null;
                         healingPulse = new HealingPulsePercentage();
                         healingPulse.healFlat = 22.5f + 1.25f * characterBody.level;
@@ -496,7 +496,7 @@ namespace JokerMod.Joker.SkillStates {
                         healingPulse.Fire();
                         break;
 
-                    case PersonaDef.SkillType.HealMedium:
+                    case SkillTypes.SkillType.HealMedium:
                         blastAttack = null;
                         healingPulse = new HealingPulsePercentage();
                         healingPulse.healFlat = 50f + 2.5f * characterBody.level;
@@ -509,7 +509,7 @@ namespace JokerMod.Joker.SkillStates {
                         healingPulse.Fire();
                         break;
 
-                    case PersonaDef.SkillType.HealHeavy:
+                    case SkillTypes.SkillType.HealHeavy:
                         blastAttack = null;
                         healingPulse = new HealingPulsePercentage();
                         healingPulse.healFlat = 72.5f + 3.75f * characterBody.level;
@@ -522,43 +522,43 @@ namespace JokerMod.Joker.SkillStates {
                         healingPulse.Fire();
                         break;
 
-                    case PersonaDef.SkillType.HealCleanse:
+                    case SkillTypes.SkillType.HealCleanse:
                         break;
 
-                    case PersonaDef.SkillType.BuffAtk:
+                    case SkillTypes.SkillType.BuffAtk:
                         break;
 
-                    case PersonaDef.SkillType.BuffDef:
+                    case SkillTypes.SkillType.BuffDef:
                         break;
 
-                    case PersonaDef.SkillType.BuffSpd:
+                    case SkillTypes.SkillType.BuffSpd:
                         break;
 
-                    case PersonaDef.SkillType.BuffAll:
+                    case SkillTypes.SkillType.BuffAll:
                         break;
 
-                    case PersonaDef.SkillType.DebuffAtk:
+                    case SkillTypes.SkillType.DebuffAtk:
                         break;
 
-                    case PersonaDef.SkillType.DebuffDef:
+                    case SkillTypes.SkillType.DebuffDef:
                         break;
 
-                    case PersonaDef.SkillType.DebuffSpd:
+                    case SkillTypes.SkillType.DebuffSpd:
                         break;
 
-                    case PersonaDef.SkillType.DebuffAll:
+                    case SkillTypes.SkillType.DebuffAll:
                         break;
 
-                    case PersonaDef.SkillType.Sleep:
+                    case SkillTypes.SkillType.Sleep:
                         break;
 
-                    case PersonaDef.SkillType.Forget:
+                    case SkillTypes.SkillType.Forget:
                         break;
 
-                    case PersonaDef.SkillType.Charm:
+                    case SkillTypes.SkillType.Charm:
                         break;
 
-                    case PersonaDef.SkillType.Passive:
+                    case SkillTypes.SkillType.Passive:
                         break;
 
                     default:

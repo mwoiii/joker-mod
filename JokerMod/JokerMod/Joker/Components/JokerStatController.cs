@@ -28,6 +28,8 @@ namespace JokerMod.Joker.Components {
 
         public bool isUsingPrimary;
 
+        public VoiceController voiceController;
+
         private float _maxSP;
 
         public float maxSP {
@@ -68,6 +70,18 @@ namespace JokerMod.Joker.Components {
         }
 
         private void Awake() {
+            SetDefaultStats();
+            InitVoiceController();
+        }
+
+        private void InitVoiceController() {
+            voiceController = gameObject.AddComponent<VoiceController>();
+            voiceController.RegisterArray(JokerAssets.summonPersonaSoundEvents, 12f);
+            voiceController.RegisterSharedStopwatch(JokerAssets.castSkillAttackSoundEvents, JokerAssets.summonPersonaSoundEvents);
+            voiceController.RegisterSharedStopwatch(JokerAssets.castSkillSupportSoundEvents, JokerAssets.summonPersonaSoundEvents);
+        }
+
+        private void SetDefaultStats() {
             primaryPersona = JokerCatalog.GetPersonaFromNameToken("ARSENE");
             secondaryPersona = JokerCatalog.GetPersonaFromNameToken("EMPTY");
             utilityPersona = JokerCatalog.GetPersonaFromNameToken("EMPTY");

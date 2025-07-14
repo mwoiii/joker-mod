@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace JokerMod.Modules {
     public static class Utils {
-        public static Random rand = new Random();
+        public static System.Random rand = new System.Random();
 
         public static object RandomChoices(IEnumerable<object> choices, IEnumerable<float> weights) {
             List<float> cumWeights = new List<float>();
@@ -30,11 +29,19 @@ namespace JokerMod.Modules {
         }
 
         public static object RandomChoice(IEnumerable<object> choices) {
-            IList<Object> list = choices as IList<object> ?? choices.ToList();
+            IList<object> list = choices as IList<object> ?? choices.ToList();
             if (list.Count > 0) {
                 return list[rand.Next(list.Count)];
             }
-            Log.Warning("RandomChoice: Got passed an empty enumerable - retuning null!");
+            Log.Warning("RandomChoice: Got passed an empty enumerable - returning null!");
+            return null;
+        }
+
+        public static object RandomChoice(object[] choices) {
+            if (choices.Length > 0) {
+                return choices[rand.Next(choices.Length)];
+            }
+            Log.Warning("RandomChoice: Got passed an empty enumerable - returning null!");
             return null;
         }
     }

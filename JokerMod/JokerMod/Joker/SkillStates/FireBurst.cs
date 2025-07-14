@@ -13,7 +13,6 @@ namespace JokerMod.Joker.SkillStates {
             stock = skillLocator.secondary.stock;
             skillLocator.secondary.stock = 0;
             base.OnEnter();
-
         }
 
         protected override void ApplyPhysics() {

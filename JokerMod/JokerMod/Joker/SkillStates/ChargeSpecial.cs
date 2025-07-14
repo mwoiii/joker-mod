@@ -6,6 +6,7 @@ namespace JokerMod.Joker.SkillStates {
         public const float SWAP_THRESHOLD = 1f;
 
         public override void OnEnter() {
+            shouldPlaySFX = true;
             base.OnEnter();
             ChargeBase.ApplyRecharge(skillLocator.special);
         }

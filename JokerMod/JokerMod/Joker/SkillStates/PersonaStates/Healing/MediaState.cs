@@ -1,11 +1,14 @@
 ﻿using JokerMod.Joker.Components.SkillHelpers;
 using JokerMod.Joker.SkillStates.BaseStates;
+using JokerMod.Modules.PersonaSkills;
 using RoR2;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
 namespace JokerMod.Joker.SkillStates.PersonaStates {
     public class MediaState : PersonaSkillBaseState {
+
+        public override SkillTypes.SkillType skillType => SkillTypes.SkillType.HealLight;
         public override float baseSPCost { get; } = 7f;
 
         private static GameObject seekerVFX = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC2/Seeker/MeditateSuccessVFX.prefab").WaitForCompletion();
