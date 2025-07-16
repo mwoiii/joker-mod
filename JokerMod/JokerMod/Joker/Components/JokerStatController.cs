@@ -76,7 +76,16 @@ namespace JokerMod.Joker.Components {
 
         private void InitVoiceController() {
             voiceController = gameObject.AddComponent<VoiceController>();
-            voiceController.RegisterArray(JokerAssets.summonPersonaSoundEvents, 12f);
+
+            voiceController.RegisterArray(JokerAssets.primaryVoiceWeakSoundEvents, 0.35f, 3f);
+
+            voiceController.RegisterArray(JokerAssets.primaryVoiceMediumSoundEvents, 1f, 8f);
+            voiceController.RegisterSharedStopwatch(JokerAssets.primaryVoiceMediumChargeSoundEvents, JokerAssets.primaryVoiceMediumSoundEvents);
+
+            voiceController.RegisterArray(JokerAssets.primaryVoiceStrongSoundEvents, 1f, 10f);
+            voiceController.RegisterSharedStopwatch(JokerAssets.primaryVoiceStrongAltSoundEvents, JokerAssets.primaryVoiceStrongSoundEvents);
+
+            voiceController.RegisterArray(JokerAssets.summonPersonaSoundEvents, 1.5f, 10f);
             voiceController.RegisterSharedStopwatch(JokerAssets.castSkillAttackSoundEvents, JokerAssets.summonPersonaSoundEvents);
             voiceController.RegisterSharedStopwatch(JokerAssets.castSkillSupportSoundEvents, JokerAssets.summonPersonaSoundEvents);
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using JokerMod.Joker.Components.UI;
+using JokerMod.Joker.SkillStates;
 using JokerMod.Joker.SkillStates.PersonaStates;
 using JokerMod.Modules;
 using RoR2;
@@ -105,11 +106,22 @@ namespace JokerMod.Joker.Components {
 
         private void Awake() {
             GlobalEventManager.onCharacterDeathGlobal += JokerOnKills;
+            GlobalEventManager.onServerDamageDealt += VoicelineOnHeavyDamge;
             gameObject.AddComponent<AOAController>();
             CreateUI();
 
             // spController requires UI to be fully initialised as it wants to instantly access components
             StartCoroutine(OnUIStarted());
+        }
+
+        private void VoicelineOnHeavyDamge(DamageReport damageReport) {
+            if (damageReport?.victim == characterBody?.healthComponent) {
+                bool isKillAttack = damageReport.combinedHealthBeforeDamage - damageReport.damageDealt <= 0f;
+                bool passesDamageThreshold = damageReport.damageDealt >= damageReport.victim.fullCombinedHealth * 0.4f;
+                if (!isKillAttack && passesDamageThreshold) {
+                    VoiceController.PlayRandomNetworkedSound(JokerAssets.hurtSoundEvents, characterBody.gameObject);
+                }
+            }
         }
 
         private void Start() {
@@ -122,6 +134,8 @@ namespace JokerMod.Joker.Components {
             }
             statController.master = this;
             voiceController = statController.voiceController;
+
+            GetComponent<CharacterDeathBehavior>().deathState = new EntityStates.SerializableEntityStateType(typeof(CollapseDeathState));
         }
 
         private void CreateUI() {

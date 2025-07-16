@@ -13,15 +13,19 @@ namespace JokerMod.Joker.Components {
 
         private Dictionary<NetworkSoundEventDef[], float> soundArrayStopwatches;
 
+        private Dictionary<NetworkSoundEventDef[], float> soundArrayMinWait;
+
         private Dictionary<NetworkSoundEventDef[], float> soundArrayMaxWait;
+
+        private Dictionary<NetworkSoundEventDef[], int> soundArrayPrevIndex;
 
         private Dictionary<NetworkSoundEventDef[], NetworkSoundEventDef[]> sharingArrays;
 
-        private const float minWait = 2f;
-
         private void Awake() {
             soundArrayStopwatches = new Dictionary<NetworkSoundEventDef[], float>();
+            soundArrayMinWait = new Dictionary<NetworkSoundEventDef[], float>();
             soundArrayMaxWait = new Dictionary<NetworkSoundEventDef[], float>();
+            soundArrayPrevIndex = new Dictionary<NetworkSoundEventDef[], int>();
             sharingArrays = new Dictionary<NetworkSoundEventDef[], NetworkSoundEventDef[]>();
         }
 
@@ -35,8 +39,9 @@ namespace JokerMod.Joker.Components {
             }
         }
 
-        public void RegisterArray(NetworkSoundEventDef[] array, float maxWait) {
+        public void RegisterArray(NetworkSoundEventDef[] array, float minWait, float maxWait) {
             soundArrayStopwatches[array] = 0f;
+            soundArrayMinWait[array] = minWait;
             soundArrayMaxWait[array] = maxWait;
         }
 
@@ -65,12 +70,27 @@ namespace JokerMod.Joker.Components {
                 time = soundArrayMaxWait[soundArray] * 0.5f;
             }
 
-            if (time > minWait && time > chance) {
+            if (time > soundArrayMinWait[soundArray] && time > chance) {
                 soundArrayStopwatches[soundArray] = 0f;
                 return true;
             }
 
             return false;
+        }
+        public void TryPlayRandomUniqueNetworkedSound(NetworkSoundEventDef[] soundArray, GameObject source, bool maxFiftyFifty = false) {
+            if (RollForSoundEvent(soundArray, maxFiftyFifty)) {
+                int idRoll = Utils.rand.Next(soundArray.Length);
+                if (soundArrayPrevIndex.ContainsKey(soundArray)) {
+                    if (idRoll >= soundArrayPrevIndex[soundArray]) {
+                        idRoll++;
+                        idRoll %= soundArray.Length;
+                    }
+                } else {
+                    soundArrayPrevIndex.Add(soundArray, idRoll);
+                }
+                soundArrayPrevIndex[soundArray] = idRoll;
+                EntitySoundManager.EmitSoundServer(soundArray[idRoll].akId, source);
+            }
         }
 
         public void TryPlayRandomNetworkedSound(NetworkSoundEventDef[] soundArray, GameObject source, bool maxFiftyFifty = false) {

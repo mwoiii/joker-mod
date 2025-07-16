@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using EntityStates;
 using JokerMod.Joker.Components.Animation;
+using RoR2.Audio;
 using RoR2.Skills;
 using UnityEngine;
 
@@ -23,6 +24,7 @@ namespace JokerMod.Modules.BaseStates {
             public float procCoefficient;
             public float nonRepeatYVelocity;
             public Action customBehaviour;
+            public AkEventIdArg soundEffect;
 
             public int substepCount;
 
@@ -44,7 +46,7 @@ namespace JokerMod.Modules.BaseStates {
             public SubstepAction(float occurrenceTime, float forwardMovement = float.NegativeInfinity, float upwardMovement = float.NegativeInfinity,
                                  float rightMovement = float.NegativeInfinity, float smoothMovementStart = 0f, float smoothMovementEnd = 0f,
                                  bool shouldRepeatMovement = true, bool shouldResetHitbox = false, bool negateBoneY = false, float damageCoefficient = float.NegativeInfinity,
-                                 float procCoefficient = float.NegativeInfinity, Action customBehaviour = null) {
+                                 float procCoefficient = float.NegativeInfinity, Action customBehaviour = null, AkEventIdArg soundEffect = default(AkEventIdArg)) {
                 this.occurrenceTime = occurrenceTime;
                 this.forwardMovement = forwardMovement;
                 this.upwardMovement = upwardMovement;
@@ -57,6 +59,7 @@ namespace JokerMod.Modules.BaseStates {
                 this.damageCoefficient = damageCoefficient;
                 this.procCoefficient = procCoefficient;
                 this.customBehaviour = customBehaviour;
+                this.soundEffect = soundEffect;
 
                 this.substepCount = -1;
             }
@@ -149,6 +152,7 @@ namespace JokerMod.Modules.BaseStates {
                 SubstepAction action = substepActions[i];
                 bool shouldBreak = false;
                 bool shouldTryMove = false;
+                bool noMovement = false;
                 float forwardMovement = 0f;
                 float upwardMovement = 0f;
                 float rightMovement = 0f;
@@ -190,6 +194,7 @@ namespace JokerMod.Modules.BaseStates {
                         rightMovement = action.rightMovement;
                         smoothMovementStart = action.smoothMovementStart;
                         smoothMovementEnd = action.smoothMovementEnd;
+                        noMovement = forwardMovement == float.NegativeInfinity && upwardMovement == float.NegativeInfinity && rightMovement == float.NegativeInfinity;
                         prevSubstepStart = action.occurrenceTime;
 
                         if (boneDeltaNeutralizer != null) {
@@ -202,7 +207,11 @@ namespace JokerMod.Modules.BaseStates {
                             attack.ResetIgnoredHealthComponents();
                         }
 
-                        if (action.shouldRepeatMovement) {
+                        if (action.soundEffect.id != default(AkEventIdArg).id) {
+                            EntitySoundManager.EmitSoundServer(action.soundEffect, characterBody.gameObject);
+                        }
+
+                        if (action.shouldRepeatMovement && !noMovement) {
                             action.substepCount = currentSubstepCount;
                         } else {
                             substepActions.RemoveAt(i);
@@ -210,10 +219,7 @@ namespace JokerMod.Modules.BaseStates {
                     }
                 }
 
-                if (shouldTryMove) {
-                    if (forwardMovement == float.NegativeInfinity && upwardMovement == float.NegativeInfinity && rightMovement == float.NegativeInfinity) {
-                        break;
-                    }
+                if (shouldTryMove && !noMovement) {
 
                     if (forwardMovement == float.NegativeInfinity) {
                         forwardMovement = 0f;
