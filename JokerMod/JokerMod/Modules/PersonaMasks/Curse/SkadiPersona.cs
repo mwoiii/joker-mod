@@ -14,5 +14,7 @@ namespace JokerMod.Modules.PersonaMasks {
         public override GameObject modelPrefab => null;
 
         public override JokerCatalog.DropTables dropTables => JokerCatalog.DropTables.Tier6;
+
+        public override string calloutString => "Play_Joker_Voice_Skadi";
     }
 }

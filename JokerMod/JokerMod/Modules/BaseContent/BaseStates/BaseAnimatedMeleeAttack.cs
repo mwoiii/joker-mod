@@ -116,7 +116,9 @@ namespace JokerMod.Modules.BaseStates {
                 PlayCrossfade("FullBody, Override", "BufferEmpty", 0.4f);
                 if (justJumped) {
                     OverrideNextStep(0);
-                    characterBody.StartCoroutine(ClaimSkill1());
+                    if (characterBody.enabled) {
+                        characterBody.StartCoroutine(ClaimSkill1());
+                    }
                 }
                 outer.SetNextStateToMain();
                 return;
@@ -208,7 +210,10 @@ namespace JokerMod.Modules.BaseStates {
                         }
 
                         if (action.soundEffect.id != default(AkEventIdArg).id) {
-                            EntitySoundManager.EmitSoundServer(action.soundEffect, characterBody.gameObject);
+                            uint playingID = AkSoundEngine.PostEvent(action.soundEffect.id, characterBody.gameObject);
+                            if (playingID != 0) {
+                                AkSoundEngine.SetRTPCValueByPlayingID("attackSpeed", attackSpdMult, playingID);
+                            }
                         }
 
                         if (action.shouldRepeatMovement && !noMovement) {
@@ -309,9 +314,11 @@ namespace JokerMod.Modules.BaseStates {
         }
 
         protected void OverrideNextStep(int step) {
-            SteppedSkillDef.InstanceData instanceData = (SteppedSkillDef.InstanceData)skillLocator.primary.skillInstanceData;
-            instanceData.step = step;
-            skillLocator.primary.skillInstanceData = instanceData;
+            SteppedSkillDef.InstanceData instanceData = (SteppedSkillDef.InstanceData)skillLocator?.primary?.skillInstanceData;
+            if (instanceData != null) {
+                instanceData.step = step;
+                skillLocator.primary.skillInstanceData = instanceData;
+            }
         }
 
         // made specifically for combo 1 finisher
@@ -324,7 +331,9 @@ namespace JokerMod.Modules.BaseStates {
         public override void OnExit() {
             base.OnExit();
             modelAnimator.SetFloat("Body", 0f);
-            characterBody.StartCoroutine(WaitBeforeResetYNegation());
+            if (characterBody.enabled) {
+                characterBody.StartCoroutine(WaitBeforeResetYNegation());
+            }
             if (stopwatch < duration) {
                 PlayCrossfade("FullBody, Override", "BufferEmpty", 0.4f);
             }

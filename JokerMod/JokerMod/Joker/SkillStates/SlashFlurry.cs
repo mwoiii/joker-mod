@@ -504,9 +504,14 @@ namespace JokerMod.Joker.SkillStates {
         private void Combo9CustomBehaviour() {
             JokerStatController statController = characterBody?.master?.GetComponent<JokerStatController>();
 
+            Ray aimRay = GetAimRay();
+            StartAimMode(aimRay, 2f, false);
+            Vector3 direction = aimRay.direction;
+            direction.y = 0f;
+
             BlastAttack blastAttack = new BlastAttack {
                 attacker = gameObject,
-                position = characterBody.transform.position + characterDirection.forward * 14f,
+                position = characterBody.transform.position + direction * 13f,
                 baseDamage = characterBody.damage * 2f,
                 crit = RollCrit(),
                 falloffModel = BlastAttack.FalloffModel.None,

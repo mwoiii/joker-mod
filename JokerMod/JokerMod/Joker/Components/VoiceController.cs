@@ -79,16 +79,20 @@ namespace JokerMod.Joker.Components {
         }
         public void TryPlayRandomUniqueNetworkedSound(NetworkSoundEventDef[] soundArray, GameObject source, bool maxFiftyFifty = false) {
             if (RollForSoundEvent(soundArray, maxFiftyFifty)) {
-                int idRoll = Utils.rand.Next(soundArray.Length);
+                int idRoll;
                 if (soundArrayPrevIndex.ContainsKey(soundArray)) {
+                    idRoll = Utils.rand.Next(soundArray.Length - 1);
+                    Log.Info($"Prev ID was {soundArrayPrevIndex[soundArray]}, rolled {idRoll}");
                     if (idRoll >= soundArrayPrevIndex[soundArray]) {
                         idRoll++;
                         idRoll %= soundArray.Length;
                     }
                 } else {
+                    idRoll = Utils.rand.Next(soundArray.Length);
                     soundArrayPrevIndex.Add(soundArray, idRoll);
                 }
                 soundArrayPrevIndex[soundArray] = idRoll;
+                Log.Info($"fina roll is {idRoll}");
                 EntitySoundManager.EmitSoundServer(soundArray[idRoll].akId, source);
             }
         }
