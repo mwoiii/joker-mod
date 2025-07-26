@@ -47,6 +47,8 @@ namespace JokerMod.Joker.Components {
 
         public VoiceController voiceController;
 
+        public GameObject jokerUI;
+
         public bool primaryResetTimerActive {
             get {
                 SteppedSkillDef steppedSkillDef = characterBody?.skillLocator?.primary?.skillDef as SteppedSkillDef;
@@ -108,6 +110,7 @@ namespace JokerMod.Joker.Components {
             GlobalEventManager.onCharacterDeathGlobal += JokerOnKills;
             GlobalEventManager.onServerDamageDealt += VoicelineOnHeavyDamge;
             gameObject.AddComponent<AOAController>();
+
             CreateUI();
 
             // spController requires UI to be fully initialised as it wants to instantly access components
@@ -126,6 +129,7 @@ namespace JokerMod.Joker.Components {
 
         private void Start() {
             characterBody = GetComponent<CharacterBody>();
+
             JokerStatController checkStatController = characterBody.master.GetComponent<JokerStatController>();
             if (checkStatController == null) {
                 statController = characterBody.master.gameObject.AddComponent<JokerStatController>();
@@ -135,13 +139,23 @@ namespace JokerMod.Joker.Components {
             statController.master = this;
             voiceController = statController.voiceController;
 
+            StartCoroutine(EnableUIIfLocal());
+
             GetComponent<CharacterDeathBehavior>().deathState = new EntityStates.SerializableEntityStateType(typeof(CollapseDeathState));
         }
 
+        private IEnumerator EnableUIIfLocal() {
+            yield return new WaitUntil(() => LocalUserManager.GetFirstLocalUser()?.cachedBody != null);
+            if (LocalUserManager.GetFirstLocalUser()?.cachedBody == characterBody) {
+                jokerUI.SetActive(true);
+            }
+        }
+
         private void CreateUI() {
-            GameObject jokerUI = Instantiate(Asset.jokerUIPrefab);
+            jokerUI = Instantiate(Asset.jokerUIPrefab);
             GameObject UI = GameObject.Find("HUDSimple(Clone)/MainContainer/MainUIArea/SpringCanvas/BottomRightCluster");
             jokerUI.transform.SetParent(UI.transform, false);
+            jokerUI.SetActive(false);
 
             aoaBarController = jokerUI.transform.Find("AOABarShadow/AOABar").GetComponent<StatBarController>();
             aoaStrongBarController = jokerUI.transform.Find("AOABarShadow/StrongAOABar").GetComponent<StatBarController>();

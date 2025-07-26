@@ -15,7 +15,9 @@ namespace JokerMod.Joker.Components.UI {
         }
 
         public void SetStat(float stat) {
-            statText.text = $"{(int)stat}{suffix}";
+            if (statText != null) {
+                statText.text = $"{(int)stat}{suffix}";
+            }
         }
     }
 }

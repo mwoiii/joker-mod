@@ -115,7 +115,8 @@ namespace JokerMod.Joker.Components {
         private static void SPUpgradeOnLevelUp(CharacterBody self) {
             if (self?.gameObject != null) {
                 JokerMaster master = self.gameObject.GetComponent<JokerMaster>();
-                if (master != null) {
+                SPController spController = master?.spController;
+                if (spController != null) {
                     master.spController.spLevel = self.level;
                 }
             }
