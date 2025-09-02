@@ -25,6 +25,7 @@ namespace JokerMod.Modules {
             Content.AddEntityState(typeof(WaitForReleaseOverrideState));
             Content.AddEntityState(typeof(WaitForReleaseState));
             Content.AddEntityState(typeof(SwapSlotMenu));
+            Content.AddEntityState(typeof(CollapseDeathState));
 
             Content.AddEntityState(typeof(KouhaState));
             Content.AddEntityState(typeof(MakouhaState));

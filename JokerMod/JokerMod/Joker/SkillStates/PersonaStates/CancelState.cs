@@ -8,7 +8,8 @@
             }
 
             if (IsKeyDownAuthority() && fixedAge >= ChargeSpecial.SWAP_THRESHOLD) {
-                SwapSlotMenu nextState = new SwapSlotMenu(true);
+                SwapSlotMenu nextState = new SwapSlotMenu();
+                nextState.skillMenuWasActive = true;
                 base.inputBank.skill4.hasPressBeenClaimed = true;
                 outer.SetNextState(nextState);
             } else if (!IsKeyDownAuthority()) {

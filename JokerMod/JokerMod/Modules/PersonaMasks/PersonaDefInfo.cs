@@ -15,6 +15,6 @@ namespace JokerMod.Modules.PersonaMasks {
 
         public JokerCatalog.DropTables dropTables;
 
-        public string calloutString;
+        public NetworkSoundEventDef calloutSound;
     }
 }

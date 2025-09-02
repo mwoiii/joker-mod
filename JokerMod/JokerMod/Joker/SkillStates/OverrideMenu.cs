@@ -7,6 +7,7 @@ using RoR2;
 using RoR2.Audio;
 using RoR2.Skills;
 using UnityEngine;
+using UnityEngine.Networking;
 
 
 namespace JokerMod.Joker.SkillStates {
@@ -44,8 +45,11 @@ namespace JokerMod.Joker.SkillStates {
             master.skillUsed = false;
             master.EnemySlainDuringMenu += KillInMenu;
 
-            if (shouldPlaySFX) {
+            if (shouldPlaySFX && NetworkServer.active) {
                 master.voiceController.TryPlayRandomNetworkedSound(JokerAssets.summonPersonaSoundEvents, characterBody.gameObject, true);
+            }
+
+            if (shouldPlaySFX && isAuthority) {
                 EntitySoundManager.EmitSoundLocal(JokerAssets.unleashSoundEvent.akId, characterBody.gameObject);
             }
 

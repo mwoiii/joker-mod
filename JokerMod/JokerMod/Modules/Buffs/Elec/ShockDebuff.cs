@@ -14,8 +14,8 @@ namespace JokerMod.Modules.Buffs {
         private static void CreateBuff() {
             buffDef = ScriptableObject.CreateInstance<BuffDef>();
             buffDef.name = "PersonaElecShock";
-            buffDef.iconSprite = null;
-            buffDef.buffColor = Color.yellow;
+            buffDef.iconSprite = Asset.elecDebuffIcon;
+            buffDef.buffColor = new Color(0.98f, 1f, 0.21f);
             buffDef.canStack = false;
             buffDef.isDebuff = true;
             buffDef.isDOT = false;
@@ -26,7 +26,7 @@ namespace JokerMod.Modules.Buffs {
         private static void ShockDebuffMult(HealthComponent self, DamageInfo damageInfo) {
             if (self.body != null && self.body.GetTimedBuffTotalDurationForIndex(buffDef.buffIndex, out _)) {
                 damageInfo.damageColorIndex = Asset.shockColor;
-                damageInfo.damage *= 1.25f;
+                damageInfo.damage *= 1.3f;
             }
         }
     }

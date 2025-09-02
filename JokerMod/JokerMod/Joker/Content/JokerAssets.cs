@@ -1,10 +1,10 @@
 ﻿using JokerMod.Modules;
 using RoR2;
-using RoR2.Projectile;
 using UnityEngine;
 
 namespace JokerMod.Joker {
     public static class JokerAssets {
+        // Why does this exist
         // particle effects
         public static GameObject swordSwingEffect;
 
@@ -63,8 +63,6 @@ namespace JokerMod.Joker {
 
             // swordSwingEffect = _assetBundle.LoadEffect("HenrySwordSwingEffect", true);
             // swordHitImpactEffect = _assetBundle.LoadEffect("ImpactHenrySlash");
-
-            CreateProjectiles();
         }
 
         private static void CreateSounds() {
@@ -197,38 +195,5 @@ namespace JokerMod.Joker {
         }
         */
         #endregion effects
-
-        #region projectiles
-        private static void CreateProjectiles() {
-            CreateBombProjectile();
-            Content.AddProjectilePrefab(bombProjectilePrefab);
-        }
-
-        private static void CreateBombProjectile() {
-            //highly recommend setting up projectiles in editor, but this is a quick and dirty way to prototype if you want
-            bombProjectilePrefab = Asset.CloneProjectilePrefab("CommandoGrenadeProjectile", "HenryBombProjectile");
-
-            //remove their ProjectileImpactExplosion component and start from default values
-            UnityEngine.Object.Destroy(bombProjectilePrefab.GetComponent<ProjectileImpactExplosion>());
-            ProjectileImpactExplosion bombImpactExplosion = bombProjectilePrefab.AddComponent<ProjectileImpactExplosion>();
-
-            bombImpactExplosion.blastRadius = 16f;
-            bombImpactExplosion.blastDamageCoefficient = 1f;
-            bombImpactExplosion.falloffModel = BlastAttack.FalloffModel.None;
-            bombImpactExplosion.destroyOnEnemy = true;
-            bombImpactExplosion.lifetime = 12f;
-            bombImpactExplosion.impactEffect = bombExplosionEffect;
-            bombImpactExplosion.lifetimeExpiredSound = Content.CreateAndAddNetworkSoundEventDef("HenryBombExplosion");
-            bombImpactExplosion.timerAfterImpact = true;
-            bombImpactExplosion.lifetimeAfterImpact = 0.1f;
-
-            ProjectileController bombController = bombProjectilePrefab.GetComponent<ProjectileController>();
-
-            if (_assetBundle.LoadAsset<GameObject>("HenryBombGhost") != null)
-                bombController.ghostPrefab = _assetBundle.CreateProjectileGhostPrefab("HenryBombGhost");
-
-            bombController.startSound = "";
-        }
-        #endregion projectiles
     }
 }

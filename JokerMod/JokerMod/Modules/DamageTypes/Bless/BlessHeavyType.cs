@@ -18,7 +18,7 @@ namespace JokerMod.Modules.DamageTypes {
             if (damageInfo.HasModdedDamageType(damageType)) {
                 CharacterBody attackerBody = damageInfo.attacker?.GetComponent<CharacterBody>();
                 if (attackerBody != null) {
-                    BuffDef buffDef = (BuffDef)Utils.RandomChoice(BlessLightType.buffList);
+                    BuffDef buffDef = (BuffDef)Utils.RandomChoice(BlessUtils.buffList);
                     attackerBody.AddTimedBuff(buffDef, buffDuration);
                 }
             }

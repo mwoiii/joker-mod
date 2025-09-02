@@ -14,8 +14,8 @@ namespace JokerMod.Modules.Buffs {
         private static void CreateBuff() {
             buffDef = ScriptableObject.CreateInstance<BuffDef>();
             buffDef.name = "PersonaBlessHallowed";
-            buffDef.iconSprite = null;
-            buffDef.buffColor = Color.white;
+            buffDef.iconSprite = Asset.blessDebuffIcon;
+            buffDef.buffColor = new Color(1f, 1f, 0.62f);
             buffDef.canStack = false;
             buffDef.isDebuff = true;
             buffDef.isDOT = false;

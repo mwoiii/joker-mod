@@ -18,9 +18,11 @@ namespace JokerMod.Joker.SkillStates.PersonaStates {
 
         protected override float projectileSpeed => 55f;
 
-        protected override float spawnHeight => 10f;
+        protected override float spawnDistance => 10f;
 
-        protected override float forwardDirectionMult => 0f;
+        protected override void ModifyDirection(ref Vector3 direction) {
+            direction = Vector3.up * -1f;
+        }
 
     }
 }

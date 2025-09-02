@@ -1,6 +1,9 @@
 ﻿using System;
 using JokerMod.Modules;
+using R2API.Networking;
+using R2API.Networking.Interfaces;
 using RoR2;
+using UnityEngine.Networking;
 
 namespace JokerMod.Joker.Components {
 
@@ -27,7 +30,7 @@ namespace JokerMod.Joker.Components {
             }
             set {
                 _currentSP = Math.Clamp(value, 0, statController.maxSP);
-                SPUpdate(_currentSP);
+                SPUpdate?.Invoke(_currentSP);
             }
         }
 
@@ -88,6 +91,10 @@ namespace JokerMod.Joker.Components {
             }
         }
 
+        public void SetSPSync(float sp) {
+            new SyncJokerSP(master.characterBody.networkIdentity.netId, sp).Send(NetworkDestination.Clients);
+        }
+
 
         public SPController(JokerMaster master) {
             this.master = master;
@@ -109,7 +116,7 @@ namespace JokerMod.Joker.Components {
         }
 
         public void AOAKillRestoreSP() {
-            currentSP += onKillSP;
+            SetSPSync(currentSP + onKillSP);
         }
 
         private static void SPUpgradeOnLevelUp(CharacterBody self) {
@@ -124,7 +131,7 @@ namespace JokerMod.Joker.Components {
 
         private void SPOnHit(DamageReport damageReport) {
             if ((bool)damageReport.attacker && damageReport.attacker == master.gameObject) {
-                currentSP += onHitSP * damageReport.damageInfo.procCoefficient;
+                SetSPSync(currentSP + onHitSP * damageReport.damageInfo.procCoefficient);
             }
         }
 
@@ -134,16 +141,41 @@ namespace JokerMod.Joker.Components {
 
         private void SubscribeInstanceEvents() {
             GlobalEventManager.onServerDamageDealt += SPOnHit;
-            statController.MaxSPUpdate += master.spBarController.SetMaxStat;
-            SPUpdate += master.spBarController.SetStat;
-            SPUpdate += master.spNumController.SetStat;
         }
 
         public void UnsubscribeInstanceEvents() {
             GlobalEventManager.onServerDamageDealt -= SPOnHit;
-            statController.MaxSPUpdate -= master.spBarController.SetMaxStat;
-            SPUpdate -= master.spBarController.SetStat;
-            SPUpdate -= master.spNumController.SetStat;
+        }
+    }
+
+    public class SyncJokerSP : INetMessage {
+
+        NetworkInstanceId bodyNetId;
+        float sp;
+
+        public SyncJokerSP() {
+        }
+
+        public SyncJokerSP(NetworkInstanceId bodyNetId, float sp) {
+            this.bodyNetId = bodyNetId;
+            this.sp = sp;
+        }
+
+        public void Serialize(NetworkWriter writer) {
+            writer.Write(bodyNetId);
+            writer.Write(sp);
+        }
+
+        public void Deserialize(NetworkReader reader) {
+            bodyNetId = reader.ReadNetworkId();
+            sp = reader.ReadSingle();
+        }
+
+        public void OnReceived() {
+            JokerMaster master = Util.FindNetworkObject(bodyNetId)?.GetComponent<JokerMaster>();
+            if (master != null) {
+                master.spController.currentSP = sp;
+            }
         }
     }
 }

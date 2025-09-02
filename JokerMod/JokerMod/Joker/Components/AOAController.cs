@@ -1,5 +1,7 @@
 ﻿using System;
 using JokerMod.Modules;
+using R2API.Networking;
+using R2API.Networking.Interfaces;
 using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -24,19 +26,21 @@ namespace JokerMod.Joker.Components {
 
         private bool executingStrong;
 
-        private bool aoaKillDidOccur;
+        public bool aoaKillDidOccur;
 
         private CharacterBody characterBody;
 
         private JokerMaster master;
 
-        private const float cooldownMult = 0.85f;
+        public const float cooldownMult = 0.85f;
 
         private const float maskChanceMult = 2.5f;
 
-        private const float maxStrongCharge = 100f;
+        public const float maxStrongCharge = 100f;
 
         private const float onHitStrongCharge = 0.5f;
+
+        private const float onKillStrongCharge = 2f;
 
         public void StartExecution(bool isStrong = false) {
             GlobalEventManager.onCharacterDeathGlobal += AOAOnKill;
@@ -66,22 +70,17 @@ namespace JokerMod.Joker.Components {
         }
 
         private void Start() {
-            // Start off cooldown
             characterBody = gameObject.GetComponent<CharacterBody>();
             master = gameObject.GetComponent<JokerMaster>();
-            master.aoaBarController.SetMaxStat(cooldownThreshold);
             stopwatch = cooldownThreshold;
-
-            // apart from you
-            // idiot
-            master.aoaStrongBarController.SetMaxStat(maxStrongCharge);
-            master.aoaStrongBarController.SetStat(0f);
         }
 
         private void FixedUpdate() {
             if (Util.HasEffectiveAuthority(characterBody.networkIdentity)) {
                 stopwatch += Time.fixedDeltaTime;
-                master.aoaBarController.SetStat(Math.Clamp(stopwatch, 0f, cooldownThreshold));
+                if (master.aoaBarController != null) {
+                    master.aoaBarController.SetStat(Math.Clamp(stopwatch, 0f, cooldownThreshold));
+                }
             }
         }
 
@@ -92,24 +91,64 @@ namespace JokerMod.Joker.Components {
 
             if ((bool)damageReport.attackerBody) {
                 if (damageReport.attackerBody == characterBody) {
-                    MultiplyCooldown(cooldownMult);
-                    master.spController.AOAKillRestoreSP();
-                    currentStrongCharge += 2f;
-                    master.aoaStrongBarController.SetStat(Math.Clamp(currentStrongCharge, 0f, maxStrongCharge));
-                    aoaKillDidOccur = true;
+                    new SyncJokerAOAHitEvent(characterBody.netIdentity.netId, currentStrongCharge + onKillStrongCharge, true).Send(NetworkDestination.Clients);
                 }
             }
         }
 
         private void AOAChargeOnHit(DamageReport damageReport) {
             if ((bool)damageReport.attacker && damageReport.attacker == master.gameObject) {
-                currentStrongCharge += onHitStrongCharge * damageReport.damageInfo.procCoefficient;
-                master.aoaStrongBarController.SetStat(Math.Clamp(currentStrongCharge, 0f, maxStrongCharge));
+                new SyncJokerAOAHitEvent(characterBody.netIdentity.netId, currentStrongCharge + onHitStrongCharge * damageReport.damageInfo.procCoefficient).Send(NetworkDestination.Clients);
             }
         }
 
-        private void MultiplyCooldown(float multiplier) {
+        public void MultiplyCooldown(float multiplier) {
             stopwatch = cooldownThreshold - (cooldownThreshold - stopwatch) * multiplier;
+        }
+    }
+
+    public class SyncJokerAOAHitEvent : INetMessage {
+
+        NetworkInstanceId bodyNetId;
+        float strongCharge;
+        bool didKill;
+
+        public SyncJokerAOAHitEvent() {
+        }
+
+        public SyncJokerAOAHitEvent(NetworkInstanceId bodyNetId, float strongCharge, bool didKill = false) {
+            this.bodyNetId = bodyNetId;
+            this.strongCharge = strongCharge;
+            this.didKill = didKill;
+        }
+
+        public void Serialize(NetworkWriter writer) {
+            writer.Write(bodyNetId);
+            writer.Write(strongCharge);
+            writer.Write(didKill);
+        }
+
+        public void Deserialize(NetworkReader reader) {
+            bodyNetId = reader.ReadNetworkId();
+            strongCharge = reader.ReadSingle();
+            didKill = reader.ReadBoolean();
+        }
+
+        public void OnReceived() {
+            JokerMaster master = Util.FindNetworkObject(bodyNetId)?.GetComponent<JokerMaster>();
+            if (master != null) {
+                master.aoaController.currentStrongCharge = strongCharge;
+
+                if (didKill) {
+                    master.aoaController.MultiplyCooldown(AOAController.cooldownMult);
+                    master.spController.AOAKillRestoreSP();
+                    master.aoaController.aoaKillDidOccur = true;
+                }
+
+                if (master.aoaBarController != null) {
+                    master.aoaStrongBarController.SetStat(Math.Clamp(strongCharge, 0f, AOAController.maxStrongCharge));
+                }
+            }
         }
     }
 }

@@ -18,13 +18,11 @@ namespace JokerMod.Joker.SkillStates {
             }
 
             if (IsKeyDownAuthority() && fixedAge >= SWAP_THRESHOLD) {
-                SwapSlotMenu nextState = new SwapSlotMenu(false);
-                Log.Info("Setting charge state to SwapSlotMenu");
+                SwapSlotMenu nextState = new SwapSlotMenu();
                 base.inputBank.skill4.hasPressBeenClaimed = true;
                 outer.SetNextState(nextState);
             } else if (!IsKeyDownAuthority()) {
                 OverrideMenu nextState = new OverrideMenu();
-                Log.Info("Setting charge state to OverrideMenu");
                 outer.SetNextState(nextState);
                 // EntityStateMachine.FindByCustomName(characterBody.gameObject, "Charge").SetNextState(nextState);
             }

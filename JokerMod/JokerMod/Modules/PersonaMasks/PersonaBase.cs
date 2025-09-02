@@ -24,9 +24,16 @@ namespace JokerMod.Modules.PersonaMasks {
 
         public abstract string calloutString { get; }
 
+        public NetworkSoundEventDef calloutSound { get; private set; }
+
         public virtual void Init() {
             CreateLang();
+            CreateCalloutSound();
             CreatePersona();
+        }
+
+        private void CreateCalloutSound() {
+            calloutSound = Content.CreateAndAddNetworkSoundEventDef(calloutString);
         }
 
         protected void CreateLang() {
@@ -40,7 +47,7 @@ namespace JokerMod.Modules.PersonaMasks {
                 itemDef = itemDef,
                 modelPrefab = modelPrefab,
                 dropTables = dropTables,
-                calloutString = calloutString
+                calloutSound = calloutSound
             });
 
             itemDef = ScriptableObject.CreateInstance<ItemDef>();

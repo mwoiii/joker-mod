@@ -11,6 +11,10 @@ namespace JokerMod.Joker.Components {
 
         private JokerMaster master;
 
+        private float timeSinceLastRolledLine;
+
+        private const float minRolledLineWaitThreshold = 1f;
+
         private Dictionary<NetworkSoundEventDef[], float> soundArrayStopwatches;
 
         private Dictionary<NetworkSoundEventDef[], float> soundArrayMinWait;
@@ -50,9 +54,15 @@ namespace JokerMod.Joker.Components {
             foreach (NetworkSoundEventDef[] key in soundArrayStopwatches.Keys.ToArray()) {
                 soundArrayStopwatches[key] += time;
             }
+            timeSinceLastRolledLine += time;
         }
 
-        private bool RollForSoundEvent(NetworkSoundEventDef[] soundArray, bool maxFiftyFifty) {
+        public bool RollForSoundEvent(NetworkSoundEventDef[] soundArray, bool maxFiftyFifty = false) {
+            if (timeSinceLastRolledLine < minRolledLineWaitThreshold) {
+                return false;
+            }
+
+            // getting elapsed time since last successfull roll for the sound array
             float time = 0f;
             if (sharingArrays.ContainsKey(soundArray)) {
                 soundArray = sharingArrays[soundArray];
@@ -64,14 +74,18 @@ namespace JokerMod.Joker.Components {
                 return false;
             }
 
+            // calculating the random threshold that the time needs to exceed to play
             float chance = (float)Utils.rand.NextDouble() * soundArrayMaxWait[soundArray];
 
+            // fixing at half chance if maxfiftyfifty
             if (maxFiftyFifty && time > soundArrayMaxWait[soundArray] * 0.5f) {
                 time = soundArrayMaxWait[soundArray] * 0.5f;
             }
 
+            // final roll; resetting elapsed time if successful
             if (time > soundArrayMinWait[soundArray] && time > chance) {
                 soundArrayStopwatches[soundArray] = 0f;
+                timeSinceLastRolledLine = 0f;
                 return true;
             }
 
@@ -82,7 +96,6 @@ namespace JokerMod.Joker.Components {
                 int idRoll;
                 if (soundArrayPrevIndex.ContainsKey(soundArray)) {
                     idRoll = Utils.rand.Next(soundArray.Length - 1);
-                    Log.Info($"Prev ID was {soundArrayPrevIndex[soundArray]}, rolled {idRoll}");
                     if (idRoll >= soundArrayPrevIndex[soundArray]) {
                         idRoll++;
                         idRoll %= soundArray.Length;
@@ -92,7 +105,6 @@ namespace JokerMod.Joker.Components {
                     soundArrayPrevIndex.Add(soundArray, idRoll);
                 }
                 soundArrayPrevIndex[soundArray] = idRoll;
-                Log.Info($"fina roll is {idRoll}");
                 EntitySoundManager.EmitSoundServer(soundArray[idRoll].akId, source);
             }
         }

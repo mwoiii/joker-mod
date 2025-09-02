@@ -16,7 +16,7 @@ namespace JokerMod.Joker.SkillStates {
         }
 
         protected override void ApplyPhysics() {
-            if (!characterBody.characterMotor.isGrounded) {
+            if (characterBody.hasEffectiveAuthority && !characterBody.characterMotor.isGrounded) {
 
                 Vector3 force = aimRay.direction * (-1000f - 400f * stock);
 

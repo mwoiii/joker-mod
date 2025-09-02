@@ -2,10 +2,18 @@
 using JokerMod.Joker.SkillStates;
 using JokerMod.Modules;
 using JokerMod.Modules.PersonaMasks;
+using R2API.Networking;
+using R2API.Networking.Interfaces;
 using RoR2;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace JokerMod.Joker.Components {
+    public enum PersonaSlot {
+        Primary,
+        Secondary,
+        Utility
+    }
 
     /// <summary>
     /// Holds stats related to Joker that need to persist between stages, including
@@ -15,6 +23,7 @@ namespace JokerMod.Joker.Components {
     /// Also contains methods to handle the aforementioned stats.
     /// </remarks>
     public class JokerStatController : MonoBehaviour {
+
 
         public PersonaDef primaryPersona;
 
@@ -31,6 +40,8 @@ namespace JokerMod.Joker.Components {
         public VoiceController voiceController;
 
         private float _maxSP;
+
+        private GenericSkill lastUsedSkill;
 
         public float maxSP {
             get {
@@ -101,6 +112,27 @@ namespace JokerMod.Joker.Components {
             MaxSPUpdate?.Invoke(_maxSP);
         }
 
+        public PersonaDef GetPersonaFromLastSkill() {
+            SkillLocator skillLocator = master.GetComponent<SkillLocator>();
+            if (lastUsedSkill == skillLocator.primary) {
+                return primaryPersona;
+            } else if (lastUsedSkill == skillLocator.secondary) {
+                return secondaryPersona;
+            } else if (lastUsedSkill == skillLocator.utility) {
+                return utilityPersona;
+            } else {
+                return null;
+            }
+        }
+
+        public void StoreLastSkillUsed(GenericSkill skill) {
+            lastUsedSkill = skill;
+        }
+
+        public void ReceivePersonaSync(ItemDef itemDef) {
+            new SyncJokerReceivePersona(GetComponent<CharacterMaster>().networkIdentity.netId, (int)itemDef.itemIndex).Send(NetworkDestination.Clients);
+        }
+
         public void ReceivePersona(ItemDef itemDef) {
             PersonaDef persona = JokerCatalog.GetPersonaFromItemDef(itemDef);
             if (!TryAssignPersona(persona)) {
@@ -108,7 +140,11 @@ namespace JokerMod.Joker.Components {
                     DropAfterOverstock(overstockPersona);
                 }
                 overstockPersona = persona;
-                EntityStateMachine.FindByCustomName(master.gameObject, "Charge").SetNextState(new OverstockMenu(master.skillMenuActive));
+                if (master.characterBody.hasEffectiveAuthority) {
+                    OverstockMenu nextState = new OverstockMenu();
+                    nextState.skillMenuWasActive = master.skillMenuActive;
+                    EntityStateMachine.FindByCustomName(master.gameObject, "Charge").SetNextState(nextState);
+                }
             }
         }
 
@@ -123,15 +159,15 @@ namespace JokerMod.Joker.Components {
                 switch (slot) {
                     case 1:
                         droppedPersona = primaryPersona;
-                        AssignPersonaToSlot(ref primaryPersona, overstockPersona, skillLocator.primary);
+                        AssignPersonaToSlot(PersonaSlot.Primary, overstockPersona, skillLocator.primary);
                         break;
                     case 2:
                         droppedPersona = secondaryPersona;
-                        AssignPersonaToSlot(ref secondaryPersona, overstockPersona, skillLocator.secondary);
+                        AssignPersonaToSlot(PersonaSlot.Secondary, overstockPersona, skillLocator.secondary);
                         break;
                     case 3:
                         droppedPersona = utilityPersona;
-                        AssignPersonaToSlot(ref utilityPersona, overstockPersona, skillLocator.utility);
+                        AssignPersonaToSlot(PersonaSlot.Utility, overstockPersona, skillLocator.utility);
                         break;
                     default:
                         droppedPersona = overstockPersona;
@@ -152,7 +188,7 @@ namespace JokerMod.Joker.Components {
                 }
 
                 SkillLocator skillLocator = master.GetComponent<SkillLocator>();
-                ref PersonaDef firstSlotRef = ref primaryPersona; // dummy
+                PersonaSlot firstSlot = 0; // dummy
                 PersonaDef holdFirstPersona = null;
                 GenericSkill firstSlotSkill = null;
 
@@ -161,17 +197,17 @@ namespace JokerMod.Joker.Components {
                 switch (slot1) {
                     case 1:
                         holdFirstPersona = primaryPersona;
-                        firstSlotRef = ref primaryPersona;
+                        firstSlot = PersonaSlot.Primary;
                         firstSlotSkill = skillLocator.primary;
                         break;
                     case 2:
                         holdFirstPersona = secondaryPersona;
-                        firstSlotRef = ref secondaryPersona;
+                        firstSlot = PersonaSlot.Secondary;
                         firstSlotSkill = skillLocator.secondary;
                         break;
                     case 3:
                         holdFirstPersona = utilityPersona;
-                        firstSlotRef = ref utilityPersona;
+                        firstSlot = PersonaSlot.Utility;
                         firstSlotSkill = skillLocator.utility;
                         break;
                 }
@@ -179,28 +215,32 @@ namespace JokerMod.Joker.Components {
                 switch (slot2) {
                     case 1:
                         holdSecondPersona = primaryPersona;
-                        AssignPersonaToSlot(ref primaryPersona, holdFirstPersona, skillLocator.primary);
+                        AssignPersonaToSlot(PersonaSlot.Primary, holdFirstPersona, skillLocator.primary);
                         break;
                     case 2:
                         holdSecondPersona = secondaryPersona;
-                        AssignPersonaToSlot(ref secondaryPersona, holdFirstPersona, skillLocator.secondary);
+                        AssignPersonaToSlot(PersonaSlot.Secondary, holdFirstPersona, skillLocator.secondary);
                         break;
                     case 3:
                         holdSecondPersona = utilityPersona;
-                        AssignPersonaToSlot(ref utilityPersona, holdFirstPersona, skillLocator.utility);
+                        AssignPersonaToSlot(PersonaSlot.Utility, holdFirstPersona, skillLocator.utility);
                         break;
                 }
 
-                AssignPersonaToSlot(ref firstSlotRef, holdSecondPersona, firstSlotSkill);
+                AssignPersonaToSlot(firstSlot, holdSecondPersona, firstSlotSkill);
             }
         }
 
         public void DropAfterOverstock(PersonaDef personaDef) {
+            new SyncJokerDropPersona(GetComponent<CharacterMaster>().netIdentity.netId, personaDef.personaNameToken, master.transform.position).Send(NetworkDestination.Clients);
+            overstockPersona = null;
+        }
+
+        public static void CreatePersonaPickup(PersonaDef personaDef, Vector3 position) {
             GenericPickupController.CreatePickupInfo pickupInfo = default(GenericPickupController.CreatePickupInfo);
             pickupInfo.pickupIndex = PickupCatalog.FindPickupIndex(personaDef.itemDef.itemIndex);
-            pickupInfo.position = master.transform.position;
-            PickupDropletController.CreatePickupDroplet(pickupInfo, master.transform.position, Vector3.zero);
-            overstockPersona = null;
+            pickupInfo.position = position;
+            PickupDropletController.CreatePickupDroplet(pickupInfo, position, Vector3.zero);
         }
 
         private bool TryAssignPersona(PersonaDef personaDef) {
@@ -208,57 +248,186 @@ namespace JokerMod.Joker.Components {
             SkillLocator skillLocator = master.GetComponent<SkillLocator>();
 
             if (primaryPersona.personaNameToken == "EMPTY") {
-                AssignPersonaToSlot(ref primaryPersona, personaDef, skillLocator.primary);
+                AssignPersonaToSlot(PersonaSlot.Primary, personaDef, skillLocator.primary);
                 assigned = true;
             } else if (secondaryPersona.personaNameToken == "EMPTY") {
-                AssignPersonaToSlot(ref secondaryPersona, personaDef, skillLocator.secondary);
+                AssignPersonaToSlot(PersonaSlot.Secondary, personaDef, skillLocator.secondary);
                 assigned = true;
             } else if (utilityPersona.personaNameToken == "EMPTY") {
-                AssignPersonaToSlot(ref utilityPersona, personaDef, skillLocator.utility);
+                AssignPersonaToSlot(PersonaSlot.Utility, personaDef, skillLocator.utility);
                 assigned = true;
             }
 
             return assigned;
         }
 
-        private void AssignPersonaToSlot(ref PersonaDef personaSlot, PersonaDef personaDef, GenericSkill skill) {
+        private void AssignPersonaToSlot(PersonaSlot personaSlot, PersonaDef personaDef, GenericSkill skill) {
             if (master.skillMenuActive) {
-                skill.UnsetSkillOverride(master.gameObject, personaSlot.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
+                switch (personaSlot) {
+                    case PersonaSlot.Primary:
+                        skill.UnsetSkillOverride(master.gameObject, primaryPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
+                        break;
+                    case PersonaSlot.Secondary:
+                        skill.UnsetSkillOverride(master.gameObject, secondaryPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
+                        break;
+                    case PersonaSlot.Utility:
+                        skill.UnsetSkillOverride(master.gameObject, utilityPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
+                        break;
+                }
                 skill.SetSkillOverride(master.gameObject, personaDef.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
             }
-            personaSlot = personaDef;
+            new SyncJokerAssignPersona(GetComponent<CharacterMaster>().networkIdentity.netId, personaDef.personaNameToken, (int)personaSlot).Send(NetworkDestination.Clients);
         }
 
         public void UpdateAndDisplaySPCosts() {
-            if (primaryPersona != null && primaryPersona.baseSPCost > 0) {
-                master.skill1CostController.gameObject.SetActive(true);
-                float skill1Cost = GetSPCost(primaryPersona.baseSPCost);
-                master.skill1CostController.SetStat(skill1Cost);
-            } else {
-                master.skill1CostController.gameObject.SetActive(false);
-            }
+            if (master.characterBody.hasEffectiveAuthority && master.skill1CostController != null) {
+                if (primaryPersona != null && primaryPersona.baseSPCost > 0) {
+                    master.skill1CostController.gameObject.SetActive(true);
+                    float skill1Cost = GetSPCost(primaryPersona.baseSPCost);
+                    master.skill1CostController.SetStat(skill1Cost);
+                } else {
+                    master.skill1CostController.gameObject.SetActive(false);
+                }
 
-            if (secondaryPersona != null && secondaryPersona.baseSPCost > 0) {
-                master.skill2CostController.gameObject.SetActive(true);
-                float skill2Cost = GetSPCost(secondaryPersona.baseSPCost);
-                master.skill2CostController.SetStat(skill2Cost);
-            } else {
-                master.skill2CostController.gameObject.SetActive(false);
-            }
+                if (secondaryPersona != null && secondaryPersona.baseSPCost > 0) {
+                    master.skill2CostController.gameObject.SetActive(true);
+                    float skill2Cost = GetSPCost(secondaryPersona.baseSPCost);
+                    master.skill2CostController.SetStat(skill2Cost);
+                } else {
+                    master.skill2CostController.gameObject.SetActive(false);
+                }
 
-            if (utilityPersona != null && utilityPersona.baseSPCost > 0) {
-                master.skill3CostController.gameObject.SetActive(true);
-                float skill3Cost = GetSPCost(utilityPersona.baseSPCost);
-                master.skill3CostController.SetStat(skill3Cost);
-            } else {
-                master.skill3CostController.gameObject.SetActive(false);
+                if (utilityPersona != null && utilityPersona.baseSPCost > 0) {
+                    master.skill3CostController.gameObject.SetActive(true);
+                    float skill3Cost = GetSPCost(utilityPersona.baseSPCost);
+                    master.skill3CostController.SetStat(skill3Cost);
+                } else {
+                    master.skill3CostController.gameObject.SetActive(false);
+                }
             }
         }
 
         public void HideSPCosts() {
-            master.skill1CostController.gameObject.SetActive(false);
-            master.skill2CostController.gameObject.SetActive(false);
-            master.skill3CostController.gameObject.SetActive(false);
+            if (master.characterBody.hasEffectiveAuthority && master.skill1CostController != null) {
+                master.skill1CostController.gameObject.SetActive(false);
+                master.skill2CostController.gameObject.SetActive(false);
+                master.skill3CostController.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    public class SyncJokerReceivePersona : INetMessage {
+
+        NetworkInstanceId masterNetId;
+        int itemIndex;
+
+        public SyncJokerReceivePersona() {
+        }
+
+        public SyncJokerReceivePersona(NetworkInstanceId masterNetId, int itemIndex) {
+            this.masterNetId = masterNetId;
+            this.itemIndex = itemIndex;
+        }
+
+        public void Serialize(NetworkWriter writer) {
+            writer.Write(masterNetId);
+            writer.Write(itemIndex);
+        }
+
+        public void Deserialize(NetworkReader reader) {
+            masterNetId = reader.ReadNetworkId();
+            itemIndex = reader.ReadInt32();
+        }
+
+        public void OnReceived() {
+            bool isUs = LocalUserManager.GetFirstLocalUser()?.cachedMaster.netIdentity.netId == masterNetId;
+            JokerStatController statController = Util.FindNetworkObject(masterNetId)?.GetComponent<JokerStatController>();
+            if (isUs && statController != null) {
+                statController.ReceivePersona(ItemCatalog.GetItemDef((ItemIndex)itemIndex));
+            }
+        }
+    }
+
+    public class SyncJokerDropPersona : INetMessage {
+
+        NetworkInstanceId masterNetId;
+        string personaNameToken;
+        Vector3 position;
+
+        public SyncJokerDropPersona() {
+        }
+
+        public SyncJokerDropPersona(NetworkInstanceId masterNetId, string personaNameToken, Vector3 position) {
+            this.masterNetId = masterNetId;
+            this.personaNameToken = personaNameToken;
+            this.position = position;
+        }
+
+        public void Serialize(NetworkWriter writer) {
+            writer.Write(masterNetId);
+            writer.Write(personaNameToken);
+            writer.Write(position);
+        }
+
+        public void Deserialize(NetworkReader reader) {
+            masterNetId = reader.ReadNetworkId();
+            personaNameToken = reader.ReadString();
+            position = reader.ReadVector3();
+        }
+
+        public void OnReceived() {
+            if (NetworkServer.active) {
+                JokerStatController statController = Util.FindNetworkObject(masterNetId)?.GetComponent<JokerStatController>();
+                if (statController != null) {
+                    statController.overstockPersona = null;
+                }
+                JokerStatController.CreatePersonaPickup(JokerCatalog.GetPersonaFromNameToken(personaNameToken), position);
+            }
+        }
+    }
+
+    public class SyncJokerAssignPersona : INetMessage {
+
+        NetworkInstanceId masterNetId;
+        string personaNameToken;
+        int personaSlot;
+
+        public SyncJokerAssignPersona() {
+        }
+
+        public SyncJokerAssignPersona(NetworkInstanceId masterNetId, string personaNameToken, int personaSlot) {
+            this.masterNetId = masterNetId;
+            this.personaNameToken = personaNameToken;
+            this.personaSlot = personaSlot;
+        }
+
+        public void Serialize(NetworkWriter writer) {
+            writer.Write(masterNetId);
+            writer.Write(personaNameToken);
+            writer.Write(personaSlot);
+        }
+
+        public void Deserialize(NetworkReader reader) {
+            masterNetId = reader.ReadNetworkId();
+            personaNameToken = reader.ReadString();
+            personaSlot = reader.ReadInt32();
+        }
+
+        public void OnReceived() {
+            JokerStatController statController = Util.FindNetworkObject(masterNetId)?.GetComponent<JokerStatController>();
+            if (statController != null) {
+                switch ((PersonaSlot)personaSlot) {
+                    case PersonaSlot.Primary:
+                        statController.primaryPersona = JokerCatalog.GetPersonaFromNameToken(personaNameToken);
+                        break;
+                    case PersonaSlot.Secondary:
+                        statController.secondaryPersona = JokerCatalog.GetPersonaFromNameToken(personaNameToken);
+                        break;
+                    case PersonaSlot.Utility:
+                        statController.utilityPersona = JokerCatalog.GetPersonaFromNameToken(personaNameToken);
+                        break;
+                }
+            }
         }
     }
 }

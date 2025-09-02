@@ -14,13 +14,13 @@ namespace JokerMod.Modules.DamageTypes {
 
         private static void AddHeavyCurseDamage(HealthComponent self, DamageInfo damageInfo) {
             if (damageInfo.HasModdedDamageType(damageType)) {
-                damageInfo.damage += self.fullCombinedHealth * 0.12f;
                 if (self.body != null) {
                     int buffCount = self.body.GetBuffCount(RoR2Content.Buffs.PermanentCurse);
-                    for (int i = 0; i < 35 - buffCount; i++) {
+                    for (int i = 0; i < 20; i++) {
                         self.body.AddBuff(RoR2Content.Buffs.PermanentCurse);
                     }
                 }
+                CurseUtils.TakeExtraPercentageDamage(self, damageInfo, 0.12f);
             }
         }
     }

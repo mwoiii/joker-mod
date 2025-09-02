@@ -3,11 +3,11 @@ using RoR2.Skills;
 using UnityEngine;
 
 namespace JokerMod.Modules.PersonaMasks {
-    public class AsparasPersona : PersonaBase {
+    public class ApsarasPersona : PersonaBase {
 
-        public override string personaNameToken => "ASPARAS";
+        public override string personaNameToken => "APSARAS";
 
-        public override string personaName => "Asparas";
+        public override string personaName => "Apsaras";
 
         public override SkillDef skillDef => JokerCatalog.GetSkillDefFromType(typeof(BufuState));
 
@@ -15,6 +15,6 @@ namespace JokerMod.Modules.PersonaMasks {
 
         public override JokerCatalog.DropTables dropTables => JokerCatalog.DropTables.Tier1 | JokerCatalog.DropTables.Tier2;
 
-        public override string calloutString => "Play_Joker_Voice_Asparas";
+        public override string calloutString => "Play_Joker_Voice_Apsaras";
     }
 }

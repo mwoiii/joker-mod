@@ -47,12 +47,12 @@ namespace JokerMod.Modules {
             new MolochPersona().Init();
 
             // Ice
-            new AsparasPersona().Init();
+            new ApsarasPersona().Init();
             new JackFrostPersona().Init();
             new LilimPersona().Init();
             new ByakkoPersona().Init();
             new KingFrostPersona().Init();
-            new YamatanoOrochiPersona().Init();
+            new YamataNoOrochiPersona().Init();
 
             // Wind
             new KelpiePersona().Init();
@@ -134,7 +134,7 @@ namespace JokerMod.Modules {
                         if (userProfile != null) {
                             userProfile.DiscoverPickup(pickupDef.pickupIndex);
                         }
-                        body.GetComponent<JokerMaster>().statController.ReceivePersona(itemDef);
+                        body.GetComponent<JokerMaster>().statController.ReceivePersonaSync(itemDef);
 
                         UnityEngine.Object.Destroy(self.gameObject);
                     }

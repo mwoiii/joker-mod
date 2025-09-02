@@ -31,7 +31,6 @@ namespace JokerMod.Joker.SkillStates {
             aimRay = GetAimRay();
             StartAimMode(aimRay, 2f, false);
             // base.PlayAnimation("Gesture Additive, Right", "FirePistol, Right");
-            EffectManager.SimpleSoundEffect(JokerAssets.fireSoundEvent.index, gameObject.transform.position, true);
             AddRecoil(-0.6f, 0.6f, -0.6f, 0.6f);
 
             // movement if airborne
@@ -43,12 +42,13 @@ namespace JokerMod.Joker.SkillStates {
 
             if (isAuthority) {
                 GetBullet().Fire();
+                EffectManager.SimpleSoundEffect(JokerAssets.fireSoundEvent.index, gameObject.transform.position, true);
             }
 
         }
 
         protected virtual void ApplyPhysics() {
-            if (!characterBody.characterMotor.isGrounded) {
+            if (characterBody.hasEffectiveAuthority && !characterBody.characterMotor.isGrounded) {
 
                 Vector3 force = aimRay.direction * -1000f;
 
@@ -72,8 +72,8 @@ namespace JokerMod.Joker.SkillStates {
 
         protected virtual BulletAttack GetBullet() {
             BulletAttack bullet = new BulletAttack {
-                owner = gameObject,
-                weapon = gameObject,
+                owner = characterBody.gameObject,
+                weapon = characterBody.gameObject,
                 origin = aimRay.origin,
                 aimVector = aimRay.direction,
                 minSpread = 0f,
@@ -91,6 +91,7 @@ namespace JokerMod.Joker.SkillStates {
                 HitEffectNormal = false,
                 stopperMask = LayerIndex.world.mask,
                 smartCollision = true,
+                damageType = DamageTypeCombo.GenericSecondary,
                 maxDistance = 300f
             };
             return bullet;

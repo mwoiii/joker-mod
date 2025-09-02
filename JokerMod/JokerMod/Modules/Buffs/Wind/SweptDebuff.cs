@@ -15,8 +15,8 @@ namespace JokerMod.Modules.Buffs {
         private static void CreateBuff() {
             buffDef = ScriptableObject.CreateInstance<BuffDef>();
             buffDef.name = "PersonaWindSwept";
-            buffDef.iconSprite = null;
-            buffDef.buffColor = Color.green;
+            buffDef.iconSprite = Asset.windDebuffIcon;
+            buffDef.buffColor = new Color(0.54f, 0.96f, 0.19f);
             buffDef.canStack = false;
             buffDef.isDebuff = true;
             buffDef.isDOT = false;
@@ -27,7 +27,7 @@ namespace JokerMod.Modules.Buffs {
         private static void SweptDebuffMult(HealthComponent self, DamageInfo damageInfo) {
             if (self.body != null && self.body.GetTimedBuffTotalDurationForIndex(buffDef.buffIndex, out _)) {
                 damageInfo.damageColorIndex = Asset.sweptColor;
-                damageInfo.damage *= 1.5f;
+                damageInfo.damage *= 2f;
             }
         }
 

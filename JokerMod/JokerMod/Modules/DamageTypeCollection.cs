@@ -48,6 +48,7 @@ namespace JokerMod.Modules {
             NukeHeavyType.Init();
 
             // Psy
+            PsyLightWeakType.Init();
             PsyLightType.Init();
             PsyMediumType.Init();
             PsyHeavyType.Init();

@@ -6,13 +6,6 @@ namespace JokerMod.Modules.DamageTypes {
 
         public static DamageAPI.ModdedDamageType damageType;
 
-        // temp
-        public static BuffDef[] buffList = [
-            DLC2Content.Buffs.IncreaseDamageBuff,
-            RoR2Content.Buffs.AttackSpeedOnCrit,
-            DLC2Content.Buffs.ElusiveAntlersBuff
-        ];
-
         public static void Init() {
             damageType = DamageAPI.ReserveDamageType();
             DamageTypeCollection.damageTypes.Add(damageType);
@@ -25,7 +18,7 @@ namespace JokerMod.Modules.DamageTypes {
             if (damageInfo.HasModdedDamageType(damageType)) {
                 CharacterBody attackerBody = damageInfo.attacker?.GetComponent<CharacterBody>();
                 if (attackerBody != null) {
-                    BuffDef buffDef = (BuffDef)Utils.RandomChoice(buffList);
+                    BuffDef buffDef = (BuffDef)Utils.RandomChoice(BlessUtils.buffList);
                     attackerBody.AddTimedBuff(buffDef, buffDuration);
                 }
             }

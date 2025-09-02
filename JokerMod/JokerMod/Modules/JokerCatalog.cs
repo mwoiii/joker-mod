@@ -208,7 +208,7 @@ namespace JokerMod.Modules {
 
             // failsafe 
             if (!selectedList.Any()) {
-                Log.Warning($"Selected Persona tier was empty (index {Array.IndexOf(choices, selectedList)}! Selecting one from nearest populated tier...");
+                Log.Warning($"Selected Persona tier was empty (index {Array.IndexOf(choices, selectedList)}!) Selecting one from nearest populated tier...");
 
                 int centerIndex = Array.IndexOf(choices, selectedList);
                 int offset = 1;

@@ -5,11 +5,7 @@ using RoR2;
 namespace JokerMod.Joker.SkillStates {
     public class OverstockMenu : OverrideMenu {
 
-        private bool skillMenuWasActive;
-
-        public OverstockMenu(bool skillMenuWasActive) {
-            this.skillMenuWasActive = skillMenuWasActive;
-        }
+        public bool skillMenuWasActive;
 
         public override void OnEnter() {
             base.OnEnter();
@@ -19,23 +15,29 @@ namespace JokerMod.Joker.SkillStates {
 
         public override void FixedUpdate() {
             base.FixedUpdate();
-            if (base.inputBank.skill1.down) {
-                SwapAndWaitRelease(1);
-            } else if (base.inputBank.skill2.down) {
-                SwapAndWaitRelease(2);
-            } else if (base.inputBank.skill3.down) {
-                SwapAndWaitRelease(3);
-            } else if (base.inputBank.skill4.down) {
-                SwapAndWaitRelease(4);
+            if (isAuthority) {
+                if (base.inputBank.skill1.down) {
+                    SwapAndWaitRelease(1);
+                } else if (base.inputBank.skill2.down) {
+                    SwapAndWaitRelease(2);
+                } else if (base.inputBank.skill3.down) {
+                    SwapAndWaitRelease(3);
+                } else if (base.inputBank.skill4.down) {
+                    SwapAndWaitRelease(4);
+                }
             }
         }
 
         private void SwapAndWaitRelease(int slot) {
             master.statController.SwapPersonaWithOverstock(slot);
             if (skillMenuWasActive) {
-                outer.SetNextState(new WaitForReleaseOverrideState(slot));
+                WaitForReleaseOverrideState nextState = new WaitForReleaseOverrideState();
+                nextState.slot = slot;
+                outer.SetNextState(nextState);
             } else {
-                outer.SetNextState(new WaitForReleaseState(slot));
+                WaitForReleaseState nextState = new WaitForReleaseState();
+                nextState.slot = slot;
+                outer.SetNextState(nextState);
             }
         }
 

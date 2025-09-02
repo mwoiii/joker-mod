@@ -151,7 +151,8 @@ namespace JokerMod.Joker.SkillStates {
             AOAController aoaController = GetComponent<AOAController>();
 
             if (fixedAge >= AOA_STRONG_THRESHOLD && aoaController.StrongIsAvailable) {
-                AOADash nextState = new AOADash(true);
+                AOADash nextState = new AOADash();
+                nextState.isStrong = true;
                 EntityStateMachine.FindByCustomName(characterBody.gameObject, "Body").SetNextState(nextState);
                 outer.SetNextStateToMain();
             } else if (fixedAge >= AOA_THRESHOLD && aoaController.StandardIsAvailable) {

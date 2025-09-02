@@ -9,11 +9,7 @@ namespace JokerMod.Joker.SkillStates {
 
         private const float lollypopFactor = 2.5f;
 
-        private bool isStrong;
-
-        public AOADash(bool isStrong = false) {
-            this.isStrong = isStrong;
-        }
+        public bool isStrong;
 
         public override void FixedUpdate() {
             base.FixedUpdate();

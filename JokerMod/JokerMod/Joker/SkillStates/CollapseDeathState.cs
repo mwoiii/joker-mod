@@ -16,11 +16,14 @@ namespace JokerMod.Joker.SkillStates {
 
         public override void OnEnter() {
             base.OnEnter();
+            Log.Info("Entering death state");
             if ((bool)base.characterMotor) {
                 base.characterMotor.enabled = true;
             }
 
-            VoiceController.PlayRandomNetworkedSound(JokerAssets.deathSoundEvents, characterBody.gameObject);
+            if (isAuthority) {
+                VoiceController.PlayRandomNetworkedSound(JokerAssets.deathSoundEvents, characterBody.gameObject);
+            }
         }
 
         public override void PlayDeathAnimation(float crossfadeDuration = 0.1f) {
@@ -32,10 +35,12 @@ namespace JokerMod.Joker.SkillStates {
 
             // sort of band-aid fix but idk why sometimes the animation just doesn't happen / gets overridden
             Animator animator = GetModelAnimator();
-            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(animator.GetLayerIndex("FullBody, Override"));
-            bool isPlaying = stateInfo.IsName("Death");
-            if (!isPlaying) {
-                PlayDeathAnimation();
+            if (animator != null) {
+                AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(animator.GetLayerIndex("FullBody, Override"));
+                bool isPlaying = stateInfo.IsName("Death");
+                if (!isPlaying) {
+                    PlayDeathAnimation();
+                }
             }
 
             if (NetworkServer.active && base.fixedAge > 4f) {

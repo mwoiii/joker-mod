@@ -22,7 +22,7 @@ namespace JokerMod.Modules.PersonaMasks {
 
         public SkillTypes.SkillType skillType;
 
-        public string calloutString;
+        public NetworkSoundEventDef calloutSound;
 
         public static PersonaDef CreatePersonaDefFromInfo(PersonaDefInfo personaDefInfo) {
             PersonaDef personaDef = (PersonaDef)ScriptableObject.CreateInstance(typeof(PersonaDef));
@@ -32,7 +32,7 @@ namespace JokerMod.Modules.PersonaMasks {
             personaDef.itemDef = personaDefInfo.itemDef;
             personaDef.modelPrefab = personaDefInfo.modelPrefab;
             personaDef.dropTables = personaDefInfo.dropTables;
-            personaDef.calloutString = personaDefInfo.calloutString;
+            personaDef.calloutSound = personaDefInfo.calloutSound;
             PersonaSkillBaseState skill = (PersonaSkillBaseState)Activator.CreateInstance(personaDef.skillDef.activationState.stateType);
             personaDef.baseSPCost = skill.baseSPCost;
             personaDef.skillType = skill.skillType;

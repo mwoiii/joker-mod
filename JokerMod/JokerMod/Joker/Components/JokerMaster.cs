@@ -21,7 +21,10 @@ namespace JokerMod.Joker.Components {
     /// for data that needs to persist between stages.
     /// </remarks>
     public class JokerMaster : MonoBehaviour {
+
         public SPController spController;
+
+        public AOAController aoaController;
 
         public bool skillMenuActive;
 
@@ -109,12 +112,6 @@ namespace JokerMod.Joker.Components {
         private void Awake() {
             GlobalEventManager.onCharacterDeathGlobal += JokerOnKills;
             GlobalEventManager.onServerDamageDealt += VoicelineOnHeavyDamge;
-            gameObject.AddComponent<AOAController>();
-
-            CreateUI();
-
-            // spController requires UI to be fully initialised as it wants to instantly access components
-            StartCoroutine(OnUIStarted());
         }
 
         private void VoicelineOnHeavyDamge(DamageReport damageReport) {
@@ -130,6 +127,21 @@ namespace JokerMod.Joker.Components {
         private void Start() {
             characterBody = GetComponent<CharacterBody>();
 
+            SetupStatController();
+
+            voiceController = statController.voiceController;
+
+            spController = new SPController(this);
+            aoaController = gameObject.AddComponent<AOAController>();
+
+            StartCoroutine(CreateUIIfLocal());
+
+            CharacterDeathBehavior characterDeathBehavour = GetComponent<CharacterDeathBehavior>();
+            characterDeathBehavour.deathState = new EntityStates.SerializableEntityStateType(typeof(CollapseDeathState));
+            characterDeathBehavour.deathStateMachine = EntityStateMachine.FindByCustomName(gameObject, "Body");
+        }
+
+        private void SetupStatController() {
             JokerStatController checkStatController = characterBody.master.GetComponent<JokerStatController>();
             if (checkStatController == null) {
                 statController = characterBody.master.gameObject.AddComponent<JokerStatController>();
@@ -137,25 +149,18 @@ namespace JokerMod.Joker.Components {
                 statController = checkStatController;
             }
             statController.master = this;
-            voiceController = statController.voiceController;
-
-            StartCoroutine(EnableUIIfLocal());
-
-            GetComponent<CharacterDeathBehavior>().deathState = new EntityStates.SerializableEntityStateType(typeof(CollapseDeathState));
+            characterBody.onSkillActivatedServer += statController.StoreLastSkillUsed;
         }
 
-        private IEnumerator EnableUIIfLocal() {
+        private IEnumerator CreateUIIfLocal() {
             yield return new WaitUntil(() => LocalUserManager.GetFirstLocalUser()?.cachedBody != null);
-            if (LocalUserManager.GetFirstLocalUser()?.cachedBody == characterBody) {
-                jokerUI.SetActive(true);
+            if (LocalUserManager.GetFirstLocalUser()?.cachedBody != characterBody) {
+                yield break;
             }
-        }
 
-        private void CreateUI() {
             jokerUI = Instantiate(Asset.jokerUIPrefab);
             GameObject UI = GameObject.Find("HUDSimple(Clone)/MainContainer/MainUIArea/SpringCanvas/BottomRightCluster");
             jokerUI.transform.SetParent(UI.transform, false);
-            jokerUI.SetActive(false);
 
             aoaBarController = jokerUI.transform.Find("AOABarShadow/AOABar").GetComponent<StatBarController>();
             aoaStrongBarController = jokerUI.transform.Find("AOABarShadow/StrongAOABar").GetComponent<StatBarController>();
@@ -165,11 +170,24 @@ namespace JokerMod.Joker.Components {
             skill1CostController = jokerUI.transform.Find("SPCosts/Skill1").GetComponent<StatNumberController>();
             skill2CostController = jokerUI.transform.Find("SPCosts/Skill2").GetComponent<StatNumberController>();
             skill3CostController = jokerUI.transform.Find("SPCosts/Skill3").GetComponent<StatNumberController>();
+
+            ConnectUI();
         }
 
-        private IEnumerator OnUIStarted() {
-            yield return new WaitUntil(() => spNumController.hasStarted);
-            spController = new SPController(this);
+        private void ConnectUI() {
+            // listen to relevant events
+            statController.MaxSPUpdate += spBarController.SetMaxStat;
+            spController.SPUpdate += spBarController.SetStat;
+            spController.SPUpdate += spNumController.SetStat;
+
+            // set defaults
+            spBarController.SetMaxStat(statController.maxSP);
+            spBarController.SetStat(statController.maxSP);
+            spNumController.SetStat(spController.currentSP);
+
+            aoaBarController.SetMaxStat(aoaController.cooldownThreshold);
+            aoaStrongBarController.SetMaxStat(AOAController.maxStrongCharge);
+            aoaStrongBarController.SetStat(0f);
         }
 
         private void OnDestroy() {

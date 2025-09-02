@@ -11,9 +11,9 @@ namespace JokerMod.Modules.Buffs {
 
         public static DotController.DotIndex dotIndex;
 
-        private static float stackFractionDamage = 0.001f;
+        private static float stackFractionDamage = 0.0005f;
 
-        private static float extraDebuffFractionDamage = 0.0005f;
+        private static float extraDebuffFractionDamage = 0.001f;
 
         public static void Init() {
             CreateBuff();
@@ -23,8 +23,8 @@ namespace JokerMod.Modules.Buffs {
         private static void CreateBuff() {
             buffDef = ScriptableObject.CreateInstance<BuffDef>();
             buffDef.name = "PersonaNukeIrradiated";
-            buffDef.iconSprite = null;
-            buffDef.buffColor = Color.red;
+            buffDef.iconSprite = Asset.nukeDebuffIcon;
+            buffDef.buffColor = new Color(0.04f, 0.97f, 0.98f);
             buffDef.canStack = true;
             buffDef.isDebuff = true;
             buffDef.isDOT = true;

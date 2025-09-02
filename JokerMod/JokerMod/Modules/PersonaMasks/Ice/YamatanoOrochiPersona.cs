@@ -3,9 +3,10 @@ using RoR2.Skills;
 using UnityEngine;
 
 namespace JokerMod.Modules.PersonaMasks {
-    public class YamatanoOrochiPersona : PersonaBase {
+    public class YamataNoOrochiPersona : PersonaBase {
 
-        public override string personaNameToken => "YAMATANOOROCHI";
+
+        public override string personaNameToken => "YamataNoOrochi";
 
         public override string personaName => "Yamata-no-Orochi";
 

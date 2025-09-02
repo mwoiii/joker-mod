@@ -20,6 +20,10 @@ namespace JokerMod.Modules {
 
         public static List<GameObject> projectilePrefabs = new List<GameObject>();
 
+        public static GameObject slashLightPrefab;
+
+        public static GameObject slashHeavyPrefab;
+
         public static GameObject eihaPrefab;
 
         public static GameObject eigaPrefab;
@@ -86,6 +90,14 @@ namespace JokerMod.Modules {
 
         public static GameObject jokerUIPrefab;
 
+        public static Sprite nukeDebuffIcon;
+
+        public static Sprite elecDebuffIcon;
+
+        public static Sprite windDebuffIcon;
+
+        public static Sprite blessDebuffIcon;
+
         internal static string assemblyDir {
             get {
                 return Path.GetDirectoryName(JokerPlugin.pluginInfo.Location);
@@ -93,6 +105,10 @@ namespace JokerMod.Modules {
         }
 
         public static void PopulateAssets() {
+            slashLightPrefab = Asset.LoadEffect(mainAssetBundle, "JokerKnifeSlashLight");
+
+            slashHeavyPrefab = Asset.LoadEffect(mainAssetBundle, "JokerKnifeSlashHeavy");
+
             eihaPrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "EihaProjectile");
 
             eigaPrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "EigaProjectile");
@@ -155,6 +171,11 @@ namespace JokerMod.Modules {
             sweptColor = R2API.ColorsAPI.RegisterDamageColor(new Color(0.45f, 0.98f, 0.48f));
 
             jokerUIPrefab = mainAssetBundle.LoadAsset<GameObject>("JokerUI");
+
+            nukeDebuffIcon = mainAssetBundle.LoadAsset<Sprite>("nukeDebuff.png");
+            elecDebuffIcon = mainAssetBundle.LoadAsset<Sprite>("elecDebuff.png");
+            windDebuffIcon = mainAssetBundle.LoadAsset<Sprite>("windDebuff.png");
+            blessDebuffIcon = mainAssetBundle.LoadAsset<Sprite>("blessDebuff.png");
         }
 
         public static void AssignDamageTypes() {

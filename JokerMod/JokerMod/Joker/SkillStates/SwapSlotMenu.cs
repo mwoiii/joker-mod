@@ -6,17 +6,13 @@ using RoR2;
 namespace JokerMod.Joker.SkillStates {
     public class SwapSlotMenu : OverrideMenu {
 
-        private bool skillMenuWasActive;
+        public bool skillMenuWasActive;
 
         private int firstSelection;
 
         private Func<InputBankTest.ButtonState> waitForButton;
 
         private bool buttonStillDown = false;
-
-        public SwapSlotMenu(bool skillMenuWasActive) {
-            this.skillMenuWasActive = skillMenuWasActive;
-        }
 
         public override void OnEnter() {
             base.OnEnter();
@@ -79,11 +75,17 @@ namespace JokerMod.Joker.SkillStates {
             firstSelection = 0;
         }
 
+
+
         private void CloseMenu(int slot) {
             if (skillMenuWasActive) {
-                outer.SetNextState(new WaitForReleaseOverrideState(slot));
+                WaitForReleaseOverrideState nextState = new WaitForReleaseOverrideState();
+                nextState.slot = slot;
+                outer.SetNextState(nextState);
             } else {
-                outer.SetNextState(new WaitForReleaseState(slot));
+                WaitForReleaseState nextState = new WaitForReleaseState();
+                nextState.slot = slot;
+                outer.SetNextState(nextState);
             }
         }
 

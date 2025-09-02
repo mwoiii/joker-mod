@@ -73,7 +73,6 @@ namespace JokerMod.Joker.SkillStates {
             hitSoundString = "";
             muzzleString = swingIndex % 2 == 0 ? "SwingLeft" : "SwingRight";
             playbackRateParam = "Slash.playbackRate";
-            //swingEffectPrefab = JokerAssets.swordSwingEffect;
             hitEffectPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Dagger/DaggerImpact.prefab").WaitForCompletion();
             impactSound = JokerAssets.primarySlashSoundEvents[0].index;
 
@@ -202,6 +201,8 @@ namespace JokerMod.Joker.SkillStates {
             base.FixedUpdate();
 
             // audio balancing
+            // will be potentially quieter the more jokers there are if they are dispersed
+            // but working around this is likely not worth the cost (tracking new healthcomponents, calculating distance each update..)
             int countDif = attack.ignoredHealthComponentList.Count - prevHealthComponentCount;
             if (countDif > 0) {
                 slashEventInstanceCount += countDif;
@@ -271,6 +272,15 @@ namespace JokerMod.Joker.SkillStates {
                     shouldRepeatMovement: false
                 ),
                 new SubstepAction(
+                    occurrenceTime: 0.08f,
+                    forwardMovement: 15f,
+                    smoothMovementStart: 0f,
+                    smoothMovementEnd: 0.25f,
+                    customBehaviour: () => {
+                         EffectManager.SimpleMuzzleFlash(Asset.slashLightPrefab, base.gameObject, "GroundCombo1-1", false);
+                    }
+                ),
+                new SubstepAction(
                     occurrenceTime: 0f,
                     forwardMovement: 15f,
                     smoothMovementStart: 0f,
@@ -294,7 +304,10 @@ namespace JokerMod.Joker.SkillStates {
                     smoothMovementStart: 0f,
                     smoothMovementEnd: 0.54f,
                     soundEffect: JokerAssets.primarySwingSoundEvents[1].akId,
-                    customBehaviour: PlayRandomWeakVoice
+                    customBehaviour: () => {
+                        PlayRandomWeakVoice();
+                        EffectManager.SimpleMuzzleFlash(Asset.slashLightPrefab, base.gameObject, "GroundCombo2-1", false);
+                    }
                 ),
                 new SubstepAction(
                     occurrenceTime: 0f,
@@ -320,7 +333,10 @@ namespace JokerMod.Joker.SkillStates {
                     smoothMovementEnd: 0.40f,
                     damageCoefficient: 1.6f,
                     soundEffect: JokerAssets.primarySwingSoundEvents[2].akId,
-                    customBehaviour: PlayRandomMediumChargeVoice
+                    customBehaviour: () => {
+                        PlayRandomMediumChargeVoice();
+                        EffectManager.SimpleMuzzleFlash(Asset.slashLightPrefab, base.gameObject, "GroundCombo3-1", false);
+                    }
                 )
             };
         }
@@ -339,7 +355,10 @@ namespace JokerMod.Joker.SkillStates {
                     smoothMovementEnd: 0.42f,
                     damageCoefficient: 1.8f,
                     soundEffect: JokerAssets.primarySwingSoundEvents[3].akId,
-                    customBehaviour: PlayRandomMediumVoice
+                    customBehaviour: () => {
+                        PlayRandomMediumVoice();
+                        EffectManager.SimpleMuzzleFlash(Asset.slashLightPrefab, base.gameObject, "GroundCombo4-1", false);
+                    }
                 )
             };
         }
@@ -364,15 +383,20 @@ namespace JokerMod.Joker.SkillStates {
                     smoothMovementStart: 0.1f,
                     smoothMovementEnd: 0.72f,
                     soundEffect: JokerAssets.primarySwingSoundEvents[6].akId,
-                    customBehaviour: PlayRandomWeakVoice
+                    customBehaviour: () => {
+                        PlayRandomWeakVoice();
+                        EffectManager.SimpleMuzzleFlash(Asset.slashHeavyPrefab, base.gameObject, "GroundCombo5-2", false);
+                    }
                 ),
-
                 new SubstepAction(
                     occurrenceTime: 0.26f,
                     forwardMovement: 12f,
                     smoothMovementStart: 0.1f,
                     smoothMovementEnd: 0.72f,
-                    soundEffect: JokerAssets.primarySwingSoundEvents[5].akId
+                    soundEffect: JokerAssets.primarySwingSoundEvents[5].akId,
+                    customBehaviour: () => {
+                        EffectManager.SimpleMuzzleFlash(Asset.slashHeavyPrefab, base.gameObject, "GroundCombo5-1", false);
+                    }
                 ),
                 new SubstepAction(
                     occurrenceTime: 0.1f,
@@ -397,9 +421,12 @@ namespace JokerMod.Joker.SkillStates {
                     smoothMovementStart: 0.1f,
                     smoothMovementEnd: 0.8f,
                     shouldResetHitbox: true,
-                    damageCoefficient: 2.5f,
+                    damageCoefficient: 5.5f,
                     soundEffect: JokerAssets.primarySwingSoundEvents[5].akId,
-                    customBehaviour: PlayRandomStrongOrAltVoice
+                    customBehaviour: () => {
+                        PlayRandomStrongOrAltVoice();
+                        EffectManager.SimpleMuzzleFlash(Asset.slashHeavyPrefab, base.gameObject, "GroundCombo6-3", false);
+                    }
                 ),
                 new SubstepAction(
                     occurrenceTime: 0.57f,
@@ -415,14 +442,20 @@ namespace JokerMod.Joker.SkillStates {
                     smoothMovementStart: 0.1f,
                     smoothMovementEnd: 0.8f,
                     shouldResetHitbox: true,
-                    soundEffect: JokerAssets.primarySwingSoundEvents[6].akId
+                    soundEffect: JokerAssets.primarySwingSoundEvents[6].akId,
+                    customBehaviour: () => {
+                        EffectManager.SimpleMuzzleFlash(Asset.slashHeavyPrefab, base.gameObject, "GroundCombo6-2", false);
+                    }
                 ),
                 new SubstepAction(
                     occurrenceTime: 0.29f,
                     forwardMovement: 9f,
                     smoothMovementStart: 0.1f,
                     smoothMovementEnd: 0.8f,
-                    soundEffect: JokerAssets.primarySwingSoundEvents[6].akId
+                    soundEffect: JokerAssets.primarySwingSoundEvents[6].akId,
+                    customBehaviour: () => {
+                        EffectManager.SimpleMuzzleFlash(Asset.slashHeavyPrefab, base.gameObject, "GroundCombo6-1", false);
+                    }
                 ),
                 new SubstepAction(
                     occurrenceTime: 0.1f,
@@ -487,7 +520,7 @@ namespace JokerMod.Joker.SkillStates {
         private void InitCombo9SubstepActions() {
             substepActions = new List<SubstepAction> {
                 new SubstepAction(
-                    occurrenceTime: 0.36f,
+                    occurrenceTime: 0.3f,
                     forwardMovement: 0f,
                     shouldRepeatMovement: false,
                     customBehaviour: Combo9CustomBehaviour
@@ -504,10 +537,26 @@ namespace JokerMod.Joker.SkillStates {
         private void Combo9CustomBehaviour() {
             JokerStatController statController = characterBody?.master?.GetComponent<JokerStatController>();
 
+            int roll = Utils.rand.Next(2);
+            if (roll == 0) {
+                PlayRandomStrongVoice();
+            } else {
+                if (statController.primaryPersona.skillType.IsSupportType()) {
+                    voiceController.TryPlayRandomNetworkedSound(JokerAssets.castSkillSupportSoundEvents, characterBody.gameObject);
+                } else {
+                    voiceController.TryPlayRandomNetworkedSound(JokerAssets.castSkillAttackSoundEvents, characterBody.gameObject);
+                }
+            }
+
+            if (!characterBody.hasEffectiveAuthority) {
+                return;
+            }
+
             Ray aimRay = GetAimRay();
             StartAimMode(aimRay, 2f, false);
             Vector3 direction = aimRay.direction;
             direction.y = 0f;
+            direction.Normalize();
 
             BlastAttack blastAttack = new BlastAttack {
                 attacker = gameObject,
@@ -651,17 +700,6 @@ namespace JokerMod.Joker.SkillStates {
                     default:
                         break;
                 }
-
-                int roll = Utils.rand.Next(2);
-                if (roll == 0) {
-                    PlayRandomStrongVoice();
-                } else {
-                    if (statController.primaryPersona.skillType.IsSupportType()) {
-                        voiceController.TryPlayRandomNetworkedSound(JokerAssets.castSkillSupportSoundEvents, characterBody.gameObject);
-                    } else {
-                        voiceController.TryPlayRandomNetworkedSound(JokerAssets.castSkillAttackSoundEvents, characterBody.gameObject);
-                    }
-                }
             }
 
             blastAttack?.Fire();
@@ -691,7 +729,8 @@ namespace JokerMod.Joker.SkillStates {
                     smoothMovementStart: 0.5f,
                     smoothMovementEnd: 0.89f,
                     shouldResetHitbox: true,
-                    damageCoefficient: 3.5f
+                    damageCoefficient: 3.5f,
+                    procCoefficient: 2f
                 ),
                 new SubstepAction(
                     occurrenceTime: 0.4f,
@@ -706,6 +745,7 @@ namespace JokerMod.Joker.SkillStates {
                     smoothMovementStart: 0.2f,
                     smoothMovementEnd: 0.4f,
                     damageCoefficient: 2.5f,
+                    procCoefficient: 1.25f,
                     soundEffect: JokerAssets.primarySwingSoundEvents[0].akId
                 )
             };
@@ -736,8 +776,7 @@ namespace JokerMod.Joker.SkillStates {
                     forwardMovement: 0f,
                     upwardMovement: 0f,
                     shouldRepeatMovement: false,
-                    negateBoneY: true,
-                    shouldResetHitbox: true
+                    negateBoneY: true
                 ),
                  new SubstepAction(
                     occurrenceTime: 0.4f,
@@ -769,7 +808,10 @@ namespace JokerMod.Joker.SkillStates {
                 new SubstepAction(
                     occurrenceTime: 0.16f,
                     soundEffect: JokerAssets.primarySwingSoundEvents[2].akId,
-                    customBehaviour: PlayRandomWeakVoice
+                    customBehaviour: () => {
+                        PlayRandomWeakVoice();
+                        EffectManager.SimpleMuzzleFlash(Asset.slashLightPrefab, base.gameObject, "AirCombo1-1", false);
+                    }
                 )
             };
         }
@@ -779,7 +821,10 @@ namespace JokerMod.Joker.SkillStates {
                 new SubstepAction(
                     occurrenceTime: 0.16f,
                     soundEffect: JokerAssets.primarySwingSoundEvents[3].akId,
-                    customBehaviour: PlayRandomWeakVoice
+                    customBehaviour: () => {
+                        PlayRandomWeakVoice();
+                        EffectManager.SimpleMuzzleFlash(Asset.slashLightPrefab, base.gameObject, "AirCombo1-2", false);
+                    }
                 )
             };
         }
@@ -789,7 +834,10 @@ namespace JokerMod.Joker.SkillStates {
                 new SubstepAction(
                     occurrenceTime: 0.4f,
                     soundEffect: JokerAssets.primarySwingSoundEvents[4].akId,
-                    customBehaviour: PlayRandomMediumVoice
+                    customBehaviour: () => {
+                        PlayRandomMediumVoice();
+                        EffectManager.SimpleMuzzleFlash(Asset.slashLightPrefab, base.gameObject, "AirCombo1-3", false);
+                    }
                 ),
                 new SubstepAction(
                     occurrenceTime: 0f,

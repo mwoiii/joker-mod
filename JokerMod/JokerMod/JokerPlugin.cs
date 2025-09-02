@@ -2,8 +2,10 @@ using System.Security;
 using System.Security.Permissions;
 using BepInEx;
 using JokerMod.Joker;
+using JokerMod.Joker.Components;
 using JokerMod.Modules;
 using R2API;
+using R2API.Networking;
 using R2API.Utils;
 using RoR2;
 
@@ -13,6 +15,7 @@ using RoR2;
 namespace JokerMod {
     [BepInDependency(R2API.ContentManagement.R2APIContentManager.PluginGUID)]
     [BepInDependency(LanguageAPI.PluginGUID)]
+    [BepInDependency(NetworkingAPI.PluginGUID)]
 
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
     [BepInPlugin(MODUID, MODNAME, MODVERSION)]
@@ -34,6 +37,8 @@ namespace JokerMod {
             pluginInfo = Info;
 
             Log.Init(Logger);
+
+            RegisterNetMessages();
 
             States.Register();
 
@@ -59,6 +64,14 @@ namespace JokerMod {
             DamageTypeCollection.Init();
             Hooks.AddHooks();
             Asset.AssignDamageTypes();
+        }
+
+        private void RegisterNetMessages() {
+            NetworkingAPI.RegisterMessageType<SyncJokerSP>();
+            NetworkingAPI.RegisterMessageType<SyncJokerReceivePersona>();
+            NetworkingAPI.RegisterMessageType<SyncJokerDropPersona>();
+            NetworkingAPI.RegisterMessageType<SyncJokerAOAHitEvent>();
+            NetworkingAPI.RegisterMessageType<SyncJokerAssignPersona>();
         }
     }
 }

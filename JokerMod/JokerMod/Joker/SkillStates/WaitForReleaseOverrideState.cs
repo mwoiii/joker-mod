@@ -6,11 +6,7 @@ using RoR2;
 namespace JokerMod.Joker.SkillStates {
     public class WaitForReleaseOverrideState : OverrideMenu {
 
-        int slot;
-
-        public WaitForReleaseOverrideState(int slot) {
-            this.slot = slot;
-        }
+        public int slot;
 
         public override void FixedUpdate() {
             if (WaitForReleaseState.CheckSkillUpOrInterrupt(slot, base.inputBank)) {

@@ -1,6 +1,8 @@
 ﻿using EntityStates;
 using JokerMod.Joker.Components;
+using JokerMod.Modules;
 using JokerMod.Modules.PersonaSkills;
+using RoR2.Audio;
 
 namespace JokerMod.Joker.SkillStates.BaseStates {
     public abstract class PersonaSkillBaseState : BaseState {
@@ -31,16 +33,25 @@ namespace JokerMod.Joker.SkillStates.BaseStates {
             }
 
             if (master.statController.TryCastSkill(baseSPCost)) {
-                if (skillType.IsSupportType()) {
-                    master.voiceController.TryPlayRandomNetworkedSound(JokerAssets.castSkillSupportSoundEvents, characterBody.gameObject);
-                } else {
-                    master.voiceController.TryPlayRandomNetworkedSound(JokerAssets.castSkillAttackSoundEvents, characterBody.gameObject);
+                // rolling separately to allow for specific persona callout
+                if (master.voiceController.RollForSoundEvent(JokerAssets.castSkillAttackSoundEvents)) {
+                    if (Utils.rand.NextDouble() > 0.25) {
+                        // standard callout
+                        if (skillType.IsSupportType()) {
+                            VoiceController.PlayRandomNetworkedSound(JokerAssets.castSkillSupportSoundEvents, characterBody.gameObject);
+                        } else {
+                            VoiceController.PlayRandomNetworkedSound(JokerAssets.castSkillAttackSoundEvents, characterBody.gameObject);
+                        }
+                    } else {
+                        // persona callout
+                        EntitySoundManager.EmitSoundServer(master.statController.GetPersonaFromLastSkill().calloutSound.akId, characterBody.gameObject);
+                    }
                 }
                 master.skillUsed = true;
                 canFire = true;
             }
 
-            if (canFire) {
+            if (canFire && characterBody.hasEffectiveAuthority) {
                 ActivateSkill();
             } else {
                 baseDuration = 0f;

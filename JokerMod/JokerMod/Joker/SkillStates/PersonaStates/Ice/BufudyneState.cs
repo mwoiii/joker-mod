@@ -8,7 +8,7 @@ namespace JokerMod.Joker.SkillStates.PersonaStates {
 
         protected override GameObject projectilePrefab => Asset.bufudynePrefab;
 
-        protected override float spawnRadius => 15f;
+        protected override float spawnRadius => 8f;
 
         protected override int projectileQuantity => 8;
 
@@ -17,8 +17,6 @@ namespace JokerMod.Joker.SkillStates.PersonaStates {
         protected override float projectileIntervalUpper => 0.16f;
 
         protected override float projectileSpeed => 30f;
-
-        protected override float spawnHeight => 9f;
 
     }
 }
