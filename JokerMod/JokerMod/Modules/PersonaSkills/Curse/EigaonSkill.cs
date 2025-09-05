@@ -18,7 +18,7 @@ namespace JokerMod.Modules.PersonaSkills {
         public override string skillNameToken => "EIGAON";
 
         public override string skillDescription => "Cast a heavy curse projectile, dealing <style=cIsDamage>800% damage</style> plus " +
-            $"<style=cIsHealth>12% max health</style> damage. Applies up to <style=cIsHealth>35 stacks of permanent curse</style>.";
+            $"at least <style=cIsHealth>12% max health</style> damage. Applies up to <style=cIsHealth>35 stacks of permanent curse</style>.";
 
         public override string skillName => "Eigaon";
 

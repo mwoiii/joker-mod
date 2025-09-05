@@ -22,7 +22,13 @@ namespace JokerMod.Modules {
 
         public static GameObject slashLightPrefab;
 
+        public static GameObject slashLightLongPrefab;
+
         public static GameObject slashHeavyPrefab;
+
+        public static GameObject slashHitPrefab;
+
+        public static GameObject slashHitStrongPrefab;
 
         public static GameObject eihaPrefab;
 
@@ -107,7 +113,13 @@ namespace JokerMod.Modules {
         public static void PopulateAssets() {
             slashLightPrefab = Asset.LoadEffect(mainAssetBundle, "JokerKnifeSlashLight");
 
+            slashLightLongPrefab = Asset.LoadEffect(mainAssetBundle, "JokerKnifeSlashLightLong");
+
             slashHeavyPrefab = Asset.LoadEffect(mainAssetBundle, "JokerKnifeSlashHeavy");
+
+            slashHitPrefab = Asset.LoadEffect(mainAssetBundle, "KnifeHitEffect");
+
+            slashHitStrongPrefab = Asset.LoadEffect(mainAssetBundle, "KnifeHitEffectStrong");
 
             eihaPrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "EihaProjectile");
 

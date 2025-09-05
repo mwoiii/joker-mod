@@ -21,7 +21,7 @@ namespace JokerMod.Modules.DamageTypes {
                         self.body.AddBuff(RoR2Content.Buffs.PermanentCurse);
                     }
                 }
-                CurseUtils.TakeExtraPercentageDamage(self, damageInfo, 0.03f);
+                CurseUtils.TakeExtraDamage(self, damageInfo, 0.03f, 2f);
             }
         }
     }

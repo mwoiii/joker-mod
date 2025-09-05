@@ -87,7 +87,7 @@ namespace JokerMod.Modules.BaseStates {
 
         private int currentSubstepCount;
 
-        private BoneDeltaNeutralizer boneDeltaNeutralizer;
+        protected BoneDeltaNeutralizer boneDeltaNeutralizer;
 
         public override void OnEnter() {
             characterBody.onJump += () => justJumped = true;
@@ -331,9 +331,6 @@ namespace JokerMod.Modules.BaseStates {
         public override void OnExit() {
             base.OnExit();
             modelAnimator.SetFloat("Body", 0f);
-            if (characterBody.enabled) {
-                characterBody.StartCoroutine(WaitBeforeResetYNegation());
-            }
             if (stopwatch < duration) {
                 PlayCrossfade("FullBody, Override", "BufferEmpty", 0.4f);
             }

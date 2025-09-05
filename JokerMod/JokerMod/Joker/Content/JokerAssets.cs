@@ -21,6 +21,10 @@ namespace JokerMod.Joker {
 
         public static NetworkSoundEventDef[] primarySlashSoundEvents;
 
+        public static NetworkSoundEventDef[] primaryImpactSoundEvents;
+
+        public static NetworkSoundEventDef[] primaryImpactStrongSoundEvents;
+
         public static NetworkSoundEventDef[] primarySwingSoundEvents;
 
         public static NetworkSoundEventDef[] primaryVoiceWeakSoundEvents;
@@ -48,6 +52,8 @@ namespace JokerMod.Joker {
         public static NetworkSoundEventDef thrashStopSoundEvent;
 
         public static NetworkSoundEventDef thrashFinisherSoundEvent;
+
+        public static NetworkSoundEventDef knifeWeakHitSoundEvent;
 
         //projectiles
         public static GameObject bombProjectilePrefab;
@@ -92,6 +98,19 @@ namespace JokerMod.Joker {
                 Content.CreateAndAddNetworkSoundEventDef("Play_Slash1"),
                 Content.CreateAndAddNetworkSoundEventDef("Play_Slash2"),
                 Content.CreateAndAddNetworkSoundEventDef("Play_Slash3"),
+            ];
+
+            primaryImpactSoundEvents = [
+                Content.CreateAndAddNetworkSoundEventDef("Play_KnifeHitWeak1"),
+                Content.CreateAndAddNetworkSoundEventDef("Play_KnifeHitWeak2"),
+                Content.CreateAndAddNetworkSoundEventDef("Play_KnifeHitWeak3"),
+            ];
+
+            primaryImpactStrongSoundEvents = [
+                Content.CreateAndAddNetworkSoundEventDef("Play_KnifeHitStrong1"),
+                Content.CreateAndAddNetworkSoundEventDef("Play_KnifeHitStrong2"),
+                Content.CreateAndAddNetworkSoundEventDef("Play_KnifeHitStrong3"),
+                Content.CreateAndAddNetworkSoundEventDef("Play_KnifeHitStrong4"),
             ];
 
             primarySwingSoundEvents = [
@@ -163,6 +182,8 @@ namespace JokerMod.Joker {
             thrashStopSoundEvent = Content.CreateAndAddNetworkSoundEventDef("Stop_Thrashing");
 
             thrashFinisherSoundEvent = Content.CreateAndAddNetworkSoundEventDef("Play_ThrashingFinisher");
+
+            knifeWeakHitSoundEvent = Content.CreateAndAddNetworkSoundEventDef("Play_KnifeWeakHit");
         }
 
         #region effects

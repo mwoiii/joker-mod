@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using JokerMod.Joker.Components.Animation;
 using JokerMod.Joker.Components.UI;
 using JokerMod.Joker.SkillStates;
 using JokerMod.Joker.SkillStates.PersonaStates;
@@ -51,6 +52,8 @@ namespace JokerMod.Joker.Components {
         public VoiceController voiceController;
 
         public GameObject jokerUI;
+
+        public BoneDeltaNeutralizer boneDeltaNeutralizer;
 
         public bool primaryResetTimerActive {
             get {
@@ -127,6 +130,12 @@ namespace JokerMod.Joker.Components {
         private void Start() {
             characterBody = GetComponent<CharacterBody>();
 
+            boneDeltaNeutralizer = characterBody?.modelLocator?.modelTransform?.GetComponent<BoneDeltaNeutralizer>();
+
+            if (boneDeltaNeutralizer != null) {
+                characterBody.characterMotor.onHitGroundAuthority += CancelYNegationOnLand;
+            }
+
             SetupStatController();
 
             voiceController = statController.voiceController;
@@ -174,6 +183,10 @@ namespace JokerMod.Joker.Components {
             ConnectUI();
         }
 
+        private void CancelYNegationOnLand(ref CharacterMotor.HitGroundInfo _) {
+            boneDeltaNeutralizer.negateY = false;
+        }
+
         private void ConnectUI() {
             // listen to relevant events
             statController.MaxSPUpdate += spBarController.SetMaxStat;
@@ -199,6 +212,7 @@ namespace JokerMod.Joker.Components {
             bool triedActivateFinisher = characterBody != null && characterBody.inputBank.activateEquipment.justPressed && primaryResetTimerActive;
             if (triedActivateFinisher) {
                 SteppedSkillDef.InstanceData instanceData = (SteppedSkillDef.InstanceData)characterBody?.skillLocator?.primary?.skillInstanceData;
+                characterBody.inputBank.activateEquipment.wasDown = true;
                 if (instanceData != null) {
                     if (instanceData.step > 0 && instanceData.step <= 5) {
                         instanceData.step += 5;

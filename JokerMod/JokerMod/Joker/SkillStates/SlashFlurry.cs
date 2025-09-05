@@ -15,7 +15,6 @@ using MonoMod.Cil;
 using R2API;
 using RoR2;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 namespace JokerMod.Joker.SkillStates {
 
@@ -30,6 +29,8 @@ namespace JokerMod.Joker.SkillStates {
         private static int slashEventInstanceCount;
 
         private int _prevHealthComponentCount;
+
+        private bool isStrongAttack = false;
 
         private int prevHealthComponentCount {
             get {
@@ -69,11 +70,10 @@ namespace JokerMod.Joker.SkillStates {
             attackRecoil = 0.5f;
             hitHopVelocity = 4f;
 
-            swingSoundString = "HenrySwordSwing";
-            hitSoundString = "";
+            hitSoundString = "Play_KnifeWeakHit";
             muzzleString = swingIndex % 2 == 0 ? "SwingLeft" : "SwingRight";
             playbackRateParam = "Slash.playbackRate";
-            hitEffectPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Dagger/DaggerImpact.prefab").WaitForCompletion();
+            hitEffectPrefab = Asset.slashHitPrefab;
             impactSound = JokerAssets.primarySlashSoundEvents[0].index;
 
             // Log.Info($"swingIndex: {swingIndex}");
@@ -123,6 +123,8 @@ namespace JokerMod.Joker.SkillStates {
                     attackStartPercentTime = 0.16f; // 0.256
                     attackEndPercentTime = 0.63f; // 1.008
                     earlyExitPercentTime = 0.79f; // 1.264
+                    hitEffectPrefab = Asset.slashHitStrongPrefab;
+                    isStrongAttack = true;
                     InitCombo6SubstepActions();
                     OverrideNextStep(0);
                     break;
@@ -164,6 +166,8 @@ namespace JokerMod.Joker.SkillStates {
                     attackStartPercentTime = 0.25f;
                     attackEndPercentTime = 0.65f;
                     earlyExitPercentTime = 0.77f;
+                    hitEffectPrefab = Asset.slashHitStrongPrefab;
+                    isStrongAttack = true;
                     InitCombo11SubstepActions();
                     OverrideNextStep(0);
                     break;
@@ -196,7 +200,13 @@ namespace JokerMod.Joker.SkillStates {
         }
 
         public override void FixedUpdate() {
+            // one impact noise per fixedupdate so hitting loads of enemies same frame is only ever one noise at a time
             attack.impactSound = ((NetworkSoundEventDef)Utils.RandomChoice(JokerAssets.primarySlashSoundEvents)).index;
+            if (isStrongAttack) {
+                hitSoundString = ((NetworkSoundEventDef)Utils.RandomChoice(JokerAssets.primaryImpactStrongSoundEvents)).eventName;
+            } else {
+                hitSoundString = ((NetworkSoundEventDef)Utils.RandomChoice(JokerAssets.primaryImpactSoundEvents)).eventName;
+            }
 
             base.FixedUpdate();
 
@@ -214,6 +224,7 @@ namespace JokerMod.Joker.SkillStates {
             // finishers
             if (!earlyMovementCancel) {
                 if (inputBank.activateEquipment.justPressed && swingIndex < 5 && bufferFinisher == false) {
+                    inputBank.activateEquipment.wasDown = true;
                     bufferFinisher = true;
                 } else if (swingIndex > 11 && isGrounded) {
                     PlayCrossfade("FullBody, Override", "BufferEmpty", 0.4f);
@@ -327,16 +338,22 @@ namespace JokerMod.Joker.SkillStates {
                     shouldRepeatMovement: false
                 ),
                 new SubstepAction(
+                    occurrenceTime: 0.22f,
+                    forwardMovement: 21f,
+                    smoothMovementStart: 0.2f,
+                    smoothMovementEnd: 0.40f,
+                    customBehaviour: () => {
+                        EffectManager.SimpleMuzzleFlash(Asset.slashLightPrefab, base.gameObject, "GroundCombo3-1", false);
+                    }
+                ),
+                new SubstepAction(
                     occurrenceTime: 0.2f,
                     forwardMovement: 21f,
                     smoothMovementStart: 0.2f,
                     smoothMovementEnd: 0.40f,
                     damageCoefficient: 1.6f,
                     soundEffect: JokerAssets.primarySwingSoundEvents[2].akId,
-                    customBehaviour: () => {
-                        PlayRandomMediumChargeVoice();
-                        EffectManager.SimpleMuzzleFlash(Asset.slashLightPrefab, base.gameObject, "GroundCombo3-1", false);
-                    }
+                    customBehaviour: PlayRandomMediumChargeVoice
                 )
             };
         }
@@ -444,6 +461,15 @@ namespace JokerMod.Joker.SkillStates {
                     shouldResetHitbox: true,
                     soundEffect: JokerAssets.primarySwingSoundEvents[6].akId,
                     customBehaviour: () => {
+                        EffectManager.SimpleMuzzleFlash(Asset.slashHeavyPrefab, base.gameObject, "GroundCombo6-1", false);
+                    }
+                ),
+                new SubstepAction(
+                    occurrenceTime: 0.36f,
+                    forwardMovement: 9f,
+                    smoothMovementStart: 0.1f,
+                    smoothMovementEnd: 0.8f,
+                    customBehaviour: () => {
                         EffectManager.SimpleMuzzleFlash(Asset.slashHeavyPrefab, base.gameObject, "GroundCombo6-2", false);
                     }
                 ),
@@ -487,7 +513,10 @@ namespace JokerMod.Joker.SkillStates {
                     smoothMovementEnd: 0.52f,
                     negateBoneY: true,
                     soundEffect: JokerAssets.primarySwingSoundEvents[4].akId,
-                    customBehaviour: PlayRandomMediumChargeVoice
+                    customBehaviour: () => {
+                        PlayRandomMediumChargeVoice();
+                        EffectManager.SimpleMuzzleFlash(Asset.slashLightLongPrefab, base.gameObject, "GroundCombo1-F", false);
+                    }
                 ),
                 new SubstepAction(
                     occurrenceTime: 0.1f,
