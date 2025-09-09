@@ -13,8 +13,11 @@ using JokerMod.Modules.PersonaSkills;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using R2API;
+using R2API.Networking;
+using R2API.Networking.Interfaces;
 using RoR2;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace JokerMod.Joker.SkillStates {
 
@@ -24,13 +27,27 @@ namespace JokerMod.Joker.SkillStates {
 
         private VoiceController voiceController;
 
+        private JokerMaster jokerMaster;
+
         private bool bufferFinisher;
 
         private static int slashEventInstanceCount;
 
         private int _prevHealthComponentCount;
 
-        private bool isStrongAttack = false;
+        public enum VFX {
+            slashLightPrefab,
+            slashLightLongPrefab,
+            slashHeavyPrefab,
+            slashHeavyBarragePrefab,
+            slashHitPrefab,
+            slashHitStrongPrefab,
+            slashBurstPrefab,
+            stabRingsPrefab,
+            slashImpactLightPrefab,
+            slashImpactHeavyPrefab,
+            slashAirWavesPrefab
+        }
 
         private int prevHealthComponentCount {
             get {
@@ -43,7 +60,10 @@ namespace JokerMod.Joker.SkillStates {
 
         public override void OnEnter() {
 
+            jokerMaster = characterBody.GetComponent<JokerMaster>();
+
             statController = characterBody?.master?.GetComponent<JokerStatController>();
+
             if (statController != null) {
                 voiceController = statController.voiceController;
                 statController.isUsingPrimary = true;
@@ -123,8 +143,6 @@ namespace JokerMod.Joker.SkillStates {
                     attackStartPercentTime = 0.16f; // 0.256
                     attackEndPercentTime = 0.63f; // 1.008
                     earlyExitPercentTime = 0.79f; // 1.264
-                    hitEffectPrefab = Asset.slashHitStrongPrefab;
-                    isStrongAttack = true;
                     InitCombo6SubstepActions();
                     OverrideNextStep(0);
                     break;
@@ -166,8 +184,8 @@ namespace JokerMod.Joker.SkillStates {
                     attackStartPercentTime = 0.25f;
                     attackEndPercentTime = 0.65f;
                     earlyExitPercentTime = 0.77f;
-                    hitEffectPrefab = Asset.slashHitStrongPrefab;
-                    isStrongAttack = true;
+                    skipHitEffects = true;
+                    hitboxGroupName = "Finisher5Group";
                     InitCombo11SubstepActions();
                     OverrideNextStep(0);
                     break;
@@ -202,11 +220,8 @@ namespace JokerMod.Joker.SkillStates {
         public override void FixedUpdate() {
             // one impact noise per fixedupdate so hitting loads of enemies same frame is only ever one noise at a time
             attack.impactSound = ((NetworkSoundEventDef)Utils.RandomChoice(JokerAssets.primarySlashSoundEvents)).index;
-            if (isStrongAttack) {
-                hitSoundString = ((NetworkSoundEventDef)Utils.RandomChoice(JokerAssets.primaryImpactStrongSoundEvents)).eventName;
-            } else {
-                hitSoundString = ((NetworkSoundEventDef)Utils.RandomChoice(JokerAssets.primaryImpactSoundEvents)).eventName;
-            }
+            hitSoundString = ((NetworkSoundEventDef)Utils.RandomChoice(JokerAssets.primaryImpactSoundEvents)).eventName;
+
 
             base.FixedUpdate();
 
@@ -247,7 +262,7 @@ namespace JokerMod.Joker.SkillStates {
             var isJokerAttackingDelegate = new Func<EquipmentSlot, bool>((EquipmentSlot equipmentSlot) => {
                 JokerStatController statController = equipmentSlot?.characterBody?.master?.GetComponent<JokerStatController>();
                 if (statController != null) {
-                    return statController.isUsingPrimary || statController.master.primaryResetTimerActive;
+                    return statController.isUsingPrimary || statController.jokerMaster.primaryResetTimerActive;
                 }
                 return false;
             });
@@ -288,7 +303,7 @@ namespace JokerMod.Joker.SkillStates {
                     smoothMovementStart: 0f,
                     smoothMovementEnd: 0.25f,
                     customBehaviour: () => {
-                         EffectManager.SimpleMuzzleFlash(Asset.slashLightPrefab, base.gameObject, "GroundCombo1-1", false);
+                         PlayVFXSync(VFX.slashLightPrefab, "GroundCombo1-1");
                     }
                 ),
                 new SubstepAction(
@@ -317,7 +332,7 @@ namespace JokerMod.Joker.SkillStates {
                     soundEffect: JokerAssets.primarySwingSoundEvents[1].akId,
                     customBehaviour: () => {
                         PlayRandomWeakVoice();
-                        EffectManager.SimpleMuzzleFlash(Asset.slashLightPrefab, base.gameObject, "GroundCombo2-1", false);
+                        PlayVFXSync(VFX.slashLightPrefab, "GroundCombo2-1");
                     }
                 ),
                 new SubstepAction(
@@ -343,7 +358,7 @@ namespace JokerMod.Joker.SkillStates {
                     smoothMovementStart: 0.2f,
                     smoothMovementEnd: 0.40f,
                     customBehaviour: () => {
-                        EffectManager.SimpleMuzzleFlash(Asset.slashLightPrefab, base.gameObject, "GroundCombo3-1", false);
+                        PlayVFXSync(VFX.slashLightPrefab, "GroundCombo3-1");
                     }
                 ),
                 new SubstepAction(
@@ -366,6 +381,15 @@ namespace JokerMod.Joker.SkillStates {
                     shouldRepeatMovement: false
                 ),
                 new SubstepAction(
+                    occurrenceTime: 0.38f,
+                    forwardMovement: 15f,
+                    smoothMovementStart: 0.27f,
+                    smoothMovementEnd: 0.42f,
+                    customBehaviour: () => {
+                        PlayVFXSync(VFX.slashImpactLightPrefab, "GroundCombo4-1B");
+                    }
+                ),
+                new SubstepAction(
                     occurrenceTime: 0.27f,
                     forwardMovement: 15f,
                     smoothMovementStart: 0.27f,
@@ -374,7 +398,7 @@ namespace JokerMod.Joker.SkillStates {
                     soundEffect: JokerAssets.primarySwingSoundEvents[3].akId,
                     customBehaviour: () => {
                         PlayRandomMediumVoice();
-                        EffectManager.SimpleMuzzleFlash(Asset.slashLightPrefab, base.gameObject, "GroundCombo4-1", false);
+                        PlayVFXSync(VFX.slashLightPrefab, "GroundCombo4-1");
                     }
                 )
             };
@@ -402,7 +426,7 @@ namespace JokerMod.Joker.SkillStates {
                     soundEffect: JokerAssets.primarySwingSoundEvents[6].akId,
                     customBehaviour: () => {
                         PlayRandomWeakVoice();
-                        EffectManager.SimpleMuzzleFlash(Asset.slashHeavyPrefab, base.gameObject, "GroundCombo5-2", false);
+                        PlayVFXSync(VFX.slashHeavyPrefab, "GroundCombo5-2");
                     }
                 ),
                 new SubstepAction(
@@ -412,7 +436,7 @@ namespace JokerMod.Joker.SkillStates {
                     smoothMovementEnd: 0.72f,
                     soundEffect: JokerAssets.primarySwingSoundEvents[5].akId,
                     customBehaviour: () => {
-                        EffectManager.SimpleMuzzleFlash(Asset.slashHeavyPrefab, base.gameObject, "GroundCombo5-1", false);
+                        PlayVFXSync(VFX.slashHeavyPrefab, "GroundCombo5-1");
                     }
                 ),
                 new SubstepAction(
@@ -433,16 +457,27 @@ namespace JokerMod.Joker.SkillStates {
                     shouldRepeatMovement: false
                 ),
                 new SubstepAction(
+                    occurrenceTime: 0.76f,
+                    forwardMovement: 9f,
+                    smoothMovementStart: 0.1f,
+                    smoothMovementEnd: 0.8f,
+                    customBehaviour: () => {
+                        PlayVFXSync(VFX.slashImpactHeavyPrefab, "GroundCombo6-3B");
+                    }
+                ),
+                new SubstepAction(
                     occurrenceTime: 0.7f,
                     forwardMovement: 9f,
                     smoothMovementStart: 0.1f,
                     smoothMovementEnd: 0.8f,
                     shouldResetHitbox: true,
-                    damageCoefficient: 5.5f,
+                    damageCoefficient: 7f, // strike 3 regular (guaranteed 'sweetspot')
                     soundEffect: JokerAssets.primarySwingSoundEvents[5].akId,
                     customBehaviour: () => {
+                        attack.hitEffectPrefab = Asset.slashHitStrongPrefab;
                         PlayRandomStrongOrAltVoice();
-                        EffectManager.SimpleMuzzleFlash(Asset.slashHeavyPrefab, base.gameObject, "GroundCombo6-3", false);
+                        PlayRandomStrongHitEffect();
+                        PlayVFXSync(VFX.slashHeavyPrefab, "GroundCombo6-3");
                     }
                 ),
                 new SubstepAction(
@@ -461,7 +496,8 @@ namespace JokerMod.Joker.SkillStates {
                     shouldResetHitbox: true,
                     soundEffect: JokerAssets.primarySwingSoundEvents[6].akId,
                     customBehaviour: () => {
-                        EffectManager.SimpleMuzzleFlash(Asset.slashHeavyPrefab, base.gameObject, "GroundCombo6-1", false);
+                        PlayVFXSync(VFX.slashAirWavesPrefab, "GroundCombo6-1");
+                        PlayVFXSync(VFX.slashHeavyPrefab, "GroundCombo6-1");
                     }
                 ),
                 new SubstepAction(
@@ -470,7 +506,8 @@ namespace JokerMod.Joker.SkillStates {
                     smoothMovementStart: 0.1f,
                     smoothMovementEnd: 0.8f,
                     customBehaviour: () => {
-                        EffectManager.SimpleMuzzleFlash(Asset.slashHeavyPrefab, base.gameObject, "GroundCombo6-2", false);
+                        PlayVFXSync(VFX.slashAirWavesPrefab, "GroundCombo6-2");
+                        PlayVFXSync(VFX.slashHeavyPrefab, "GroundCombo6-2");
                     }
                 ),
                 new SubstepAction(
@@ -480,7 +517,8 @@ namespace JokerMod.Joker.SkillStates {
                     smoothMovementEnd: 0.8f,
                     soundEffect: JokerAssets.primarySwingSoundEvents[6].akId,
                     customBehaviour: () => {
-                        EffectManager.SimpleMuzzleFlash(Asset.slashHeavyPrefab, base.gameObject, "GroundCombo6-1", false);
+                        PlayVFXSync(VFX.slashAirWavesPrefab, "GroundCombo6-1");
+                        PlayVFXSync(VFX.slashHeavyPrefab, "GroundCombo6-1");
                     }
                 ),
                 new SubstepAction(
@@ -488,7 +526,7 @@ namespace JokerMod.Joker.SkillStates {
                     forwardMovement: 9f,
                     smoothMovementStart: 0.1f,
                     smoothMovementEnd: 0.8f,
-                    damageCoefficient: 1f
+                    damageCoefficient: 1f // strike 1, 2, 3
                 )
             };
         }
@@ -506,6 +544,29 @@ namespace JokerMod.Joker.SkillStates {
                     negateBoneY: true
                 ),
                 new SubstepAction(
+                    occurrenceTime: 0.41f,
+                    forwardMovement: 8f,
+                    upwardMovement: 150f,
+                    smoothMovementStart: 0.09f,
+                    smoothMovementEnd: 0.52f,
+                    negateBoneY: true,
+                    customBehaviour: () => {
+                        PlayVFXSync(VFX.slashBurstPrefab, "GroundCombo1-FB");
+                    }
+                ),
+                new SubstepAction(
+                    occurrenceTime: 0.365f,
+                    forwardMovement: 8f,
+                    upwardMovement: 150f,
+                    smoothMovementStart: 0.09f,
+                    smoothMovementEnd: 0.52f,
+                    negateBoneY: true,
+                    damageCoefficient: 4.5f, // sweetspot
+                    customBehaviour: () => {
+                        attack.hitEffectPrefab = Asset.slashHitStrongPrefab;
+                    }
+                ),
+                new SubstepAction(
                     occurrenceTime: 0.29f,
                     forwardMovement: 8f,
                     upwardMovement: 150f,
@@ -515,14 +576,15 @@ namespace JokerMod.Joker.SkillStates {
                     soundEffect: JokerAssets.primarySwingSoundEvents[4].akId,
                     customBehaviour: () => {
                         PlayRandomMediumChargeVoice();
-                        EffectManager.SimpleMuzzleFlash(Asset.slashLightLongPrefab, base.gameObject, "GroundCombo1-F", false);
+                        PlayRandomStrongHitEffect();
+                        PlayVFXSync(VFX.slashLightLongPrefab, "GroundCombo1-F");
                     }
                 ),
                 new SubstepAction(
                     occurrenceTime: 0.1f,
                     forwardMovement: 0f,
                     negateBoneY: true,
-                    damageCoefficient: 2.5f
+                    damageCoefficient: 2f // regular
                 )
             };
         }
@@ -530,18 +592,48 @@ namespace JokerMod.Joker.SkillStates {
         private void InitCombo8SubstepActions() {
             substepActions = new List<SubstepAction> {
                 new SubstepAction(
-                    occurrenceTime: 0.36f,
+                    occurrenceTime: 0.41f,
+                    customBehaviour: () => {
+                        PlayVFXSync(VFX.stabRingsPrefab, "GroundCombo2-F");
+                        PlayVFXSync(VFX.slashBurstPrefab, "GroundCombo2-FB");
+                    }
+                ),
+                new SubstepAction(
+                    occurrenceTime: 0.38f,
+                    customBehaviour: () => {
+                        SetKnifeTrailStateSync(false);
+                    }
+                ),
+                new SubstepAction(
+                    occurrenceTime: 0.35f,
                     forwardMovement: 0f,
-                    shouldRepeatMovement: false
+                    shouldRepeatMovement: false,
+                    customBehaviour: () => {
+                        PlayRandomStrongHitEffect();
+                    }
+                ),
+                new SubstepAction(
+                    occurrenceTime: 0.315f,
+                    forwardMovement: 140f,
+                    smoothMovementStart: 0.16f,
+                    smoothMovementEnd: 0.56f,
+                    damageCoefficient: 4f, // sweetspot
+                    customBehaviour: () => {
+                        attack.damageType = DamageType.Stun1s;
+                        attack.hitEffectPrefab = Asset.slashHitStrongPrefab;
+                    }
                 ),
                 new SubstepAction(
                     occurrenceTime: 0.26f,
                     forwardMovement: 140f,
                     smoothMovementStart: 0.16f,
                     smoothMovementEnd: 0.56f,
-                    damageCoefficient: 2.5f,
+                    damageCoefficient: 2f, // regular
                     soundEffect: JokerAssets.primarySwingSoundEvents[6].akId,
-                    customBehaviour: PlayRandomMediumVoice
+                    customBehaviour: () => {
+                        PlayRandomMediumVoice();
+                        SetKnifeTrailStateSync(true);
+                    }
                 )
             };
         }
@@ -737,10 +829,45 @@ namespace JokerMod.Joker.SkillStates {
         private void InitCombo10SubstepActions() {
             substepActions = new List<SubstepAction> {
                 new SubstepAction(
+                    occurrenceTime: 0.68f,
+                    customBehaviour: () => {
+                        PlayVFXSync(VFX.slashBurstPrefab, "GroundCombo4-FB");
+                    }
+                ),
+                new SubstepAction(
+                    occurrenceTime: 0.66f,
+                    customBehaviour: () => {
+                        PlayVFXSync(VFX.slashHeavyPrefab, "GroundCombo4-F");
+                    }
+                ),
+                new SubstepAction(
                     occurrenceTime: 0.63f,
                     forwardMovement: 0f,
                     rightMovement: 0f,
-                    shouldRepeatMovement: false
+                    shouldRepeatMovement: false,
+                    customBehaviour: () => {
+                        SetKnifeTrailStateSync(false);
+                    }
+                ),
+                new SubstepAction(
+                    occurrenceTime: 0.60f,
+                    forwardMovement: 120f,
+                    rightMovement: 168f,
+                    smoothMovementStart: 0.5f,
+                    smoothMovementEnd: 0.89f,
+                    customBehaviour: PlayRandomStrongHitEffect
+                ),
+                new SubstepAction(
+                    occurrenceTime: 0.56f,
+                    forwardMovement: 120f,
+                    rightMovement: 168f,
+                    smoothMovementStart: 0.5f,
+                    smoothMovementEnd: 0.89f,
+                    procCoefficient: 2.5f,
+                    damageCoefficient: 7f, // sweetspot
+                    customBehaviour: () => {
+                        attack.hitEffectPrefab = Asset.slashHitStrongPrefab;
+                    }
                 ),
                 new SubstepAction(
                     occurrenceTime: 0.53f,
@@ -758,14 +885,21 @@ namespace JokerMod.Joker.SkillStates {
                     smoothMovementStart: 0.5f,
                     smoothMovementEnd: 0.89f,
                     shouldResetHitbox: true,
-                    damageCoefficient: 3.5f,
-                    procCoefficient: 2f
+                    damageCoefficient: 5f, // regular
+                    procCoefficient: 2f,
+                    customBehaviour: () => {
+                        attack.damageType = DamageType.Stun1s;
+                        SetKnifeTrailStateSync(true);
+                    }
                 ),
                 new SubstepAction(
                     occurrenceTime: 0.4f,
                     forwardMovement: 0f,
                     rightMovement: 0f,
-                    shouldRepeatMovement: false
+                    shouldRepeatMovement: false,
+                    customBehaviour: () => {
+                        SetKnifeTrailStateSync(false);
+                    }
                 ),
                 new SubstepAction(
                     occurrenceTime: 0.2f,
@@ -773,9 +907,12 @@ namespace JokerMod.Joker.SkillStates {
                     rightMovement: -56f,
                     smoothMovementStart: 0.2f,
                     smoothMovementEnd: 0.4f,
-                    damageCoefficient: 2.5f,
-                    procCoefficient: 1.25f,
-                    soundEffect: JokerAssets.primarySwingSoundEvents[0].akId
+                    damageCoefficient: 1.5f, // weak hit
+                    procCoefficient: 1.5f,
+                    soundEffect: JokerAssets.primarySwingSoundEvents[0].akId,
+                    customBehaviour: () => {
+                        SetKnifeTrailStateSync(true);
+                    }
                 )
             };
         }
@@ -790,15 +927,28 @@ namespace JokerMod.Joker.SkillStates {
                     shouldRepeatMovement: false
                 ),
                 new SubstepAction(
-                    occurrenceTime: 0.66f,
-                    forwardMovement: 40f,
-                    upwardMovement: 50f,
+                    occurrenceTime: 0.71f,
+                    forwardMovement: 20f,
+                    upwardMovement: 25f,
                     smoothMovementStart: 0.56f,
                     smoothMovementEnd: 0.81f,
-                    damageCoefficient: 4f,
+                    shouldResetHitbox: true,
+                    customBehaviour: PlayRandomStrongHitEffect
+                ),
+                new SubstepAction(
+                    occurrenceTime: 0.66f,
+                    forwardMovement: 20f,
+                    upwardMovement: 25f,
+                    smoothMovementStart: 0.56f,
+                    smoothMovementEnd: 0.81f,
+                    damageCoefficient: 2.5f, // strike 2 and 3
                     negateBoneY: true,
                     shouldResetHitbox: true,
-                    soundEffect: JokerAssets.primarySwingSoundEvents[5].akId
+                    soundEffect: JokerAssets.primarySwingSoundEvents[5].akId,
+                    customBehaviour: () => {
+                        PlayVFXSync(VFX.slashHeavyBarragePrefab, "GroundCombo5-F2");
+                        PlayRandomStrongHitEffect();
+                    }
                 ),
                 new SubstepAction(
                     occurrenceTime: 0.5f,
@@ -809,13 +959,16 @@ namespace JokerMod.Joker.SkillStates {
                 ),
                  new SubstepAction(
                     occurrenceTime: 0.4f,
-                    forwardMovement: 40f,
+                    forwardMovement: 20f,
                     upwardMovement: 25f,
                     smoothMovementStart: 0.36f,
                     smoothMovementEnd: 0.55f,
                     negateBoneY: true,
                     soundEffect: JokerAssets.primarySwingSoundEvents[0].akId,
-                    customBehaviour: PlayRandomStrongOrAltVoice
+                    customBehaviour: () => {
+                        PlayRandomStrongOrAltVoice();
+                        PlayVFXSync(VFX.slashHeavyPrefab, "GroundCombo5-F1");
+                    }
                 ),
                 new SubstepAction(
                     occurrenceTime: 0.36f,
@@ -824,7 +977,7 @@ namespace JokerMod.Joker.SkillStates {
                     smoothMovementStart: 0.36f,
                     smoothMovementEnd: 0.55f,
                     negateBoneY: true,
-                    damageCoefficient: 3f
+                    damageCoefficient: 1.5f // strike 1
                 )
             };
         }
@@ -839,7 +992,7 @@ namespace JokerMod.Joker.SkillStates {
                     soundEffect: JokerAssets.primarySwingSoundEvents[2].akId,
                     customBehaviour: () => {
                         PlayRandomWeakVoice();
-                        EffectManager.SimpleMuzzleFlash(Asset.slashLightPrefab, base.gameObject, "AirCombo1-1", false);
+                        PlayVFXSync(VFX.slashLightPrefab, "AirCombo1-1");
                     }
                 )
             };
@@ -852,7 +1005,7 @@ namespace JokerMod.Joker.SkillStates {
                     soundEffect: JokerAssets.primarySwingSoundEvents[3].akId,
                     customBehaviour: () => {
                         PlayRandomWeakVoice();
-                        EffectManager.SimpleMuzzleFlash(Asset.slashLightPrefab, base.gameObject, "AirCombo1-2", false);
+                        PlayVFXSync(VFX.slashLightPrefab, "AirCombo1-2");
                     }
                 )
             };
@@ -865,7 +1018,7 @@ namespace JokerMod.Joker.SkillStates {
                     soundEffect: JokerAssets.primarySwingSoundEvents[4].akId,
                     customBehaviour: () => {
                         PlayRandomMediumVoice();
-                        EffectManager.SimpleMuzzleFlash(Asset.slashLightPrefab, base.gameObject, "AirCombo1-3", false);
+                        PlayVFXSync(VFX.slashLightPrefab, "AirCombo1-3");
                     }
                 ),
                 new SubstepAction(
@@ -902,6 +1055,11 @@ namespace JokerMod.Joker.SkillStates {
 
         }
 
+        private void PlayRandomStrongHitEffect() {
+            int soundIndex = Utils.rand.Next(JokerAssets.primaryImpactStrongSoundEvents.Length);
+            AkSoundEngine.PostEvent(JokerAssets.primaryImpactStrongSoundEvents[soundIndex].akId, characterBody.gameObject);
+        }
+
         protected override void PlayAttackAnimation() {
             int comboNum = 1 + swingIndex;
             switch (comboNum) {
@@ -915,6 +1073,52 @@ namespace JokerMod.Joker.SkillStates {
                     PlayCrossfade("FullBody, Override", $"AttackAirborneCombo{comboNum - 11}", playbackRateParam, duration, 0.1f * duration);
                     break;
             }
+        }
+
+        private void SetKnifeTrailStateSync(bool emitting) {
+            if (characterBody.hasEffectiveAuthority) {
+                new SyncJokerKnifeTrailState(characterBody.networkIdentity.netId, emitting, characterBody.transform.position).Send(NetworkDestination.Clients);
+            }
+        }
+
+        private void PlayVFXSync(SlashFlurry.VFX vfxId, string muzzleName) {
+            if (characterBody.hasEffectiveAuthority) {
+                new SyncJokerSlashFlurryVFX(characterBody.networkIdentity.netId, (int)vfxId, muzzleName, characterBody.transform.position).Send(NetworkDestination.Clients);
+            }
+        }
+
+        public static GameObject GetPrefabFromVFXID(SlashFlurry.VFX vfxId) {
+            GameObject prefab = null;
+            switch (vfxId) {
+                case SlashFlurry.VFX.slashLightPrefab:
+                    prefab = Asset.slashLightPrefab;
+                    break;
+                case SlashFlurry.VFX.slashLightLongPrefab:
+                    prefab = Asset.slashLightLongPrefab;
+                    break;
+                case SlashFlurry.VFX.slashHeavyPrefab:
+                    prefab = Asset.slashHeavyPrefab;
+                    break;
+                case SlashFlurry.VFX.slashHeavyBarragePrefab:
+                    prefab = Asset.slashHeavyBarragePrefab;
+                    break;
+                case SlashFlurry.VFX.slashBurstPrefab:
+                    prefab = Asset.slashBurstPrefab;
+                    break;
+                case SlashFlurry.VFX.stabRingsPrefab:
+                    prefab = Asset.stabRingsPrefab;
+                    break;
+                case SlashFlurry.VFX.slashImpactLightPrefab:
+                    prefab = Asset.slashImpactLightPrefab;
+                    break;
+                case SlashFlurry.VFX.slashImpactHeavyPrefab:
+                    prefab = Asset.slashImpactHeavyPrefab;
+                    break;
+                case SlashFlurry.VFX.slashAirWavesPrefab:
+                    prefab = Asset.slashAirWavesPrefab;
+                    break;
+            }
+            return prefab;
         }
 
         protected override void PlaySwingEffect() {
@@ -934,6 +1138,98 @@ namespace JokerMod.Joker.SkillStates {
             if (bufferFinisher) {
                 OverrideNextStep(swingIndex + 6);
                 skillLocator.primary.ExecuteIfReady();
+            }
+
+            jokerMaster.SetKnifeTrailState(false); // in case state is cancelled early
+        }
+    }
+
+    public class SyncJokerSlashFlurryVFX : INetMessage {
+        // if vfx are all placed locally, the position of vfx to player is not consistent across clients
+
+        NetworkInstanceId bodyNetId;
+        int vfxId;
+        string muzzleName;
+        Vector3 position;
+
+        public SyncJokerSlashFlurryVFX() {
+        }
+
+        public SyncJokerSlashFlurryVFX(NetworkInstanceId masterNetId, int vfxId, string muzzlename, Vector3 position) {
+            this.bodyNetId = masterNetId;
+            this.vfxId = vfxId;
+            this.muzzleName = muzzlename;
+            this.position = position;
+        }
+
+        public void Serialize(NetworkWriter writer) {
+            writer.Write(bodyNetId);
+            writer.Write(vfxId);
+            writer.Write(muzzleName);
+            writer.Write(position);
+        }
+
+        public void Deserialize(NetworkReader reader) {
+            bodyNetId = reader.ReadNetworkId();
+            vfxId = reader.ReadInt32();
+            muzzleName = reader.ReadString();
+            position = reader.ReadVector3();
+        }
+
+        public void OnReceived() {
+            CharacterBody characterBody = Util.FindNetworkObject(bodyNetId)?.GetComponent<CharacterBody>();
+            string localMuzzleName = muzzleName; // needed due to proximity of network messages
+            if (characterBody != null) {
+                GameObject prefab = SlashFlurry.GetPrefabFromVFXID((SlashFlurry.VFX)vfxId);
+                if (!characterBody.hasEffectiveAuthority) {
+                    characterBody.StartCoroutine(Utils.ExecuteWhenNearPosition(() => {
+                        EffectManager.SimpleMuzzleFlash(prefab, characterBody.gameObject, localMuzzleName, false);
+                    }, characterBody.gameObject, position));
+                } else {
+                    EffectManager.SimpleMuzzleFlash(prefab, characterBody.gameObject, muzzleName, false);
+                }
+            }
+        }
+    }
+
+    public class SyncJokerKnifeTrailState : INetMessage {
+        // if vfx are all placed locally, the position of vfx to player is not consistent across clients
+
+        NetworkInstanceId bodyNetId;
+        bool emitting;
+        Vector3 position;
+
+        public SyncJokerKnifeTrailState() {
+        }
+
+        public SyncJokerKnifeTrailState(NetworkInstanceId masterNetId, bool emitting, Vector3 position) {
+            this.bodyNetId = masterNetId;
+            this.emitting = emitting;
+            this.position = position;
+        }
+
+        public void Serialize(NetworkWriter writer) {
+            writer.Write(bodyNetId);
+            writer.Write(emitting);
+            writer.Write(position);
+        }
+
+        public void Deserialize(NetworkReader reader) {
+            bodyNetId = reader.ReadNetworkId();
+            emitting = reader.ReadBoolean();
+            position = reader.ReadVector3();
+        }
+
+        public void OnReceived() {
+            CharacterBody characterBody = Util.FindNetworkObject(bodyNetId)?.GetComponent<CharacterBody>();
+            if (characterBody != null) {
+                if (!characterBody.hasEffectiveAuthority) {
+                    characterBody.StartCoroutine(Utils.ExecuteWhenNearPosition(() => {
+                        characterBody.GetComponent<JokerMaster>()?.SetKnifeTrailState(emitting);
+                    }, characterBody.gameObject, position));
+                } else {
+                    characterBody.GetComponent<JokerMaster>()?.SetKnifeTrailState(emitting);
+                }
             }
         }
     }

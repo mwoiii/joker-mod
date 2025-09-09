@@ -1195,8 +1195,8 @@ namespace JokerMod.Joker {
             itemDisplayRules.Add(ItemDisplays.CreateDisplayRuleGroupWithRules(ItemDisplays.KeyAssets["CritOnUse"],
                 ItemDisplays.CreateDisplayRule(ItemDisplays.LoadDisplay("DisplayNeuralImplant"),
                     "Head",
-                    new Vector3(-31.27846F, -7.32369F, -0.08429F),
-                    new Vector3(0F, 90.14672F, 0F),
+                    new Vector3(-23.41918F, -6.94736F, 0.13807F),
+                    new Vector3(2.73913F, 268.379F, 0.30139F),
                     new Vector3(18.12736F, 18.12736F, 18.12736F)
                     )
                 ));

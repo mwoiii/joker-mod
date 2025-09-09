@@ -22,13 +22,21 @@ namespace JokerMod.Joker {
              + "< ! > Joker's stock of different Personas are his most valuable asset. Carefully manage your SP and forge powerful Persona combinations " +
              "to ensure you're always ahead of the curve." + Environment.NewLine + Environment.NewLine;
 
-            string outro = "..and so he left, following a roadless path.";
+            string outro = "..and so he left, onto a roadless path.";
             string outroFailure = "..and so he vanished, his rebellion quelled.";
 
             Language.Add(prefix + "NAME", "Joker");
             Language.Add(prefix + "DESCRIPTION", desc);
             Language.Add(prefix + "SUBTITLE", "Prisoner of Fate");
-            Language.Add(prefix + "LORE", "john persona 5");
+            Language.Add(prefix + "LORE", "...You are held captive." + Environment.NewLine + Environment.NewLine +
+                "A prisoner of fate to a future that has been sealed in advance." + Environment.NewLine + Environment.NewLine +
+                "This is truly an unjust game - your chances of winning are almost none." + Environment.NewLine + Environment.NewLine +
+                "But if my voice is reaching you, there may yet be a possibility open to you." + Environment.NewLine + Environment.NewLine +
+                "I beg you. Please overcome this game... and save the world." + Environment.NewLine + Environment.NewLine +
+                "The key to victory lies within the memories of your bonds - the truth that you and your friends grasped." + Environment.NewLine + Environment.NewLine +
+                "It all began that day, when the game was started half a year ago." + Environment.NewLine + Environment.NewLine +
+                "For the sake of your world's future, as well as your own..." + Environment.NewLine + Environment.NewLine +
+                "You must remember.");
             Language.Add(prefix + "OUTRO_FLAVOR", outro);
             Language.Add(prefix + "OUTRO_FAILURE", outroFailure);
 
@@ -44,7 +52,7 @@ namespace JokerMod.Joker {
             #region Primary
             Language.Add(prefix + "PRIMARY_SLASH_FLURRY_NAME", "Slash Flurry");
             Language.Add(prefix + "PRIMARY_SLASH_FLURRY_DESCRIPTION", $"Slash in a wide arc for <style=cIsDamage>{100f * JokerStaticValues.slashFlurryDamageCoefficient}% damage</style>. " +
-                $"Further attacks in the combo deal <style=cIsDamage>increased damage</style>, and unique combo finishers can be performed by using the <style=cIsUtility>Special skill</style>.");
+                $"Further attacks in the combo deal <style=cIsDamage>increased damage</style>, and unique combo finishers can be performed by using the <style=cIsUtility>Equipment</style> button.");
             #endregion
 
             #region Secondary

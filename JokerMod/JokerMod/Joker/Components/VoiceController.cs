@@ -9,7 +9,7 @@ namespace JokerMod.Joker.Components {
 
     public class VoiceController : MonoBehaviour {
 
-        private JokerMaster master;
+        private JokerMaster jokerMaster;
 
         private float timeSinceLastRolledLine;
 

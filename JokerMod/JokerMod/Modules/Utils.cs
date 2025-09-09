@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace JokerMod.Modules {
     public static class Utils {
@@ -43,6 +46,15 @@ namespace JokerMod.Modules {
             }
             Log.Warning("RandomChoice: Got passed an empty enumerable - returning null!");
             return null;
+        }
+
+        public static IEnumerator ExecuteWhenNearPosition(Action action, GameObject gameObject, Vector3 position, float maxWait = 1f) {
+            float stopwatch = 0f;
+            while (Vector3.Distance(gameObject.transform.position, position) > 0.5f && stopwatch < maxWait) {
+                stopwatch += Time.deltaTime;
+                yield return null;
+            }
+            action?.Invoke();
         }
     }
 }

@@ -45,6 +45,7 @@ namespace JokerMod.Modules.BaseStates {
         protected Animator animator;
         private HitStopCachedState hitStopCachedState;
         private Vector3 storedVelocity;
+        protected bool skipHitEffects; // can cause unintended effects sometimes (velocity cancelling)
 
         public override void OnEnter() {
             base.OnEnter();
@@ -94,15 +95,18 @@ namespace JokerMod.Modules.BaseStates {
         protected virtual void OnHitEnemyAuthority() {
             Util.PlaySound(hitSoundString, gameObject);
 
-            if (!hasHopped) {
-                if (characterMotor && !characterMotor.isGrounded && hitHopVelocity > 0f) {
-                    SmallHop(characterMotor, hitHopVelocity);
+
+            if (!skipHitEffects) {
+                if (!hasHopped) {
+                    if (characterMotor && !characterMotor.isGrounded && hitHopVelocity > 0f) {
+                        SmallHop(characterMotor, hitHopVelocity);
+                    }
+
+                    hasHopped = true;
                 }
 
-                hasHopped = true;
+                ApplyHitstop();
             }
-
-            ApplyHitstop();
         }
 
         protected void ApplyHitstop() {

@@ -26,9 +26,21 @@ namespace JokerMod.Modules {
 
         public static GameObject slashHeavyPrefab;
 
+        public static GameObject slashHeavyBarragePrefab;
+
         public static GameObject slashHitPrefab;
 
         public static GameObject slashHitStrongPrefab;
+
+        public static GameObject slashBurstPrefab;
+
+        public static GameObject stabRingsPrefab;
+
+        public static GameObject slashImpactLightPrefab;
+
+        public static GameObject slashImpactHeavyPrefab;
+
+        public static GameObject slashAirWavesPrefab;
 
         public static GameObject eihaPrefab;
 
@@ -117,9 +129,21 @@ namespace JokerMod.Modules {
 
             slashHeavyPrefab = Asset.LoadEffect(mainAssetBundle, "JokerKnifeSlashHeavy");
 
+            slashHeavyBarragePrefab = Asset.LoadEffect(mainAssetBundle, "JokerKnifeSlashHeavyBarrage");
+
             slashHitPrefab = Asset.LoadEffect(mainAssetBundle, "KnifeHitEffect");
 
             slashHitStrongPrefab = Asset.LoadEffect(mainAssetBundle, "KnifeHitEffectStrong");
+
+            slashBurstPrefab = Asset.LoadEffect(mainAssetBundle, "SlashBurst");
+
+            stabRingsPrefab = Asset.LoadEffect(mainAssetBundle, "StabRings");
+
+            slashImpactLightPrefab = Asset.LoadEffect(mainAssetBundle, "ImpactLight");
+
+            slashImpactHeavyPrefab = Asset.LoadEffect(mainAssetBundle, "ImpactHeavy");
+
+            slashAirWavesPrefab = Asset.LoadEffect(mainAssetBundle, "JokerKnifeSlashAirWaves");
 
             eihaPrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "EihaProjectile");
 

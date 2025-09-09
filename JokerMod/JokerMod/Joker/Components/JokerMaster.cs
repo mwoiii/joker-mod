@@ -55,6 +55,8 @@ namespace JokerMod.Joker.Components {
 
         public BoneDeltaNeutralizer boneDeltaNeutralizer;
 
+        public Transform knifeTrail;
+
         public bool primaryResetTimerActive {
             get {
                 SteppedSkillDef steppedSkillDef = characterBody?.skillLocator?.primary?.skillDef as SteppedSkillDef;
@@ -83,6 +85,12 @@ namespace JokerMod.Joker.Components {
             }
         }
 
+        public void SetKnifeTrailState(bool emitting) {
+            foreach (Transform child in knifeTrail) {
+                child.GetComponent<TrailRenderer>().emitting = emitting;
+            }
+        }
+
         private void JokerOnKills(DamageReport damageReport) {
             // Granting a stock of secondary on kill
             // And having a chance to drop a persona
@@ -93,15 +101,15 @@ namespace JokerMod.Joker.Components {
             if ((bool)damageReport.attackerBody) {
                 CharacterBody attackerBody = damageReport.attackerBody;
                 if (attackerBody == GetComponent<CharacterBody>()) {
-                    JokerMaster master = attackerBody.GetComponent<JokerMaster>();
+                    JokerMaster jokerMaster = attackerBody.GetComponent<JokerMaster>();
 
                     // bullet restock
                     float max = attackerBody.skillLocator.GetSkill(SkillSlot.Secondary).maxStock;
                     float current = attackerBody.skillLocator.GetSkill(SkillSlot.Secondary).stock;
-                    if (!master.skillMenuActive) {
+                    if (!jokerMaster.skillMenuActive) {
                         damageReport.attackerBody.skillLocator.GetSkill(SkillSlot.Secondary).stock = (int)Mathf.Clamp(current + 1, current, max);
                     } else {
-                        master.EnemySlainDuringMenu();
+                        jokerMaster.EnemySlainDuringMenu();
                     }
 
                     // mask item dropping
@@ -130,6 +138,8 @@ namespace JokerMod.Joker.Components {
         private void Start() {
             characterBody = GetComponent<CharacterBody>();
 
+            knifeTrail = characterBody?.modelLocator?.modelTransform?.GetComponent<ChildLocator>()?.FindChild("KnifeTrail");
+
             boneDeltaNeutralizer = characterBody?.modelLocator?.modelTransform?.GetComponent<BoneDeltaNeutralizer>();
 
             if (boneDeltaNeutralizer != null) {
@@ -157,7 +167,7 @@ namespace JokerMod.Joker.Components {
             } else {
                 statController = checkStatController;
             }
-            statController.master = this;
+            statController.jokerMaster = this;
             characterBody.onSkillActivatedServer += statController.StoreLastSkillUsed;
         }
 

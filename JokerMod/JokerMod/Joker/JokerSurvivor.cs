@@ -39,7 +39,7 @@ namespace JokerMod.Joker {
             crosshair = Asset.LoadCrosshair("Standard"),
             podPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/NetworkedObjects/SurvivorPod"),
 
-            maxHealth = 110f,
+            maxHealth = 90f,
             healthRegen = 1.5f,
             armor = 0f,
 
@@ -121,6 +121,7 @@ namespace JokerMod.Joker {
         public void AddHitboxes() {
             //example of how to create a HitBoxGroup. see summary for more details
             Prefabs.SetupHitBoxGroup(characterModelObject, "KnifeGroup", ["KnifeHitbox1", "KnifeHitbox2"]);
+            Prefabs.SetupHitBoxGroup(characterModelObject, "Finisher5Group", ["GiantAssHitbox"]);
         }
 
         public override void InitializeEntityStateMachines() {

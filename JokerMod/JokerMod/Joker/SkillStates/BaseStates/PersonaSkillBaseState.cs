@@ -3,6 +3,7 @@ using JokerMod.Joker.Components;
 using JokerMod.Modules;
 using JokerMod.Modules.PersonaSkills;
 using RoR2.Audio;
+using UnityEngine.Networking;
 
 namespace JokerMod.Joker.SkillStates.BaseStates {
     public abstract class PersonaSkillBaseState : BaseState {
@@ -34,17 +35,19 @@ namespace JokerMod.Joker.SkillStates.BaseStates {
 
             if (master.statController.TryCastSkill(baseSPCost)) {
                 // rolling separately to allow for specific persona callout
-                if (master.voiceController.RollForSoundEvent(JokerAssets.castSkillAttackSoundEvents)) {
-                    if (Utils.rand.NextDouble() > 0.25) {
-                        // standard callout
-                        if (skillType.IsSupportType()) {
-                            VoiceController.PlayRandomNetworkedSound(JokerAssets.castSkillSupportSoundEvents, characterBody.gameObject);
+                if (NetworkServer.active) {
+                    if (master.voiceController.RollForSoundEvent(JokerAssets.castSkillAttackSoundEvents)) {
+                        if (Utils.rand.NextDouble() > 0.25) {
+                            // standard callout
+                            if (skillType.IsSupportType()) {
+                                VoiceController.PlayRandomNetworkedSound(JokerAssets.castSkillSupportSoundEvents, characterBody.gameObject);
+                            } else {
+                                VoiceController.PlayRandomNetworkedSound(JokerAssets.castSkillAttackSoundEvents, characterBody.gameObject);
+                            }
                         } else {
-                            VoiceController.PlayRandomNetworkedSound(JokerAssets.castSkillAttackSoundEvents, characterBody.gameObject);
+                            // persona callout
+                            EntitySoundManager.EmitSoundServer(master.statController.GetPersonaFromLastSkill().calloutSound.akId, characterBody.gameObject);
                         }
-                    } else {
-                        // persona callout
-                        EntitySoundManager.EmitSoundServer(master.statController.GetPersonaFromLastSkill().calloutSound.akId, characterBody.gameObject);
                     }
                 }
                 master.skillUsed = true;

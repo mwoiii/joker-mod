@@ -3,6 +3,7 @@ using System.Security.Permissions;
 using BepInEx;
 using JokerMod.Joker;
 using JokerMod.Joker.Components;
+using JokerMod.Joker.SkillStates;
 using JokerMod.Modules;
 using R2API;
 using R2API.Networking;
@@ -72,6 +73,8 @@ namespace JokerMod {
             NetworkingAPI.RegisterMessageType<SyncJokerDropPersona>();
             NetworkingAPI.RegisterMessageType<SyncJokerAOAHitEvent>();
             NetworkingAPI.RegisterMessageType<SyncJokerAssignPersona>();
+            NetworkingAPI.RegisterMessageType<SyncJokerSlashFlurryVFX>();
+            NetworkingAPI.RegisterMessageType<SyncJokerKnifeTrailState>();
         }
     }
 }

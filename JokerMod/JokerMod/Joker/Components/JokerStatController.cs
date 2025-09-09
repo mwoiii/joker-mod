@@ -31,7 +31,7 @@ namespace JokerMod.Joker.Components {
 
         public PersonaDef utilityPersona;
 
-        public JokerMaster master;
+        public JokerMaster jokerMaster;
 
         public PersonaDef overstockPersona;
 
@@ -73,8 +73,8 @@ namespace JokerMod.Joker.Components {
         /// <returns>Bool indicating whether or not the skill execution should proceeed.</returns>
         public bool TryCastSkill(float baseSPCost) {
             float spCost = GetSPCost(baseSPCost);
-            if (master.spController.currentSP >= spCost) {
-                master.spController.currentSP -= spCost;
+            if (jokerMaster.spController.currentSP >= spCost) {
+                jokerMaster.spController.currentSP -= spCost;
                 return true;
             }
             return false;
@@ -113,7 +113,7 @@ namespace JokerMod.Joker.Components {
         }
 
         public PersonaDef GetPersonaFromLastSkill() {
-            SkillLocator skillLocator = master.GetComponent<SkillLocator>();
+            SkillLocator skillLocator = jokerMaster.GetComponent<SkillLocator>();
             if (lastUsedSkill == skillLocator.primary) {
                 return primaryPersona;
             } else if (lastUsedSkill == skillLocator.secondary) {
@@ -140,10 +140,10 @@ namespace JokerMod.Joker.Components {
                     DropAfterOverstock(overstockPersona);
                 }
                 overstockPersona = persona;
-                if (master.characterBody.hasEffectiveAuthority) {
+                if (jokerMaster.characterBody.hasEffectiveAuthority) {
                     OverstockMenu nextState = new OverstockMenu();
-                    nextState.skillMenuWasActive = master.skillMenuActive;
-                    EntityStateMachine.FindByCustomName(master.gameObject, "Charge").SetNextState(nextState);
+                    nextState.skillMenuWasActive = jokerMaster.skillMenuActive;
+                    EntityStateMachine.FindByCustomName(jokerMaster.gameObject, "Charge").SetNextState(nextState);
                 }
             }
         }
@@ -153,7 +153,7 @@ namespace JokerMod.Joker.Components {
         }
 
         public void SwapPersonaWithOverstock(int slot) {
-            SkillLocator skillLocator = master.GetComponent<SkillLocator>();
+            SkillLocator skillLocator = jokerMaster.GetComponent<SkillLocator>();
             if (overstockPersona != null) {
                 PersonaDef droppedPersona = null;
                 switch (slot) {
@@ -187,7 +187,7 @@ namespace JokerMod.Joker.Components {
                     return;
                 }
 
-                SkillLocator skillLocator = master.GetComponent<SkillLocator>();
+                SkillLocator skillLocator = jokerMaster.GetComponent<SkillLocator>();
                 PersonaSlot firstSlot = 0; // dummy
                 PersonaDef holdFirstPersona = null;
                 GenericSkill firstSlotSkill = null;
@@ -232,7 +232,7 @@ namespace JokerMod.Joker.Components {
         }
 
         public void DropAfterOverstock(PersonaDef personaDef) {
-            new SyncJokerDropPersona(GetComponent<CharacterMaster>().netIdentity.netId, personaDef.personaNameToken, master.transform.position).Send(NetworkDestination.Clients);
+            new SyncJokerDropPersona(GetComponent<CharacterMaster>().netIdentity.netId, personaDef.personaNameToken, jokerMaster.transform.position).Send(NetworkDestination.Clients);
             overstockPersona = null;
         }
 
@@ -245,7 +245,7 @@ namespace JokerMod.Joker.Components {
 
         private bool TryAssignPersona(PersonaDef personaDef) {
             bool assigned = false;
-            SkillLocator skillLocator = master.GetComponent<SkillLocator>();
+            SkillLocator skillLocator = jokerMaster.GetComponent<SkillLocator>();
 
             if (primaryPersona.personaNameToken == "EMPTY") {
                 AssignPersonaToSlot(PersonaSlot.Primary, personaDef, skillLocator.primary);
@@ -262,56 +262,56 @@ namespace JokerMod.Joker.Components {
         }
 
         private void AssignPersonaToSlot(PersonaSlot personaSlot, PersonaDef personaDef, GenericSkill skill) {
-            if (master.skillMenuActive) {
+            if (jokerMaster.skillMenuActive) {
                 switch (personaSlot) {
                     case PersonaSlot.Primary:
-                        skill.UnsetSkillOverride(master.gameObject, primaryPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
+                        skill.UnsetSkillOverride(jokerMaster.gameObject, primaryPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
                         break;
                     case PersonaSlot.Secondary:
-                        skill.UnsetSkillOverride(master.gameObject, secondaryPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
+                        skill.UnsetSkillOverride(jokerMaster.gameObject, secondaryPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
                         break;
                     case PersonaSlot.Utility:
-                        skill.UnsetSkillOverride(master.gameObject, utilityPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
+                        skill.UnsetSkillOverride(jokerMaster.gameObject, utilityPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
                         break;
                 }
-                skill.SetSkillOverride(master.gameObject, personaDef.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
+                skill.SetSkillOverride(jokerMaster.gameObject, personaDef.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
             }
             new SyncJokerAssignPersona(GetComponent<CharacterMaster>().networkIdentity.netId, personaDef.personaNameToken, (int)personaSlot).Send(NetworkDestination.Clients);
         }
 
         public void UpdateAndDisplaySPCosts() {
-            if (master.characterBody.hasEffectiveAuthority && master.skill1CostController != null) {
+            if (jokerMaster.characterBody.hasEffectiveAuthority && jokerMaster.skill1CostController != null) {
                 if (primaryPersona != null && primaryPersona.baseSPCost > 0) {
-                    master.skill1CostController.gameObject.SetActive(true);
+                    jokerMaster.skill1CostController.gameObject.SetActive(true);
                     float skill1Cost = GetSPCost(primaryPersona.baseSPCost);
-                    master.skill1CostController.SetStat(skill1Cost);
+                    jokerMaster.skill1CostController.SetStat(skill1Cost);
                 } else {
-                    master.skill1CostController.gameObject.SetActive(false);
+                    jokerMaster.skill1CostController.gameObject.SetActive(false);
                 }
 
                 if (secondaryPersona != null && secondaryPersona.baseSPCost > 0) {
-                    master.skill2CostController.gameObject.SetActive(true);
+                    jokerMaster.skill2CostController.gameObject.SetActive(true);
                     float skill2Cost = GetSPCost(secondaryPersona.baseSPCost);
-                    master.skill2CostController.SetStat(skill2Cost);
+                    jokerMaster.skill2CostController.SetStat(skill2Cost);
                 } else {
-                    master.skill2CostController.gameObject.SetActive(false);
+                    jokerMaster.skill2CostController.gameObject.SetActive(false);
                 }
 
                 if (utilityPersona != null && utilityPersona.baseSPCost > 0) {
-                    master.skill3CostController.gameObject.SetActive(true);
+                    jokerMaster.skill3CostController.gameObject.SetActive(true);
                     float skill3Cost = GetSPCost(utilityPersona.baseSPCost);
-                    master.skill3CostController.SetStat(skill3Cost);
+                    jokerMaster.skill3CostController.SetStat(skill3Cost);
                 } else {
-                    master.skill3CostController.gameObject.SetActive(false);
+                    jokerMaster.skill3CostController.gameObject.SetActive(false);
                 }
             }
         }
 
         public void HideSPCosts() {
-            if (master.characterBody.hasEffectiveAuthority && master.skill1CostController != null) {
-                master.skill1CostController.gameObject.SetActive(false);
-                master.skill2CostController.gameObject.SetActive(false);
-                master.skill3CostController.gameObject.SetActive(false);
+            if (jokerMaster.characterBody.hasEffectiveAuthority && jokerMaster.skill1CostController != null) {
+                jokerMaster.skill1CostController.gameObject.SetActive(false);
+                jokerMaster.skill2CostController.gameObject.SetActive(false);
+                jokerMaster.skill3CostController.gameObject.SetActive(false);
             }
         }
     }
