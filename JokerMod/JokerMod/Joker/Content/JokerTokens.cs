@@ -41,7 +41,7 @@ namespace JokerMod.Joker {
             Language.Add(prefix + "OUTRO_FAILURE", outroFailure);
 
             #region Skins
-            Language.Add(prefix + "MASTERY_SKIN_NAME", "Alternate");
+            Language.Add(prefix + "MASTERY_SKIN_NAME", "Crow");
             #endregion
 
             #region Passive

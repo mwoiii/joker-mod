@@ -74,9 +74,5 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
-# I would never redistribute the game files
-Packages/Risk of Rain 2
-Assets/Joker/Unshareable
-
 
 # End of https://www.toptal.com/developers/gitignore/api/unity
