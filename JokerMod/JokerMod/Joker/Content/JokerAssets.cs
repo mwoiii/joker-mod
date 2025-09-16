@@ -5,6 +5,7 @@ using UnityEngine;
 namespace JokerMod.Joker {
     public static class JokerAssets {
         // Why does this exist
+
         // particle effects
         public static GameObject swordSwingEffect;
 
@@ -40,6 +41,8 @@ namespace JokerMod.Joker {
         public static NetworkSoundEventDef[] hurtSoundEvents;
 
         public static NetworkSoundEventDef[] deathSoundEvents;
+
+        public static NetworkSoundEventDef[] fireBurstSoundEvent;
 
         public static NetworkSoundEventDef fireSoundEvent;
 
@@ -169,6 +172,10 @@ namespace JokerMod.Joker {
                 Content.CreateAndAddNetworkSoundEventDef("Play_Joker_Voice_Sorry"),
                 Content.CreateAndAddNetworkSoundEventDef("Play_Joker_Voice_ThisIsBad"),
                 Content.CreateAndAddNetworkSoundEventDef("Play_Joker_Voice_What"),
+            ];
+
+            fireBurstSoundEvent = [
+                Content.CreateAndAddNetworkSoundEventDef("Play_Joker_Voice_Fire"),
             ];
 
             fireSoundEvent = Content.CreateAndAddNetworkSoundEventDef("Play_Fire");

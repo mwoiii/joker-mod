@@ -29,7 +29,7 @@ namespace JokerMod.Joker.SkillStates {
         }
 
         private void SwapAndWaitRelease(int slot) {
-            master.statController.SwapPersonaWithOverstock(slot);
+            jokerMaster.statController.SwapPersonaWithOverstock(slot);
             if (skillMenuWasActive) {
                 WaitForReleaseOverrideState nextState = new WaitForReleaseOverrideState();
                 nextState.slot = slot;

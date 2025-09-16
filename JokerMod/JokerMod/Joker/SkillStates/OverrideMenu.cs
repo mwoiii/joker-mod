@@ -13,7 +13,7 @@ using UnityEngine.Networking;
 namespace JokerMod.Joker.SkillStates {
     public class OverrideMenu : BaseSkillState {
 
-        protected JokerMaster master;
+        protected JokerMaster jokerMaster;
 
         protected GenericSkill primary;
         protected GenericSkill secondary;
@@ -39,14 +39,14 @@ namespace JokerMod.Joker.SkillStates {
         public override void OnEnter() {
             base.OnEnter();
 
-            master = GetComponent<JokerMaster>();
-            master.statController.UpdateAndDisplaySPCosts();
-            master.skillMenuActive = true;
-            master.skillUsed = false;
-            master.EnemySlainDuringMenu += KillInMenu;
+            jokerMaster = GetComponent<JokerMaster>();
+            jokerMaster.statController.UpdateAndDisplaySPCosts();
+            jokerMaster.skillMenuActive = true;
+            jokerMaster.skillUsed = false;
+            jokerMaster.EnemySlainDuringMenu += KillInMenu;
 
             if (shouldPlaySFX && NetworkServer.active) {
-                master.voiceController.TryPlayRandomNetworkedSound(JokerAssets.summonPersonaSoundEvents, characterBody.gameObject, true);
+                jokerMaster.voiceController.TryPlayRandomNetworkedSound(JokerAssets.summonPersonaSoundEvents, characterBody.gameObject, true);
             }
 
             if (shouldPlaySFX && isAuthority) {
@@ -66,22 +66,22 @@ namespace JokerMod.Joker.SkillStates {
             holdSpecialStock = special.stock + 1; // only go on cooldown if skill used
 
             if (isAuthority && (bool)skillLocator) {
-                primary.SetSkillOverride(gameObject, master.statController.primaryPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
-                secondary.SetSkillOverride(gameObject, master.statController.secondaryPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
-                utility.SetSkillOverride(gameObject, master.statController.utilityPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
+                primary.SetSkillOverride(gameObject, jokerMaster.statController.primaryPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
+                secondary.SetSkillOverride(gameObject, jokerMaster.statController.secondaryPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
+                utility.SetSkillOverride(gameObject, jokerMaster.statController.utilityPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
                 special.SetSkillOverride(gameObject, cancelSkill, GenericSkill.SkillOverridePriority.Upgrade);
             }
         }
 
         public override void OnExit() {
-            master.skillMenuActive = false;
-            master.statController.HideSPCosts();
-            master.EnemySlainDuringMenu -= KillInMenu;
+            jokerMaster.skillMenuActive = false;
+            jokerMaster.statController.HideSPCosts();
+            jokerMaster.EnemySlainDuringMenu -= KillInMenu;
 
             if (isAuthority && skillLocator != null) {
-                primary.UnsetSkillOverride(gameObject, master.statController.primaryPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
-                secondary.UnsetSkillOverride(gameObject, master.statController.secondaryPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
-                utility.UnsetSkillOverride(gameObject, master.statController.utilityPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
+                primary.UnsetSkillOverride(gameObject, jokerMaster.statController.primaryPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
+                secondary.UnsetSkillOverride(gameObject, jokerMaster.statController.secondaryPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
+                utility.UnsetSkillOverride(gameObject, jokerMaster.statController.utilityPersona.skillDef, GenericSkill.SkillOverridePriority.Upgrade);
                 special.UnsetSkillOverride(gameObject, cancelSkill, GenericSkill.SkillOverridePriority.Upgrade);
             }
 
@@ -91,7 +91,7 @@ namespace JokerMod.Joker.SkillStates {
             utility.stock = Math.Clamp(holdUtilityStock + (int)(holdUtilityStopwatch / utility.finalRechargeInterval), 0, utility.maxStock);
             special.stock = Math.Clamp(holdSpecialStock + (int)(holdSpecialStopwatch / special.finalRechargeInterval), 0, special.maxStock);
 
-            if (master.skillUsed) {
+            if (jokerMaster.skillUsed) {
                 special.stock -= 1;
             } else {
                 special.rechargeStopwatch = holdSpecialStopwatch % special.finalRechargeInterval;
@@ -108,7 +108,7 @@ namespace JokerMod.Joker.SkillStates {
         }
 
         private void KillInMenu() {
-            if (master.skillMenuActive) {
+            if (jokerMaster.skillMenuActive) {
                 holdSecondaryStock += 1;
             }
         }

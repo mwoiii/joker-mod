@@ -1,4 +1,5 @@
 ﻿using System;
+using JokerMod.Joker.Components;
 using RoR2;
 using UnityEngine;
 
@@ -13,6 +14,8 @@ namespace JokerMod.Joker.SkillStates {
             stock = skillLocator.secondary.stock;
             skillLocator.secondary.stock = 0;
             base.OnEnter();
+
+            GetComponent<JokerMaster>()?.voiceController?.TryPlayRandomNetworkedSound(JokerAssets.fireBurstSoundEvent, characterBody.gameObject, true);
         }
 
         protected override void ApplyPhysics() {

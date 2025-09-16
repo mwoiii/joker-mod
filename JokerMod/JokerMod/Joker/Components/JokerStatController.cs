@@ -99,6 +99,7 @@ namespace JokerMod.Joker.Components {
             voiceController.RegisterArray(JokerAssets.summonPersonaSoundEvents, 1.5f, 16f);
             voiceController.RegisterSharedStopwatch(JokerAssets.castSkillAttackSoundEvents, JokerAssets.summonPersonaSoundEvents);
             voiceController.RegisterSharedStopwatch(JokerAssets.castSkillSupportSoundEvents, JokerAssets.summonPersonaSoundEvents);
+            voiceController.RegisterSharedStopwatch(JokerAssets.fireBurstSoundEvent, JokerAssets.summonPersonaSoundEvents);
         }
 
         private void SetDefaultStats() {

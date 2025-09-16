@@ -70,8 +70,8 @@ namespace JokerMod.Joker.SkillStates {
         }
 
         private void SwapWithSlot(int secondSelection) {
-            master.statController.SwapPersonaSlots(firstSelection, secondSelection);
-            master.statController.UpdateAndDisplaySPCosts();
+            jokerMaster.statController.SwapPersonaSlots(firstSelection, secondSelection);
+            jokerMaster.statController.UpdateAndDisplaySPCosts();
             firstSelection = 0;
         }
 

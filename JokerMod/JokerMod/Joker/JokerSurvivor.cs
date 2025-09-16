@@ -121,6 +121,7 @@ namespace JokerMod.Joker {
         public void AddHitboxes() {
             //example of how to create a HitBoxGroup. see summary for more details
             Prefabs.SetupHitBoxGroup(characterModelObject, "KnifeGroup", ["KnifeHitbox1", "KnifeHitbox2"]);
+            Prefabs.SetupHitBoxGroup(characterModelObject, "Finisher4Group", ["MediumAssHitbox"]);
             Prefabs.SetupHitBoxGroup(characterModelObject, "Finisher5Group", ["GiantAssHitbox"]);
         }
 

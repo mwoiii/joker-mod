@@ -1,6 +1,7 @@
 using System.Security;
 using System.Security.Permissions;
 using BepInEx;
+using BepInEx.Configuration;
 using JokerMod.Joker;
 using JokerMod.Joker.Components;
 using JokerMod.Joker.SkillStates;
@@ -14,12 +15,19 @@ using RoR2;
 [assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
 
 namespace JokerMod {
+
     [BepInDependency(R2API.ContentManagement.R2APIContentManager.PluginGUID)]
+
     [BepInDependency(LanguageAPI.PluginGUID)]
+
     [BepInDependency(NetworkingAPI.PluginGUID)]
 
+    [BepInDependency("com.rune580.riskofoptions", BepInDependency.DependencyFlags.SoftDependency)]
+
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
+
     [BepInPlugin(MODUID, MODNAME, MODVERSION)]
+
     public class JokerPlugin : BaseUnityPlugin {
 
         public const string MODUID = "com.Miyowi.JokerMod";
@@ -27,6 +35,8 @@ namespace JokerMod {
         public const string MODVERSION = "1.0.0";
 
         public static PluginInfo pluginInfo;
+
+        public static ConfigFile config;
 
         public const string DEVELOPER_PREFIX = "MIYOWI";
 
@@ -37,7 +47,11 @@ namespace JokerMod {
 
             pluginInfo = Info;
 
+            config = Config;
+
             Log.Init(Logger);
+
+            Options.Init();
 
             RegisterNetMessages();
 
@@ -65,6 +79,7 @@ namespace JokerMod {
             DamageTypeCollection.Init();
             Hooks.AddHooks();
             Asset.AssignDamageTypes();
+            Options.OnLoadFinished();
         }
 
         private void RegisterNetMessages() {

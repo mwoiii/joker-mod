@@ -3,10 +3,8 @@ using System.Collections;
 using JokerMod.Joker.Components.Animation;
 using JokerMod.Joker.Components.UI;
 using JokerMod.Joker.SkillStates;
-using JokerMod.Joker.SkillStates.PersonaStates;
 using JokerMod.Modules;
 using RoR2;
-using RoR2.Projectile;
 using RoR2.Skills;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -235,14 +233,6 @@ namespace JokerMod.Joker.Components {
             }
 
             voiceController.UnpausedUpdate();
-
-            if (Input.GetKeyDown(KeyCode.F2)) {
-                // you WON!! THE [free] TEST EIHA
-                Log.Info($"CONGRATS!!!");
-                var freeState = new EihaState();
-                Asset.eihaPrefab.GetComponent<ProjectileImpactExplosion>().blastRadius = testRadius;
-                EntityStateMachine.FindByCustomName(characterBody.gameObject, "Weapon").SetNextState(new EihaState());
-            }
         }
     }
 }

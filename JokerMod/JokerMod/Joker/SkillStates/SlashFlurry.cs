@@ -160,6 +160,7 @@ namespace JokerMod.Joker.SkillStates {
                     attackStartPercentTime = 0.23f;
                     attackEndPercentTime = 0.53f;
                     earlyExitPercentTime = 0.7f;
+                    skipHitEffects = true;
                     InitCombo8SubstepActions();
                     OverrideNextStep(0);
                     break;
@@ -176,6 +177,8 @@ namespace JokerMod.Joker.SkillStates {
                     attackStartPercentTime = 0.16f;
                     attackEndPercentTime = 0.52f;
                     earlyExitPercentTime = 0.69f;
+                    skipHitEffects = true;
+                    hitboxGroupName = "Finisher4Group";
                     InitCombo10SubstepActions();
                     OverrideNextStep(0);
                     break;
@@ -546,18 +549,15 @@ namespace JokerMod.Joker.SkillStates {
                 new SubstepAction(
                     occurrenceTime: 0.41f,
                     forwardMovement: 8f,
-                    upwardMovement: 150f,
+                    upwardMovement: 125f,
                     smoothMovementStart: 0.09f,
                     smoothMovementEnd: 0.52f,
-                    negateBoneY: true,
-                    customBehaviour: () => {
-                        PlayVFXSync(VFX.slashBurstPrefab, "GroundCombo1-FB");
-                    }
+                    negateBoneY: true
                 ),
                 new SubstepAction(
                     occurrenceTime: 0.365f,
                     forwardMovement: 8f,
-                    upwardMovement: 150f,
+                    upwardMovement: 140f,
                     smoothMovementStart: 0.09f,
                     smoothMovementEnd: 0.52f,
                     negateBoneY: true,
@@ -852,7 +852,7 @@ namespace JokerMod.Joker.SkillStates {
                 new SubstepAction(
                     occurrenceTime: 0.60f,
                     forwardMovement: 120f,
-                    rightMovement: 168f,
+                    rightMovement: 158f,
                     smoothMovementStart: 0.5f,
                     smoothMovementEnd: 0.89f,
                     customBehaviour: PlayRandomStrongHitEffect
@@ -860,7 +860,7 @@ namespace JokerMod.Joker.SkillStates {
                 new SubstepAction(
                     occurrenceTime: 0.56f,
                     forwardMovement: 120f,
-                    rightMovement: 168f,
+                    rightMovement: 158f,
                     smoothMovementStart: 0.5f,
                     smoothMovementEnd: 0.89f,
                     procCoefficient: 2.5f,
@@ -872,19 +872,19 @@ namespace JokerMod.Joker.SkillStates {
                 new SubstepAction(
                     occurrenceTime: 0.53f,
                     forwardMovement: 120f,
-                    rightMovement: 168f,
+                    rightMovement: 158f,
                     smoothMovementStart: 0.5f,
                     smoothMovementEnd: 0.89f,
+                    shouldResetHitbox: true,
                     soundEffect: JokerAssets.primarySwingSoundEvents[6].akId,
                     customBehaviour: PlayRandomStrongAltVoice
                 ),
                 new SubstepAction(
                     occurrenceTime: 0.5f,
                     forwardMovement: 120f,
-                    rightMovement: 168f,
+                    rightMovement: 158f,
                     smoothMovementStart: 0.5f,
                     smoothMovementEnd: 0.89f,
-                    shouldResetHitbox: true,
                     damageCoefficient: 5f, // regular
                     procCoefficient: 2f,
                     customBehaviour: () => {
@@ -903,7 +903,7 @@ namespace JokerMod.Joker.SkillStates {
                 ),
                 new SubstepAction(
                     occurrenceTime: 0.2f,
-                    forwardMovement: 40f,
+                    forwardMovement: 15f,
                     rightMovement: -56f,
                     smoothMovementStart: 0.2f,
                     smoothMovementEnd: 0.4f,
