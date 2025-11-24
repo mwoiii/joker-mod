@@ -25,14 +25,14 @@ namespace JokerMod.Modules.Buffs {
         }
 
         private static void SweptDebuffMult(HealthComponent self, DamageInfo damageInfo) {
-            if (self.body != null && self.body.GetTimedBuffTotalDurationForIndex(buffDef.buffIndex, out _)) {
+            if (self?.body != null && self.body.HasBuff(buffDef.buffIndex)) {
                 damageInfo.damageColorIndex = Asset.sweptColor;
                 damageInfo.damage *= 2f;
             }
         }
 
         private static void RemoveDebuff(CharacterMotor self) {
-            if (self.body != null && self.body.GetTimedBuffTotalDurationForIndex(buffDef.buffIndex, out _)) {
+            if (self.body != null && self.body.HasBuff(buffDef.buffIndex)) {
                 self.body.RemoveOldestTimedBuff(buffDef.buffIndex);
             }
         }

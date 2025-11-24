@@ -10,17 +10,23 @@
 		<None Remove="libs\**" />
 	</ItemGroup>
 	<ItemGroup>
+	  <None Remove="mwmwjokermod" />
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Include="mwmwjokermod" />
+	</ItemGroup>
+	<ItemGroup>
 	  <PackageReference Include="BepInEx.Analyzers" Version="1.0.*">
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
 	  <PackageReference Include="BepInEx.Core" Version="5.4.21" />
-	  <PackageReference Include="MMHOOK.RoR2" Version="2025.6.3" />
+	  <PackageReference Include="MMHOOK.RoR2" Version="2025.11.19" />
 	  <PackageReference Include="MonoMod" Version="22.7.31.1" />
 	  <PackageReference Include="R2API" Version="5.0.5" />
 	  <PackageReference Include="R2API.DamageType" Version="1.1.7" />
 	  <PackageReference Include="R2API.Dot" Version="1.0.4" />
-	  <PackageReference Include="RiskOfRain2.GameLibs" Version="1.3.9-r.0" />
+	  <PackageReference Include="RiskOfRain2.GameLibs" Version="1.4.0-r.0" />
 	  <PackageReference Include="Rune580.Mods.RiskOfRain2.RiskOfOptions" Version="2.8.3" />
 	  <PackageReference Include="UnityEngine.Modules" Version="2021.3.33" />
 	</ItemGroup>

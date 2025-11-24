@@ -24,7 +24,7 @@ namespace JokerMod.Modules.Buffs {
         }
 
         private static void HallowedDebuffHeal(HealthComponent self, DamageInfo damageInfo) {
-            if (self.body != null && self.body.GetTimedBuffTotalDurationForIndex(buffDef.buffIndex, out _)) {
+            if (self?.body != null && self.body.HasBuff(buffDef.buffIndex)) {
                 HealthComponent attackerHealth = damageInfo.attacker?.GetComponent<HealthComponent>();
                 if (attackerHealth != null) {
                     attackerHealth.Heal(damageInfo.damage * 0.1f, default(ProcChainMask));

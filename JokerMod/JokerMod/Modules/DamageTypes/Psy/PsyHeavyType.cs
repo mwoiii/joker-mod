@@ -22,7 +22,7 @@ namespace JokerMod.Modules.DamageTypes {
 
         private static void AddHeavyPsyBuffs(HealthComponent self, DamageInfo damageInfo) {
             if (damageInfo.HasModdedDamageType(damageType)) {
-                if (self.body != null) {
+                if (self?.body != null) {
                     CharacterBody? attackerBody = damageInfo.attacker?.GetComponent<CharacterBody>();
                     int quantityRoll = Utils.rand.Next(minBuffs, maxBuffs + 1);
 
@@ -32,7 +32,7 @@ namespace JokerMod.Modules.DamageTypes {
                             BuffDef buffDef = (BuffDef)Utils.RandomChoice(PsyUtils.debuffList);
 
                             if (buffDef.isDOT) {
-                                DotController.InflictDot(self.gameObject, damageInfo.attacker, DotController.GetDotDefIndex(buffDef), buffDuration * damageInfo.procCoefficient, 1.5f);
+                                DotController.InflictDot(self.gameObject, damageInfo.attacker, DotController.GetDotDefIndex(buffDef), buffDuration * damageInfo.procCoefficient, 1.5f, null);
                             } else if (PsyUtils.untimedDebuffList.Contains(buffDef)) {
                                 self.body?.AddBuff(buffDef);
                             } else {

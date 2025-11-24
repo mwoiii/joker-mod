@@ -10,7 +10,7 @@ using UnityEngine;
 namespace JokerMod.Joker {
     public class JokerSurvivor : SurvivorBase<JokerSurvivor> {
         //used to load the assetbundle for this character. must be unique
-        public override string assetBundleName => "jokermod";
+        public override string assetBundleName => "mwmwjokermod";
 
         //the name of the prefab we will create. conventionally ending in "Body". must be unique
         public override string bodyName => "JokerBody";

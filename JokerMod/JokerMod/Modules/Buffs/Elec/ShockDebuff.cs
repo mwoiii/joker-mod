@@ -24,7 +24,7 @@ namespace JokerMod.Modules.Buffs {
         }
 
         private static void ShockDebuffMult(HealthComponent self, DamageInfo damageInfo) {
-            if (self.body != null && self.body.GetTimedBuffTotalDurationForIndex(buffDef.buffIndex, out _)) {
+            if (self?.body != null && self.body.HasBuff(buffDef.buffIndex)) {
                 damageInfo.damageColorIndex = Asset.shockColor;
                 damageInfo.damage *= 1.3f;
             }

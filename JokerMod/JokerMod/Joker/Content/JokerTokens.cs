@@ -18,7 +18,7 @@ namespace JokerMod.Joker {
             string desc = "Joker is a highly adaptable survivor who uses the power of the Wild Card to overcome any obstacle.<color=#CCD3E0>" + Environment.NewLine + Environment.NewLine
              + "< ! > Slash Flurry's finishers excel in different situations. Learning the differences is key to mastery." + Environment.NewLine + Environment.NewLine
              + "< ! > Fire doubles as both mobility and a high-damage burst option. Make sure to manage your bullets according to the situation." + Environment.NewLine + Environment.NewLine
-             + "< ! > Phantom Dash is a simple but powerful skill, allowing you dash even mid-combo." + Environment.NewLine + Environment.NewLine
+             + "< ! > Phantom Dash is a simple but powerful skill, allowing you to dash even mid-combo." + Environment.NewLine + Environment.NewLine
              + "< ! > Joker's stock of different Personas are his most valuable asset. Carefully manage your SP and forge powerful Persona combinations " +
              "to ensure you're always ahead of the curve." + Environment.NewLine + Environment.NewLine;
 
@@ -28,15 +28,11 @@ namespace JokerMod.Joker {
             Language.Add(prefix + "NAME", "Joker");
             Language.Add(prefix + "DESCRIPTION", desc);
             Language.Add(prefix + "SUBTITLE", "Prisoner of Fate");
-            Language.Add(prefix + "LORE", "...You are held captive." + Environment.NewLine + Environment.NewLine +
-                "A prisoner of fate to a future that has been sealed in advance." + Environment.NewLine + Environment.NewLine +
-                "This is truly an unjust game - your chances of winning are almost none." + Environment.NewLine + Environment.NewLine +
-                "But if my voice is reaching you, there may yet be a possibility open to you." + Environment.NewLine + Environment.NewLine +
-                "I beg you. Please overcome this game... and save the world." + Environment.NewLine + Environment.NewLine +
-                "The key to victory lies within the memories of your bonds - the truth that you and your friends grasped." + Environment.NewLine + Environment.NewLine +
-                "It all began that day, when the game was started half a year ago." + Environment.NewLine + Environment.NewLine +
-                "For the sake of your world's future, as well as your own..." + Environment.NewLine + Environment.NewLine +
-                "You must remember.");
+            Language.Add(prefix + "LORE", "What could possibly put a man aboard a ship bound for the edge of the galaxy, for a rescue mission that never ends?" + Environment.NewLine + Environment.NewLine +
+                "Some might have thought they knew what they were getting into. Others might have been sweet-talked by UES recruiters and agreed to join. Others still were picked up along the way. These are all sensible reasons." + Environment.NewLine + Environment.NewLine +
+                "This man did not come to be here by sensible reasoning. Less a man, more a walking accumulation of desires. Desire is a powerful thing. A blinding, unstoppable driving force. Perhaps it acted as some inevitable, invisible hand to bring him aboard this ship. Perhaps the flaps of butterfly wings and bouncing of atoms had the sense of humor to put him here. The one thing that you can be sure of, is that it was not his own desires that brought him here." + Environment.NewLine + Environment.NewLine +
+                "It was you. A reflection of your own desires brought me here. Into a never-ending cycle of progress, victory, death. This connects us irrevocably. Thou hast acquired a new vow, guiding thou back to the hearth of the soul. I sendeth my blessing." + Environment.NewLine + Environment.NewLine +
+                "I am thou, thou art I.");
             Language.Add(prefix + "OUTRO_FLAVOR", outro);
             Language.Add(prefix + "OUTRO_FAILURE", outroFailure);
 

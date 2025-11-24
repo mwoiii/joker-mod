@@ -13,9 +13,9 @@ namespace JokerMod.Modules.DamageTypes {
         }
 
         private static void AddIceMediumBuff(HealthComponent self, DamageInfo damageInfo) {
-            if (self.body != null && damageInfo.HasModdedDamageType(damageType)) {
+            if (self?.body != null && damageInfo.HasModdedDamageType(damageType)) {
                 for (int i = 0; i < 3; i++) {
-                    DotController.InflictDot(self.body.gameObject, damageInfo.attacker, DotController.DotIndex.Frost, 10f, 1f);
+                    DotController.InflictDot(self.body.gameObject, damageInfo.attacker, DotController.DotIndex.Frost, 10f, 1f, null);
                 }
             }
         }

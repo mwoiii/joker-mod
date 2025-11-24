@@ -49,7 +49,7 @@ namespace JokerMod.Joker.SkillStates {
                 jokerMaster.voiceController.TryPlayRandomNetworkedSound(JokerAssets.summonPersonaSoundEvents, characterBody.gameObject, true);
             }
 
-            if (shouldPlaySFX && isAuthority) {
+            if (shouldPlaySFX && isAuthority && characterBody?.isPlayerControlled == true) {
                 EntitySoundManager.EmitSoundLocal(JokerAssets.unleashSoundEvent.akId, characterBody.gameObject);
             }
 

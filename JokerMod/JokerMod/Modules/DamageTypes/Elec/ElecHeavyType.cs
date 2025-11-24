@@ -14,7 +14,7 @@ namespace JokerMod.Modules.DamageTypes {
         }
 
         private static void AddElecHeavyBuff(HealthComponent self, DamageInfo damageInfo) {
-            if (self.body != null && damageInfo.HasModdedDamageType(damageType)) {
+            if (self?.body != null && damageInfo.HasModdedDamageType(damageType)) {
                 self.body.AddTimedBuff(ShockDebuff.buffDef, 12f, 1);
                 SetStateOnHurt stunComponent = self.GetComponent<SetStateOnHurt>();
                 if (stunComponent != null && stunComponent.canBeStunned) {

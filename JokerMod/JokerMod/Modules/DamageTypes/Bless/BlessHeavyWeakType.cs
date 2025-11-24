@@ -14,7 +14,7 @@ namespace JokerMod.Modules.DamageTypes {
         }
 
         private static void AddBlessHeavyWeakBuff(HealthComponent self, DamageInfo damageInfo) {
-            if (self.body != null && damageInfo.HasModdedDamageType(damageType)) {
+            if (self?.body != null && damageInfo.HasModdedDamageType(damageType)) {
                 self.body.AddTimedBuff(HallowedDebuff.buffDef, 16f);
             }
         }

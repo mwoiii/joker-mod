@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using JokerMod.Modules.DamageTypes;
 using R2API;
 using RoR2;
@@ -16,7 +17,7 @@ namespace JokerMod.Modules {
 
         public static AssetBundle mainAssetBundle;
 
-        internal static string assetBundleName = "jokermod";
+        internal static string assetBundleName = "mwmwjokermod";
 
         public static List<GameObject> projectilePrefabs = new List<GameObject>();
 
@@ -196,6 +197,8 @@ namespace JokerMod.Modules {
             bufudynePrefab = Asset.LoadAndAddProjectilePrefab(mainAssetBundle, "BufudyneProjectile");
 
             maskTierDef = mainAssetBundle.LoadAsset<ItemTierDef>("MaskTier");
+            maskTierDef.tier = ItemTier.NoTier;
+
             maskColor = R2API.ColorsAPI.RegisterColor(new Color(0.41f, 0.94f, 1f));
             maskDarkColor = R2API.ColorsAPI.RegisterColor(new Color(0.08f, 0.29f, 0.85f));
             maskTierDef.colorIndex = maskColor;
@@ -258,7 +261,14 @@ namespace JokerMod.Modules {
 
             AssetBundle assetBundle = null;
             try {
-                assetBundle = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(JokerPlugin.instance.Info.Location), "AssetBundles", bundleName));
+                using (var assetStream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"JokerMod.{bundleName}")) {
+                    if (assetStream != null) {
+                        assetBundle = AssetBundle.LoadFromStream(assetStream);
+                    }
+                }
+                if (assetBundle == null) {
+                    assetBundle = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(JokerPlugin.instance.Info.Location), "AssetBundles", bundleName));
+                }
             } catch (System.Exception e) {
                 Log.Error($"Error loading asset bundle, {bundleName}. Your asset bundle must be in a folder next to your mod dll called 'AssetBundles'. Follow the guide to build and install your mod correctly!\n{e}");
             }

@@ -13,8 +13,8 @@ namespace JokerMod.Modules.DamageTypes {
         }
 
         private static void AddNukeLightWeakBuff(HealthComponent self, DamageInfo damageInfo) {
-            if (self.body != null && damageInfo.HasModdedDamageType(damageType)) {
-                DotController.InflictDot(self.body.gameObject, damageInfo.attacker, Buffs.IrradiatedDebuff.dotIndex, float.PositiveInfinity, 1f);
+            if (self?.body != null && damageInfo.HasModdedDamageType(damageType)) {
+                DotController.InflictDot(self.body.gameObject, damageInfo.attacker, Buffs.IrradiatedDebuff.dotIndex, float.PositiveInfinity, 1f, null);
             }
         }
     }

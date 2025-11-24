@@ -69,10 +69,6 @@ namespace JokerMod.Modules {
                 IL.RoR2.GenericPickupController.AttemptGrant += IL_GenericPickupController_AttemptGrant;
             }
 
-            if (IL_Handle_GenericPickupControllerAttemptGrant_Actions != null) {
-                IL.RoR2.GenericPickupController.AttemptGrant += IL_GenericPickupController_AttemptGrant;
-            }
-
             if (IL_Handle_OverlapAttackFire_Actions != null) {
                 IL.RoR2.OverlapAttack.Fire += IL_OverlapAttack_Fire;
             }

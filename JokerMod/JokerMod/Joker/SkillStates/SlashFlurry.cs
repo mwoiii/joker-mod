@@ -829,13 +829,13 @@ namespace JokerMod.Joker.SkillStates {
         private void InitCombo10SubstepActions() {
             substepActions = new List<SubstepAction> {
                 new SubstepAction(
-                    occurrenceTime: 0.68f,
+                    occurrenceTime: 0.69f,
                     customBehaviour: () => {
                         PlayVFXSync(VFX.slashBurstPrefab, "GroundCombo4-FB");
                     }
                 ),
                 new SubstepAction(
-                    occurrenceTime: 0.66f,
+                    occurrenceTime: 0.67f,
                     customBehaviour: () => {
                         PlayVFXSync(VFX.slashHeavyPrefab, "GroundCombo4-F");
                     }

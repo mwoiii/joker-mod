@@ -145,16 +145,13 @@ namespace JokerMod.Modules {
             });
 
             ILCursor c = new ILCursor(il);
-            // if ((bool)body.inventory && pickupDef != null) {
-            if (c.TryGotoNext(x => x.MatchLdarg(1)) &&
-                c.TryGotoNext(x => x.MatchCallOrCallvirt<CharacterBody>("get_inventory")) &&
-                c.TryGotoNext(x => x.MatchCallOrCallvirt<UnityEngine.Object>("op_Implicit")) &&
-                c.TryGotoNext(x => x.MatchBrfalse(out var _)) &&
-                c.TryGotoNext(x => x.MatchLdloc(1)) &&
-                c.TryGotoNext(MoveType.After, x => x.MatchBrfalse(out var _))) {
+            // grantContext.rotation = rotation;
+            if (c.TryGotoNext(x => x.MatchLdloca(out _)) &&
+                c.TryGotoNext(x => x.MatchLdloc(out _)) &&
+                c.TryGotoNext(MoveType.After, x => x.MatchStfld<RoR2.PickupDef.GrantContext>("rotation"))) {
                 c.Emit(OpCodes.Ldarg_0);
                 c.Emit(OpCodes.Ldarg_1);
-                c.Emit(OpCodes.Ldloc_1);
+                c.Emit(OpCodes.Ldloc_2);
                 ILLabel resumeLabel = c.DefineLabel();
                 c.EmitDelegate(continueDelegate);
                 c.Emit(OpCodes.Brtrue, resumeLabel);

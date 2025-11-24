@@ -13,8 +13,8 @@ namespace JokerMod.Modules.DamageTypes {
         }
 
         private static void AddFireLightWeakBuff(HealthComponent self, DamageInfo damageInfo) {
-            if (self.body != null && damageInfo.HasModdedDamageType(damageType)) {
-                DotController.InflictDot(self.body.gameObject, damageInfo.attacker, DotController.DotIndex.Burn, 8f, 1f);
+            if (self?.body != null && damageInfo.HasModdedDamageType(damageType)) {
+                DotController.InflictDot(self.body.gameObject, damageInfo.attacker, DotController.DotIndex.Burn, 8f, 1f, null);
             }
         }
     }
